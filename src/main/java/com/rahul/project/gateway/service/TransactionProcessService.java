@@ -38,9 +38,8 @@ public class TransactionProcessService {
     private TransactionRepository transactionRepository;
 
     public TransactionProcessDTO processGatewayHostedSave(TransactionProcessDTO transactionProcessDTO) {
-        //TransactionProcessDTO processDTO = new TransactionProcessDTO();
-        logger.info(" Inside ProcessTransactionService first request to save transaction");
 
+        logger.info(" Inside ProcessTransactionService first request to save transaction");
 
         User sendByUser = abstractDao.getEntityById(User.class, transactionProcessDTO.getCustomerId());
         Appointment appointment = abstractDao.getEntityById(Appointment.class, transactionProcessDTO.getAppointmentId());
