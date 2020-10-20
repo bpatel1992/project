@@ -44,8 +44,8 @@ public class TransactionResponseController {
         transactionProcessDTO.setTransactionId(request.getParameter("systemTxnRef"));
         transactionProcessDTO.setStatus(request.getParameter("txnStatus"));
 
-
-        TransactionProcessDTO response = transactionProcessService.processGatewayHostedUpdate(transactionProcessDTO);
+        TransactionProcessDTO response = new TransactionProcessDTO();
+//        TransactionProcessDTO response = transactionProcessService.processGatewayHostedUpdate(transactionProcessDTO);
         response.setRedirectURL(null);
         if (response.getRedirectURL() != null) {
             model.addAttribute("url", response.getRedirectURL());

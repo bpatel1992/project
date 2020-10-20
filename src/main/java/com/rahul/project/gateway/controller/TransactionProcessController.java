@@ -24,7 +24,7 @@ public class TransactionProcessController {
     TransactionProcessService transactionProcessService;
 
 
-    @RequestMapping(path = {"/processTxn/save", "/oauth2/api/processTxn/save"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = {"/process/txn/save", "/oauth2/api/process/txn/save"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public TransactionProcessDTO processTxn(@Valid @RequestBody TransactionProcessDTO transactionProcessDTO) {
 
         logger.info("inside pos process in payment process controller");
