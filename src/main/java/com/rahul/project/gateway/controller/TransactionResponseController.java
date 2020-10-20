@@ -29,9 +29,9 @@ public class TransactionResponseController {
         logger.info("in getProcessTxnResponse");
         String result = "";
         TransactionProcessDTO transactionProcessDTO = new TransactionProcessDTO();
-         Map<String, String[]> map = request.getParameterMap();
-         HashMap<String, Object> attributes = new HashMap<>();
-                for (String str : map.keySet()) {
+        Map<String, String[]> map = request.getParameterMap();
+        HashMap<String, Object> attributes = new HashMap<>();
+        for (String str : map.keySet()) {
             result = (result.equalsIgnoreCase("") ? result : result + ",") + str + "=" + request.getParameter(str);
             attributes.put(str, request.getParameter(str));
             logger.info(" parameter --> " + str + " param value -->" + request.getParameter(str));
@@ -46,12 +46,12 @@ public class TransactionResponseController {
 
 
         TransactionProcessDTO response = transactionProcessService.processGatewayHostedUpdate(transactionProcessDTO);
+        response.setRedirectURL(null);
         if (response.getRedirectURL() != null) {
             model.addAttribute("url", response.getRedirectURL());
-             model.addAttribute("smsInvoice","enabled");
-        }
-        else
-            model.addAttribute("smsInvoice","notEnabled");
+            model.addAttribute("smsInvoice", "enabled");
+        } else
+            model.addAttribute("smsInvoice", "notEnabled");
         logger.info("response status is " + response.getRespKey());
         return "pgResult";
     }
