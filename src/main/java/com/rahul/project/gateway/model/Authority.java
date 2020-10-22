@@ -18,9 +18,15 @@ import java.io.Serializable;
 @Table(name = "authority")
 public class Authority implements Serializable {
 
+//    @Id
+//    @SequenceGenerator(name = "fee_m_gen", allocationSize = 1, sequenceName = "fee_m_seq")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fee_m_gen")
+//    private long id;
+
     @Id
     @Column(name = "authority_id")
     private Long authorityId;
+
     @Basic
     @Column(name = "name")
     private String name;

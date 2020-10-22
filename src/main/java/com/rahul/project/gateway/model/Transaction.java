@@ -4,6 +4,8 @@ import com.rahul.project.gateway.serialize.TransactionStatusSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,13 +17,13 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "transaction_m")
-public class Transaction implements Serializable {
+public class Transaction extends BaseEntity {
 
     private static final long serialVersionUID = -8547228405978266579L;
 
     @Id
-    @SequenceGenerator(name = "_m_gen", allocationSize = 1, sequenceName = "txn_m_seq")
-    @GeneratedValue(generator = "txn_m_gen", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "transaction_m_gen", allocationSize = 1, sequenceName = "transaction_m_seq")
+    @GeneratedValue(generator = "transaction_m_gen", strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
 
@@ -96,6 +98,19 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "customer_user_id")
     private User customerUserId;
 
+
+    @Basic
+    @CreatedDate
+    @Column(name = "creation_date")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate;
+
+    @Basic
+    @LastModifiedDate
+    @Column(name = "modification_date")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date modificationDate;
+
     public enum TransactionStatusType {
         SUCCESS, FAILED, INPROGRESS,
     }
@@ -119,6 +134,7 @@ public class Transaction implements Serializable {
 
         public static List<Transaction.TransactionStatus> getTransactionStatusByTypes(
                 List<Transaction.TransactionStatusType> transactionStatusTypes) {
+
             List<Transaction.TransactionStatus> transactionStatuses = new ArrayList<Transaction.TransactionStatus>();
 
             for (Transaction.TransactionStatus transactionStatus : Transaction.TransactionStatus

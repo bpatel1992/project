@@ -62,8 +62,10 @@ public class Appointment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "appointment_repeat_id")
     private AppointmentRepeat appointmentRepeat;
+
     @Column(name = "occurrence")
     private Integer occurrence;
+
     @ManyToOne
     @JoinColumn(name = "service_id")
     private Services services;

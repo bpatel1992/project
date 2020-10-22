@@ -1,6 +1,7 @@
 package com.rahul.project.gateway.controller;
 
 
+import com.rahul.project.gateway.dto.FeeDTO;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
 import com.rahul.project.gateway.service.TransactionProcessService;
 import org.slf4j.Logger;
@@ -30,5 +31,14 @@ public class TransactionProcessController {
         logger.info("inside pos process in payment process controller");
         return transactionProcessService.processGatewayHostedSave(transactionProcessDTO);
     }
+
+
+    @RequestMapping(path = {"/api/process/fee", "/oauth2/api/process/fee"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public FeeDTO processFee(@Valid @RequestBody FeeDTO feeDto) throws Exception {
+
+        logger.info("inside pos process in payment process controller");
+        return transactionProcessService.processFee(feeDto);
+    }
+
 
 }

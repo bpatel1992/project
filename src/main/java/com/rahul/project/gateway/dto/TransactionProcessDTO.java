@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 public class TransactionProcessDTO {
 
     @NotNull(message = "Validator.notNullMsg")
+    private Long id;
+
+    @NotNull(message = "Validator.notNullMsg")
     private Long customerId;
 
     @NotNull(message = "Validator.notNullMsg")
