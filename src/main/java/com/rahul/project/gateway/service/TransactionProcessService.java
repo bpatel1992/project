@@ -5,6 +5,8 @@ import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.dto.FeeDTO;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
+import com.rahul.project.gateway.enums.FeeStatus;
+import com.rahul.project.gateway.enums.TaxStatus;
 import com.rahul.project.gateway.hash.AESSecurity;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.FeeRepository;
@@ -124,6 +126,7 @@ public class TransactionProcessService {
         protected void configure() {
             map().setAuthorityId(source.getAuthority().getAuthorityId());
             map().setServicesId(source.getService().getId());
+
         }
     };
 
@@ -136,8 +139,24 @@ public class TransactionProcessService {
 
 
     public FeeDTO processFee(FeeDTO feeDTO) throws Exception {
+
         Fee fee = feeRepository.getByServiceAndAuthority(new Services(feeDTO.getServicesId()),new Authority(feeDTO.getAuthorityId()));
-        return modelMapper.map(fee, FeeDTO.class);
+//        feeDTO=modelMapper.map(fee, FeeDTO.class);
+    feeDTO.setFee(fee.getFee());
+    feeDTO.setTax(fee.getTax());
+    feeDTO.setFeeType(fee.getFeeType().getName());
+    feeDTO.setTaxType(fee.getTaxType().getName());
+       if(TaxStatus.VARIABLE.equals(fee.getTaxType()) && FeeStatus.VARIABLE.equals(fee.getFeeType())){
+           feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getAmount().multiply(feeDTO.getFee().divide(new BigDecimal(100)))).add(feeDTO.getFee().multiply(feeDTO.getTax().divide(new BigDecimal(100)))));
+       }else if(TaxStatus.VARIABLE.equals(fee.getTaxType())){
+           feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getFee()).add(feeDTO.getFee().multiply(feeDTO.getTax().divide(new BigDecimal(100)))));
+       }else if(FeeStatus.VARIABLE.equals(fee.getFeeType())){
+           feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getTax()).add(feeDTO.getAmount().multiply(feeDTO.getFee().divide(new BigDecimal(100)))));
+       }
+       else{
+           feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getFee()).add(feeDTO.getTax()));
+       }
+        return feeDTO;
     }
 
 
