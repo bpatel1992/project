@@ -63,8 +63,8 @@ public class SignUpService {
     AuthorityRepository authorityRepository;
     @Autowired
     private UserDao userDao;
-   /* @Autowired
-    SendMailService sendMailService;*/
+    @Autowired
+    SendMailService sendMailService;
 
     public SignUpResponseDTO signUpCustomerStageOne(SignUpCustomerStage1Dto signUpCustomerDto) throws Exception {
         logger.info("in customer sign up stage 1");
@@ -92,6 +92,7 @@ public class SignUpService {
         user.setRandomKey(commonUtility.generateUserRandomKey());
         if (signUpCustomerDto.getEmail() != null) {
             user.setEmail(signUpCustomerDto.getEmail());
+            //sendMailService.sendEmailConfirmation();
 //            sendMailService.sendOTPAdmin(user, otp, commonUtility.getDateConverted(expiryTime), userName);
         }
         user.setTitle(new Title(signUpCustomerDto.getTitleId()));
@@ -141,6 +142,10 @@ public class SignUpService {
         user.setSignUpRandomKey(commonUtility.get20DigitRandomKey());
         user.setActivated(false);
         userRepository.save(user);
+
+        if (!user.getEmail().isEmpty()) {
+            sendMailService.sendEmailConfirmation(user);
+        }
         CompositeId compositeId = new CompositeId(loginTypeEntity.getId(), user.getId());
         userLoginPassword.setCompositeId(compositeId);
         userLoginPassword.setLoginType(loginTypeEntity);
@@ -288,5 +293,6 @@ public class SignUpService {
         }
         return commonUtility.setResponseDTO(responseDTO);
     }
+
 
 }

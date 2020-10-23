@@ -110,4 +110,8 @@ public class SignUpController {
         }
         return user;
     }
+
+    private void updateEmailStatus(){
+
+    }
 }
