@@ -19,7 +19,7 @@ public class Appointment extends BaseEntity {
     @Id
     @SequenceGenerator(name = "appointment_m_gen", allocationSize = 1, sequenceName = "appointment_m_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointment_m_gen")
-    private long id;
+    private Long id;
 
     @JoinColumn(name = "appointment_status")
     private AppointmentStatus appointmentStatus;
@@ -137,6 +137,14 @@ public class Appointment extends BaseEntity {
                     AppointmentStatusType.ACTIVE,
                     AppointmentStatusType.COMPLETED,
                     AppointmentStatusType.MISSED,
+                    AppointmentStatusType.SCHEDULED));
+        }
+
+        public static List<AppointmentStatus> getBookedAppointmentStatuses() {
+            return getAppointmentsStatusByTypes(Arrays.asList(
+                    AppointmentStatusType.ACTIVE,
+//                    AppointmentStatusType.COMPLETED,
+//                    AppointmentStatusType.MISSED,
                     AppointmentStatusType.SCHEDULED));
         }
 

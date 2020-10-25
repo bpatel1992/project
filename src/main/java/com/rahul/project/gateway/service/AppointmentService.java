@@ -3,11 +3,11 @@ package com.rahul.project.gateway.service;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.controller.CrudCtrlBase;
 import com.rahul.project.gateway.dao.AbstractDao;
+import com.rahul.project.gateway.dto.AppointmentAvailabilityDto;
+import com.rahul.project.gateway.dto.AppointmentAvailabilitySlotDto;
 import com.rahul.project.gateway.dto.CreateAppointmentDto;
-import com.rahul.project.gateway.model.Appointment;
-import com.rahul.project.gateway.model.PartnerAddress;
-import com.rahul.project.gateway.model.Pet;
-import com.rahul.project.gateway.model.User;
+import com.rahul.project.gateway.model.*;
+import com.rahul.project.gateway.repository.AppointmentRepository;
 import com.rahul.project.gateway.repository.UserAddressTimingRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
@@ -17,10 +17,14 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @TransactionalService
 public class AppointmentService {
@@ -34,6 +38,9 @@ public class AppointmentService {
     private final Translator translator;
     private final SendMailService sendMailService;
     private final UserAddressTimingRepository userAddressTimingRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -111,12 +118,87 @@ public class AppointmentService {
         Integer slotInMin = attendant.getChargesSlotInMin();
 
         Date date = appointment.getAppointmentDate();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-//        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimings(attendant.getId(), appointment.getClinic().getId(), day);
+        Calendar time = Calendar.getInstance();
+        time.setTime(date);
+        int day = time.get(Calendar.DAY_OF_WEEK);
+        Set<TimeRange> timeRanges = userAddressTimingRepository.businessTimings(attendant.getId(),
+                appointment.getClinic().getId(), String.valueOf(day));
+        if (timeRanges != null && timeRanges.size() > 0) {
+            List<TimeRange> ranges = new ArrayList<>(timeRanges);
+            ranges.sort(Comparator.comparing(TimeRange::getDisplayOrder));
+            List<AppointmentAvailabilityDto> appointmentAvailabilityDtos = new ArrayList<>();
+            int c = 0;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+            for (TimeRange timeRange : ranges) {
+
+                time.set(Calendar.HOUR_OF_DAY, timeRange.getFromHours());
+                time.set(Calendar.MINUTE, timeRange.getFromMinutes());
+
+                LocalTime fromTime = LocalTime.parse(
+                        (timeRange.getFromHours() > 9 ? timeRange.getFromHours() : "0" + timeRange.getFromHours()) +
+                                ":" +
+                                (timeRange.getFromMinutes() > 9 ? timeRange.getFromMinutes() : "0" + timeRange.getFromMinutes()));
+                LocalTime toTime = LocalTime.parse(
+                        (timeRange.getToHours() > 9 ? timeRange.getToHours() : "0" + timeRange.getToHours()) +
+                                ":" +
+                                (timeRange.getToMinutes() > 9 ? timeRange.getToMinutes() : "0" + timeRange.getToMinutes()));
+                while (fromTime.plus(slotInMin, ChronoUnit.MINUTES).compareTo(toTime) <= 0) {
+                    appointmentAvailabilityDtos.add(createEntry(formatter, fromTime, ++c, appointment));
+                    fromTime = fromTime.plus(slotInMin, ChronoUnit.MINUTES);
+                }
+            }
+//            logger.info(appointmentAvailabilityDtos.toString());
+            createAppointmentDto.setAppointmentAvailabilitySlotDtos(slotCreation(appointmentAvailabilityDtos, formatter));
+        }
 
         return createAppointmentDto;
+    }
+
+    private AppointmentAvailabilityDto createEntry(DateTimeFormatter formatter, LocalTime localTime, int c,
+                                                   Appointment appointment) {
+
+        AppointmentAvailabilityDto appointmentAvailabilityDto = new AppointmentAvailabilityDto();
+        appointmentAvailabilityDto.setTime(localTime.format(formatter));
+        List<Long> appointmentExist = appointmentRepository.appointmentExist(appointment.getAttendant().getId(), appointment.getClinic().getId(),
+                commonUtility.getOnlyTimeAMPM(appointmentAvailabilityDto.getTime()), appointment.getAppointmentDate(),
+                Appointment.AppointmentStatus.getBookedAppointmentStatuses());
+        appointmentAvailabilityDto.setAvailable(appointmentExist.size() <= 0);
+        appointmentAvailabilityDto.setDisplayOrder(c);
+        return appointmentAvailabilityDto;
+    }
+
+    private List<AppointmentAvailabilitySlotDto> slotCreation(List<AppointmentAvailabilityDto> appointmentAvailabilityDtos,
+                                                              DateTimeFormatter formatter) {
+        LocalTime time6 = LocalTime.parse("05:59");
+        LocalTime time12 = LocalTime.parse("12:00");
+        LocalTime time16 = LocalTime.parse("15:59");
+        List<AppointmentAvailabilitySlotDto> slotDtoArrayList = new ArrayList<>();
+        List<AppointmentAvailabilityDto> morning = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
+                LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time6) &&
+                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time12)
+        ).collect(Collectors.toList());
+        createSlotEntry(slotDtoArrayList, morning, "morning");
+        List<AppointmentAvailabilityDto> afternoon = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
+                LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time12) &&
+                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time16)
+        ).collect(Collectors.toList());
+        createSlotEntry(slotDtoArrayList, afternoon, "afternoon");
+        List<AppointmentAvailabilityDto> evening = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
+                LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time16)).collect(Collectors.toList());
+        createSlotEntry(slotDtoArrayList, evening, "evening");
+        return slotDtoArrayList;
+
+    }
+
+    private void createSlotEntry(List<AppointmentAvailabilitySlotDto> slotDtos,
+                                 List<AppointmentAvailabilityDto> dtos, String slot) {
+
+        if (dtos != null && dtos.size() > 0) {
+            AppointmentAvailabilitySlotDto availabilitySlotDto = new AppointmentAvailabilitySlotDto();
+            availabilitySlotDto.setSlot(slot);
+            availabilitySlotDto.setAppointmentAvailabilityDtos(dtos);
+            slotDtos.add(availabilitySlotDto);
+        }
     }
 
     public CreateAppointmentDto createAppointment(CreateAppointmentDto createAppointmentDto) throws Exception {
