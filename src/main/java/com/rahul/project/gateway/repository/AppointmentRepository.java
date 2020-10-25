@@ -20,4 +20,6 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Long>
             " a.appointmentFromTime = ?3 and a.appointmentStatus in (?5)")
     List<Long> appointmentExist(Long user, Long partnerAddress, Date time, Date date,
                                 List<Appointment.AppointmentStatus> appointmentStatuses);
+
+
 }

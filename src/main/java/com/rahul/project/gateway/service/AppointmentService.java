@@ -1,5 +1,6 @@
 package com.rahul.project.gateway.service;
 
+import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.controller.CrudCtrlBase;
 import com.rahul.project.gateway.dao.AbstractDao;
@@ -9,6 +10,7 @@ import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.AppointmentRepository;
 import com.rahul.project.gateway.repository.UserAddressTimingRepository;
+import com.rahul.project.gateway.repository.UserRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
 import org.modelmapper.Converter;
@@ -41,6 +43,8 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private UserRepository userRepository;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -114,14 +118,14 @@ public class AppointmentService {
 
     public CreateAppointmentDto getAvailability(CreateAppointmentDto createAppointmentDto) throws Exception {
         Appointment appointment = modelMapper.map(createAppointmentDto, Appointment.class);
-        User attendant = abstractDao.getEntityById(User.class, createAppointmentDto.getAttendantId());
-        Integer slotInMin = attendant.getChargesSlotInMin();
-
+        Integer slotInMin = userRepository.getSlotTime(appointment.getAttendant().getId());
+        if (slotInMin == null)
+            throw new BusinessException("slot time not set");
         Date date = appointment.getAppointmentDate();
         Calendar time = Calendar.getInstance();
         time.setTime(date);
         int day = time.get(Calendar.DAY_OF_WEEK);
-        Set<TimeRange> timeRanges = userAddressTimingRepository.businessTimings(attendant.getId(),
+        Set<TimeRange> timeRanges = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
                 appointment.getClinic().getId(), String.valueOf(day));
         if (timeRanges != null && timeRanges.size() > 0) {
             List<TimeRange> ranges = new ArrayList<>(timeRanges);
