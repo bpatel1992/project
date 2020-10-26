@@ -57,21 +57,21 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         String loginType = "self";
-//        userType = "ADMIN",
-       /* if (((Map) authentication.getDetails()).get("user_type") != null)
-            userType = ((Map) authentication.getDetails()).get("user_type").toString();*/
+        String userType = "ADMIN";
+        if (((Map) authentication.getDetails()).get("user_type") != null)
+            userType = ((Map) authentication.getDetails()).get("user_type").toString();
 
 
         if (((Map) authentication.getDetails()).get("login_type") != null)
             loginType = ((Map) authentication.getDetails()).get("login_type").toString();
-      /*  //authority
+        //authority
         String authority = "ROLE_ADMIN";
         if (userType != null) {
             if ("customer".equalsIgnoreCase(userType))
                 authority = "ROLE_CUSTOMER";
             else if ("partner".equalsIgnoreCase(userType))
                 authority = "ROLE_PARTNER";
-        }*/
+        }
 
         // login type self
         if (loginType != null) {
@@ -107,7 +107,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     throw new CustomException(authException);
                 }
             } else
-                user = userDao.findByUserName(name, password, loginType);
+                user = userDao.findByUserName(name, password, loginType, authority);
         } catch (Exception e) {
             AuthException authException = new AuthException();
             authException.setErrorDescription(translator.toLocale(e.getMessage()));

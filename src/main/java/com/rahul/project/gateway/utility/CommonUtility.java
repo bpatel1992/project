@@ -49,6 +49,8 @@ public class CommonUtility {
     private final SimpleDateFormat oneTimeFormat = new SimpleDateFormat("hh:mm:ss");
     private final SimpleDateFormat onlyDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat dateFormatUnique = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    private final SimpleDateFormat onlyTimeAMPMFormat = new SimpleDateFormat("hh:mm a");
+
     @Autowired
     AbstractDao abstractDao;
     @Autowired
@@ -77,6 +79,15 @@ public class CommonUtility {
     public Date getOnlyTime(String date) {
         try {
             return oneTimeFormat.parse(date);
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
+        return null;
+    }
+
+    public Date getOnlyTimeAMPM(String date) {
+        try {
+            return onlyTimeAMPMFormat.parse(date);
         } catch (Exception e) {
             logger.error(e.toString());
         }
