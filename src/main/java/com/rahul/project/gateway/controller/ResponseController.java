@@ -68,19 +68,25 @@ public class ResponseController {
         String message="";
         String result = "";
         String userId=request.getParameter("id");
+if(userId!=null) {
+    User user = abstractDao.getEntityById(User.class, userId);
+    if (user != null) {
+        Boolean b = user.getIsEmailVerified();
+        if (b) {
+            message = "Your Email is Already Verified";
+        } else {
+            user.setIsEmailVerified(true);
+            abstractDao.saveOrUpdateEntity(user);
 
-        User user=abstractDao.getEntityById(User.class,userId);
-        if(user !=null){
-            Boolean b=user.getIsEmailVerified();
-            if(b){
-                 message="Your Email is Already Verified";
-            }else {
-               user.setIsEmailVerified(true);
-               abstractDao.saveOrUpdateEntity(user);
-            }
-        }else{
-            message="Account Not Found Please Contact to Admin or SignUp Again";
+            message = "Your Email is Successfully Verified";
         }
+    } else {
+        message = "Account Not Found Please Contact to Admin or SignUp Again";
+    }
+}else{
+    message = "Account Not Found Please Contact to Admin or SignUp Again";
+}
+
         model.addAttribute("message", message);
 
         //        TransactionProcessDTO transactionProcessDTO = new TransactionProcessDTO();
