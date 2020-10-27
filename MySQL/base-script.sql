@@ -1,11 +1,11 @@
-INSERT INTO day_m(id,name,status,short_code) VALUES
-( '1', 'Sunday', '1', 'S' ),
-( '2', 'Monday', '1', 'M' ),
-( '3', 'Tuesday', '1', 'T' ),
-( '4', 'Wednesday', '1', 'W' ),
-( '5', 'Thursday', '1', 'T' ),
-( '6', 'Friday', '1', 'F' ),
-( '7', 'Saturday', '1', 'S' );
+INSERT INTO `day_m`(`id`,`name`,`status`,`short_code`,`code`) VALUES
+( '1', 'Sunday', '1', 'S', '1' ),
+( '2', 'Monday', '1', 'M', '2' ),
+( '3', 'Tuesday', '1', 'T', '3' ),
+( '4', 'Wednesday', '1', 'W', '4' ),
+( '5', 'Thursday', '1', 'T', '5' ),
+( '6', 'Friday', '1', 'F', '6' ),
+( '7', 'Saturday', '1', 'S', '7' );
 
 
 create table if not exists oauth_access_token (
