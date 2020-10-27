@@ -22,10 +22,10 @@ public class CreateCallFactory {
 
     private VonageClient vonageClient = null;
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         CreateCallFactory createCallFactory = new CreateCallFactory();
         createCallFactory.createConCall();
-    }
+    }*/
 
     public VonageClient getVonageClient() {
         return createVonageClientService();
@@ -33,15 +33,15 @@ public class CreateCallFactory {
 
     private VonageClient createVonageClientService() {
         if (vonageClient == null) {
-            /*vonageClient = VonageClient.builder()
+            vonageClient = VonageClient.builder()
                     .applicationId(environment.getRequiredProperty("vonage.application.id"))
                     .privateKeyPath(environment.getRequiredProperty("vonage.application.key.path"))
-                    .build();*/
+                    .build();
 
-            vonageClient = VonageClient.builder()
+            /*vonageClient = VonageClient.builder()
                     .applicationId("1de854a9-974a-48ac-b96c-c7ada006e1c1")
                     .privateKeyPath("C:\\Data\\work\\PetShree\\private.key")
-                    .build();
+                    .build();*/
         }
 
         return vonageClient;
@@ -58,6 +58,7 @@ public class CreateCallFactory {
                 ConnectAction.builder()
                         .endpoint(PhoneEndpoint.builder(TO_NUMBER).build())
                         .from(FROM_NUMBER).timeOut(20)
+//                        .limit()
                         .build()
         );
 
