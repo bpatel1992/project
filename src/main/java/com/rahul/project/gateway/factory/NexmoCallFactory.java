@@ -14,13 +14,23 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateCallFactory {
+public class NexmoCallFactory {
 
     @Autowired
     private Environment environment;
 
 
     private VonageClient vonageClient = null;
+    private VonageClient verifyClient = null;
+
+    private VonageClient createVerifyClient() {
+        if (verifyClient == null) {
+            verifyClient = VonageClient.builder()
+                    .apiKey(environment.getRequiredProperty("sms.api.key"))
+                    .apiSecret(environment.getRequiredProperty("sms.api.secret")).build();
+        }
+        return verifyClient;
+    }
 
   /*  public static void main(String[] args) {
         CreateCallFactory createCallFactory = new CreateCallFactory();
