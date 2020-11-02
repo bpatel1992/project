@@ -14,6 +14,7 @@ public class ECardDTO {
     private String name;//": "Dr. Rishi Sood",
     private String bio;
     private BigDecimal userCharges;
+    private String consultationFee;
     private Integer userExperience;
     private String avatarURL;
     private String imageURL;
@@ -32,6 +33,8 @@ public class ECardDTO {
     private String twitterLink;//": "",
     private String whatsAppLink;//": "",
     private String whatsShareLink;//": "",
+    private String experienceLink;
+    private String experience;
     private String emailLink;//": "",
     private String phoneLink;//": "",
 }

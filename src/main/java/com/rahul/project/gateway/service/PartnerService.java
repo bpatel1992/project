@@ -3,7 +3,6 @@ package com.rahul.project.gateway.service;
 import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.uiBeans.BusinessAddress;
-import com.rahul.project.gateway.crud.uiBeans.ECardFlow;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dao.PartnerDao;
 import com.rahul.project.gateway.dto.*;
@@ -13,6 +12,7 @@ import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.PartnerDocumentRepository;
 import com.rahul.project.gateway.repository.PartnerRepository;
 import com.rahul.project.gateway.repository.UserDocumentRepository;
+import com.rahul.project.gateway.repository.UserPartnerRelationMPRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
 import org.modelmapper.ModelMapper;
@@ -22,10 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -58,6 +60,8 @@ public class PartnerService {
     private UserService userService;
     @Autowired
     private PartnerDocumentRepository partnerDocumentRepository;
+    @Autowired
+    private UserPartnerRelationMPRepository userPartnerRelationMPRepository;
 
     public void registerPartner(Partner partner) throws Exception {
         partner.getPartnerAddresses().stream().forEach(partnerAddress -> {
@@ -173,15 +177,50 @@ public class PartnerService {
 
 
     public ECardDTO getECardDetails(String userName, String partnerUserName) throws Exception {
+        ECardDTO eCardDTO = new ECardDTO();
+        Boolean partnerUserNamePresent = false;
         User user = userService.getUserRepository().getByUserName(userName);
+        Partner partner;
         if (user == null)
             throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
-        Partner partner = partnerRepository.getByUserName(partnerUserName);
-        if (partner == null)
-            throw new BusinessException(translator.toLocale("user.not.found", new Object[]{partnerUserName}));
-        ECardFlow eCardFlow = new ECardFlow(partner);
-        ECardDTO eCardDTO = modelMapper.map(eCardFlow, ECardDTO.class);
-        return processPartnerAddress(partner.getPartnerAddresses(), user, eCardDTO);
+        if (partnerUserName != null) {
+            partnerUserNamePresent = true;
+            partner = partnerRepository.getByUserName(partnerUserName);
+            if (partner == null)
+                throw new BusinessException(translator.toLocale("user.not.found", new Object[]{partnerUserName}));
+        } else {
+            List<Authority> collect = user.getAuthorities().stream().filter(authority -> "ROLE_PARTNER".equalsIgnoreCase(authority.getName())).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(collect)) {
+                Set<Partner> partners = userPartnerRelationMPRepository.byUserAndRelation(user.getId(), "Owner");
+                if (CollectionUtils.isEmpty(partners))
+                    throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
+                else {
+                    partner = partners.iterator().next();
+                }
+            } else {
+                throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
+            }
+        }
+
+//        partner.setName(userName);
+//        ECardFlow eCardFlow = new ECardFlow(partner);
+//        eCardDTO = modelMapper.map(eCardFlow, ECardDTO.class);
+        eCardDTO.setAddress(partner.getAddress());
+        eCardDTO.setAddressLink("https://www.google.com/maps/search/" + partner.getAddress());
+        eCardDTO.setEmail(partner.getEmail());
+        eCardDTO.setEmailLink("mailto:" + partner.getEmail());
+        eCardDTO.setYoutubeLink(partner.getYoutubeLink());
+        eCardDTO.setTwitterLink(partner.getTwitterLink());
+        eCardDTO.setInstagramLink(partner.getInstagramLink());
+        eCardDTO.setFbLink(partner.getFbLink());
+        eCardDTO.setWhatsShareLink("https://api.whatsapp.com/send?text=" +
+                URLEncoder.encode(translator.toLocale("user.ecard.share",
+                        new String[]{environment.getRequiredProperty("application.url") + "ecard/" + userName
+                                + (partnerUserNamePresent ? ("/" + partnerUserName) : "")}), "UTF-8"));
+        eCardDTO.setExperience(user.getUserExperience() + " " + translator.toLocale("user.experience.label"));
+        eCardDTO.setConsultationFee("₹ " + commonUtility.currencyFormat(user.getUserCharges()) + " " + translator.toLocale("consultation.fees.label"));
+
+        return processPartnerAddress(user.getPartnerAddresses(), user, eCardDTO);
     }
 
 

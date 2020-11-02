@@ -24,6 +24,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -365,5 +367,9 @@ public class CommonUtility {
     public String getDateString(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_IST);
         return simpleDateFormat.format(date);
+    }
+
+    public String currencyFormat(BigDecimal n) {
+        return NumberFormat.getInstance(Locale.US).format(n);
     }
 }

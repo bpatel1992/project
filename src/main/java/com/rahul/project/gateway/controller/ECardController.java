@@ -36,7 +36,7 @@ public class ECardController {
     @RequestMapping(value = "/api/e/card/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ECardDTO registerPartner(@RequestParam("userName") String userName,
-                                    @RequestParam("partnerUserName") String partnerUserName) throws Exception {
+                                    @RequestParam(value = "partnerUserName", required = false) String partnerUserName) throws Exception {
         logger.info(" inside e-card details");
         return partnerService.getECardDetails(userName, partnerUserName);
     }

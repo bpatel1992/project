@@ -38,11 +38,11 @@ public class ECardFlow implements Serializable {
 
     public ECardFlow(Partner partner) throws Exception {
         this.businessName = partner.getBusinessName();
-        this.phone = "+" + partner.getCountry().getCode() + "-" + partner.getMobile();
-        this.whatsAppPhone = this.phone;
+//        this.phone = "+" + partner.getCountry().getCode() + "-" + partner.getMobile();
+//        this.whatsAppPhone = this.phone;
         this.address = partner.getAddress();
         this.addressLink = "https://www.google.com/maps/search/" + partner.getAddress();
-        this.phoneLink = "tel:" + partner.getCountry().getCode() + partner.getMobile();
+//        this.phoneLink = "tel:" + partner.getCountry().getCode() + partner.getMobile();
         this.email = partner.getEmail();
         this.emailLink = "mailto:" + this.email;
         this.name =
@@ -55,12 +55,12 @@ public class ECardFlow implements Serializable {
         this.youtubeLink = partner.getYoutubeLink();
         this.twitterLink = partner.getTwitterLink();
         this.instagramLink = partner.getInstagramLink();
-        String text = TextSource.getText("user.ecard.contact", new String[]{this.name});
-        this.whatsAppLink = "https://api.whatsapp.com/send?phone=" + "+" + partner.getCountry().getCode() +
-                partner.getMobile() + "&text=" + URLEncoder.encode(text, "UTF-8");
+//        String text = TextSource.getText("user.ecard.contact", new String[]{this.name});
+//        this.whatsAppLink = "https://api.whatsapp.com/send?phone=" + "+" + partner.getCountry().getCode() +
+//                partner.getMobile() + "&text=" + URLEncoder.encode(text, "UTF-8");
         this.whatsShareLink = "https://api.whatsapp.com/send?text=" +
                 URLEncoder.encode(TextSource.getText("user.ecard.share",
-                        new String[]{PropertySource.getRequiredProperty("application.url") + "ecard/" + partner.getUserName()}), "UTF-8");
+                        new String[]{PropertySource.getRequiredProperty("application.url") + "ecard/" + partner.getName() + "/" + partner.getUserName()}), "UTF-8");
         this.fbLink = partner.getFbLink();
     }
 
