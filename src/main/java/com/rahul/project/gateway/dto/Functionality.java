@@ -7,5 +7,7 @@ import lombok.Data;
 public class Functionality {
 
     private Long id;
+    private Integer displayOrder;
+    private String name;
 
 }

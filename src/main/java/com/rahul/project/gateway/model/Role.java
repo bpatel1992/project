@@ -33,15 +33,12 @@ public class Role implements Serializable {
     @Column(name = "role_name")
     private String roleName;
 
-    @Column(name = "role_desc")
-    private String roleDesc;
-
     @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
     private boolean status;
 
     @ManyToMany
     @JoinTable(name = "role_functionality_privilege_mp", joinColumns = @JoinColumn(name = "role_id")
-            , inverseJoinColumns = @JoinColumn(name = "functionality_id"))
+            , inverseJoinColumns = @JoinColumn(name = "role_functionality_id"))
     private Set<RoleFunctionality> roleFunctionality;
 
     @JsonIgnore
@@ -52,11 +49,11 @@ public class Role implements Serializable {
 
     @JsonInclude()
     @Transient
-    private String label;
+    private String roleNameLabel;
 
-    public String getLabel() {
+    public String getRoleNameLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 
 }
