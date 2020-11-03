@@ -16,11 +16,11 @@ public class PartnerAddressDTO {
     private Long id;
     private Long partnerId;
     private Boolean isPartner;
-    private PartnerDTO partner;
+    //    private PartnerDTO partner;
     private String address;
     private String name;
     private Integer displayOrder;
-    private MasterDataDTO country;
+    private CountryDTO country;
     private MasterDataDTO state;
     private MasterDataDTO city;
     private MasterDataDTO pinCode;

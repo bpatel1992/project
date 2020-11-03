@@ -1,4 +1,4 @@
-INSERT INTO `day_m`(`id`,`name`,`status`,`short_code`,`code`) VALUES
+INSERT INTO day_m(id,name,status,short_code,code) VALUES
 ( '1', 'Sunday', '1', 'S', '1' ),
 ( '2', 'Monday', '1', 'M', '2' ),
 ( '3', 'Tuesday', '1', 'T', '3' ),
@@ -196,19 +196,19 @@ INSERT INTO pin_code_m(id,code,description,status,city_id
  );
 
 
-INSERT INTO `appointment_repeat_m`(
-    `id`,
-    `appointment_repeat`,
-    `active`
+INSERT INTO appointment_repeat_m(
+    id,
+    appointment_repeat,
+    active
 ) VALUES (
     1,
     ' Does not repeat',
     1
  );
 
-INSERT INTO `appointment_type_m`(`id`,`appointment_type`,`active`) VALUES
+INSERT INTO appointment_type_m(id,appointment_type,active) VALUES
 ( '1', 'Office Visit', '1' ),
-( '2', 'Home Vist', '1' ),
+( '2', 'Home Visit', '1' ),
 ( '3', 'Online Consultation', '1' ),
 ( '4', 'Surgery', '1' ),
 ( '5', 'Boarding', '1' ),
@@ -217,10 +217,10 @@ INSERT INTO `appointment_type_m`(`id`,`appointment_type`,`active`) VALUES
 ( '8', 'Deworming', '1' );
 
 
-INSERT INTO `appointment_reason_m`(
-    `id`,
-    `appointment_reason`,
-    `active`
+INSERT INTO appointment_reason_m(
+    id,
+    appointment_reason,
+    active
 ) VALUES (
     1,
     'Tossing Head',

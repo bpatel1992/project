@@ -125,7 +125,7 @@ public class AppointmentService {
         Calendar time = Calendar.getInstance();
         time.setTime(date);
         int day = time.get(Calendar.DAY_OF_WEEK);
-        Set<TimeRange> timeRanges = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
+        Set<TimeRange> timeRanges = userAddressTimingRepository.getTimeRange(appointment.getAttendant().getId(),
                 appointment.getClinic().getId(), String.valueOf(day));
         if (timeRanges != null && timeRanges.size() > 0) {
             List<TimeRange> ranges = new ArrayList<>(timeRanges);

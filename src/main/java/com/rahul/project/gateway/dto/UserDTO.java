@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,7 +21,7 @@ public class UserDTO {
 
     private String fullName;
     private Partner partner;
-
+    private Set<PartnerAddressDTO> partnerAddresses;
     private String userType;
     private String phone;
     private List<RoleDTO> roles;

@@ -1,9 +1,6 @@
 package com.rahul.project.gateway.repository;
 
-import com.rahul.project.gateway.model.PartnerAddress;
-import com.rahul.project.gateway.model.TimeRange;
-import com.rahul.project.gateway.model.User;
-import com.rahul.project.gateway.model.UserAddressTiming;
+import com.rahul.project.gateway.model.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +18,9 @@ public interface UserAddressTimingRepository extends BaseRepository<UserAddressT
     @Query(value = "SELECT bt.timeRange FROM UserAddressTiming ua join ua.businessTimings bt " +
             " join bt.days dy WHERE ua.user.id = ?1 and ua.partnerAddress.id = ?2 and " +
             "dy.code = ?3 ")
-    Set<TimeRange> businessTimings(Long user, Long partnerAddress, String day);
+    Set<TimeRange> getTimeRange(Long user, Long partnerAddress, String day);
+
+    @Query(value = "SELECT bt FROM UserAddressTiming ua join ua.businessTimings bt " +
+            " WHERE ua.user.id = ?1 and ua.partnerAddress.id = ?2 ")
+    Set<BusinessTiming> businessTimings(Long partnerId, Long partnerAddressId);
 }

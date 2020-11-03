@@ -3,7 +3,6 @@ package com.rahul.project.gateway.controller;
 import com.rahul.project.gateway.configuration.annotations.RESTController;
 import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Partner;
-import com.rahul.project.gateway.model.PartnerAddress;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
 import org.modelmapper.ModelMapper;
@@ -53,7 +52,7 @@ public class PartnerController {
 
     @RequestMapping(value = "/oauth2/api/partner/address/update/create", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public PartnerAddress createUpdatePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
+    public PartnerAddressDTO createUpdatePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
         logger.info("inside createUpdatePartnerAddress  !!");
         return partnerService.createUpdatePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }

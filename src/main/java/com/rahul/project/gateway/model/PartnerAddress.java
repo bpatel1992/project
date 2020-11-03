@@ -73,6 +73,7 @@ public class PartnerAddress implements Serializable {
 
     @Column(name = "longitude")
     private Double longitude;
+
     @JsonInclude()
     @Transient
     private Set<BusinessTiming> businessTimings;

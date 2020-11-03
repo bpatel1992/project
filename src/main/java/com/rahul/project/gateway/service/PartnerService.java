@@ -75,15 +75,10 @@ public class PartnerService {
         return responseDTO;
     }
 
-    public PartnerAddress createUpdatePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
+    public PartnerAddressDTO createUpdatePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
         Set<BusinessTiming> businessTimings = null;
 
         PartnerAddress partnerAddress = modelMapper.map(partnerAddressDTO, PartnerAddress.class);
-
-        if (!partnerAddress.getPartnerContactNumbers().isEmpty()) {
-            abstractDao.saveOrUpdateEntity(partnerAddress.getPartnerContactNumbers());
-        }
-        abstractDao.saveOrUpdateEntity(partnerAddress);
 
         if (partnerAddressDTO.getBusinessTimings() != null && partnerAddressDTO.getBusinessTimings().size() > 0) {
             businessTimings = partnerAddressDTO.getBusinessTimings()
@@ -93,6 +88,27 @@ public class PartnerService {
             abstractDao.saveOrUpdateEntity(businessTimings);
         }
 
+
+        if (partnerAddressDTO.getIsPartner()) {
+            if (!partnerAddress.getPartnerContactNumbers().isEmpty()) {
+                abstractDao.saveOrUpdateEntity(partnerAddress.getPartnerContactNumbers());
+            }
+            abstractDao.saveOrUpdateEntity(partnerAddress);
+            PartnerAddressTiming partnerAddressTiming = new PartnerAddressTiming(abstractDao.getEntityById(Partner.class, partnerAddressDTO.getPartnerId())
+                    , partnerAddress, businessTimings);
+            abstractDao.saveOrUpdateEntity(partnerAddressTiming);
+        } else {
+            partnerAddress = abstractDao.getEntityById(PartnerAddress.class, partnerAddress.getId());
+            UserAddressTiming userAddressTiming = new UserAddressTiming(
+                    abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser()), partnerAddress, businessTimings);
+            abstractDao.saveOrUpdateEntity(userAddressTiming);
+        }
+
+        partnerAddress.setBusinessTimings(businessTimings);
+        return modelMapper.map(partnerAddress, PartnerAddressDTO.class);
+    }
+
+    /*public Set<PartnerAddress> fetchUserPartnerAddress(PartnerAddressDTO partnerAddressDTO) {
 
         if (partnerAddressDTO.getIsPartner()) {
             PartnerAddressTiming partnerAddressTiming = new PartnerAddressTiming(abstractDao.getEntityById(Partner.class, partnerAddressDTO.getPartnerId())
@@ -106,7 +122,7 @@ public class PartnerService {
 
         partnerAddress.setBusinessTimings(businessTimings);
         return partnerAddress;
-    }
+    }*/
 
     public List<PartnerResponseDTO> fetchPartnerLocationWise(PartnerRequestDTO partnerRequestDTO) throws Exception {
 
