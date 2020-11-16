@@ -175,7 +175,7 @@ public class CommonUtility {
 
     public String getDateByTimeZone(String timeZone) {
         Instant nowUtc = Instant.now();
-        ZoneId zoneId = ZoneId.of(timeZone);
+        ZoneId zoneId = ZoneId.of(timeZone != null ? timeZone : "Asia/Kolkata");
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nowUtc, zoneId);
         return zonedDateTime.format(formatter);
     }

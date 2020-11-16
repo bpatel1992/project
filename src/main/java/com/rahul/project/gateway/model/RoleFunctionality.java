@@ -29,7 +29,7 @@ public class RoleFunctionality implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties({"features", "roles", "localizations"})
-    @JoinColumn(name = "functionality_id")
+    @JoinColumn(name = "func_id")
     private Functionality functionality;
 
     @ManyToMany

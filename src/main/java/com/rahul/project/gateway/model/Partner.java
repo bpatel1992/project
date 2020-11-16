@@ -25,6 +25,16 @@ public class Partner implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "partner_m_gen")
     @Column(name = "id")
     private Long id;
+
+    @JoinColumn(name = "bank_name")
+    private String bankName;
+
+    @JoinColumn(name = "ifsc")
+    private String ifsc;
+
+    @JoinColumn(name = "bank_account_number")
+    private String bankAccountNumber;
+
     @Basic
     @Column(name = "partner_type")
     private String partnerType;

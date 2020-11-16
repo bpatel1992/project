@@ -47,7 +47,7 @@ public class Functionality implements Serializable {
     private String description;
 
     @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
-    private boolean status;
+    private Boolean status;
 
     @ManyToMany
     @JsonIgnoreProperties("functionaries")

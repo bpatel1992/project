@@ -34,7 +34,7 @@ public class Role implements Serializable {
     private String roleName;
 
     @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
-    private boolean status;
+    private Boolean status;
 
     @ManyToMany
     @JoinTable(name = "role_functionality_privilege_mp", joinColumns = @JoinColumn(name = "role_id")

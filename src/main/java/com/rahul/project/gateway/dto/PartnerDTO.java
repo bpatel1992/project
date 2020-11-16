@@ -25,5 +25,7 @@ public class PartnerDTO {
     private String twitterLink;
     private Boolean subscribed;
     private String userName;
-
+    private String bankName;
+    private String ifsc;
+    private String bankAccountNumber;
 }

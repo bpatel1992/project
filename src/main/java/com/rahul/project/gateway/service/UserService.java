@@ -507,24 +507,24 @@ public class UserService {
         Set<Authority> authorities = user.getAuthorities();
         if (authorities == null)
             authorities = new HashSet<>();
-        //authority
-        String authority = "ROLE_ADMIN";
         if (savePasswordAdminDTO.getUserType() != null) {
+            //authority
+            String authority = "ROLE_ADMIN";
             if ("customer".equalsIgnoreCase(savePasswordAdminDTO.getUserType()))
                 authority = "ROLE_CUSTOMER";
             else if ("partner".equalsIgnoreCase(savePasswordAdminDTO.getUserType()))
                 authority = "ROLE_PARTNER";
+            String finalAuthority = authority;
+            Authority exist = authorities.stream()
+                    .filter(authority1 -> finalAuthority.equalsIgnoreCase(authority1.getName()))
+                    .findAny()
+                    .orElse(null);
+            if (exist == null) {
+                authorities.add(authorityRepository.getByName(authority));
+                user.setAuthorities(authorities);
+            }
+            userRepository.save(user);
         }
-        String finalAuthority = authority;
-        Authority exist = authorities.stream()
-                .filter(authority1 -> finalAuthority.equalsIgnoreCase(authority1.getName()))
-                .findAny()
-                .orElse(null);
-        if (exist == null) {
-            authorities.add(authorityRepository.getByName(authority));
-            user.setAuthorities(authorities);
-        }
-        userRepository.save(user);
         userLoginPasswordRepository.save(userLoginPassword);
         responseDTO.setRandomKey(user.getRandomKey());
         return responseDTO;
@@ -570,9 +570,10 @@ public class UserService {
         Role entity = modelMapper.map(roleDTO, Role.class);
         CrudCtrlBase.copyNonNullProperties(entity, role);
         for (RoleFunctionality roleFunctionality : role.getRoleFunctionality()) {
-            for (RoleFeature roleFeature : roleFunctionality.getFeatures()) {
-                abstractDao.saveOrUpdateEntity(roleFeature);
-            }
+            if (roleFunctionality.getFeatures() != null)
+                for (RoleFeature roleFeature : roleFunctionality.getFeatures()) {
+                    abstractDao.saveOrUpdateEntity(roleFeature);
+                }
             abstractDao.saveOrUpdateEntity(roleFunctionality);
         }
         abstractDao.saveOrUpdateEntity(role);

@@ -65,12 +65,26 @@ public class SendMailService {
 
         // true = text/html
         helper.setText("<table bgcolor='#ebeef0' cellpadding='0' cellspacing='0' align='center' border='0' width='420'>  " +
-                "<tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr>" +
+                "<tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'>" +
+                "</td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> " +
+                "<table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> " +
+                "<td width='360' colspan='2'></td> <td width='20'></td></tr>" +
                 "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'>" +
                 "<a href='" + webSiteURL + "' style='display:block' target='_blank'>" +
-                "<img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>" +
+                "<img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> " +
+                "<td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial," +
+                "sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;" +
+                "margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>" +
                 translator.toLocale("send.otp.admin.label.forgot.password") + "</span> </td> <td width='20'></td> </tr>	" +
-                "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table> </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> <td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Dear " +
+                "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table>" +
+                " </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' " +
+                "style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> " +
+                "<table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> " +
+                "<td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> " +
+                "<td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' " +
+                "width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td " +
+                "style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;" +
+                "font-weight:300;line-height:18px;padding:0 0 20px 0'>Dear " +
                 userName + "," + "<br/>" + "<br/>" + "Thank you for choosing HelloVet." + "<br/>" + "<br/>" +
                 "\n" +
                 "We use email to send important communications related to your account and HelloVet\n" +

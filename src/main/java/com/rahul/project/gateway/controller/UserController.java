@@ -118,18 +118,25 @@ public class UserController {
         return new ResponseDTO(userService.removeProfilePic());
     }
 
-    @PostMapping(value = {"/oauth2/api/user/password/update", "/api/user/role/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
+    @PostMapping(value = {"/oauth2/api/user/role/update", "/api/user/role/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO passwordUpdate(@RequestBody SavePasswordAdminDTO savePasswordAdminDTO) throws Exception {
         return userService.userPasswordUpdate(savePasswordAdminDTO, new ResponseDTO());
     }
 
-    @PostMapping(value = {"/api/user/password/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
+    @PostMapping(value = {"/api/user/password/update", "oauth2/api/user/password/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
             produces = MediaType.APPLICATION_JSON_VALUE)
     public OauthResponse passwordUpdateSignUp(@RequestBody SavePasswordAdminDTO savePasswordAdminDTO) throws Exception {
 
         userService.userPasswordUpdate(savePasswordAdminDTO, new ResponseDTO());
         return signUpService.loginAfterSignUp("random", savePasswordAdminDTO.getRandomKey());
+    }
+
+    @PostMapping(value = {"oauth2/api/user/password/update"}, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDTO passwordUpdateNew(@RequestBody SavePasswordAdminDTO savePasswordAdminDTO) throws Exception {
+
+        return userService.userPasswordUpdate(savePasswordAdminDTO, new ResponseDTO());
     }
 
     /*  @PostMapping(value = {"/api/login"}, *//*consumes = MediaType.APPLICATION_JSON_VALUE,*//*
@@ -144,7 +151,7 @@ public class UserController {
         return userService.createAdminUser(userDTO);
     }
 
-    @RequestMapping(path = {"/oauth2/api/admin/role/create"}, method = RequestMethod.POST,
+    @RequestMapping(path = {"/oauth2/api/admin/role/create/update", "/api/admin/role/create/update"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public RoleDTO createRoleAdmin(@Valid @RequestBody RoleDTO roleDTO) throws Exception {
         return userService.createUpdateRoleAdmin(roleDTO);

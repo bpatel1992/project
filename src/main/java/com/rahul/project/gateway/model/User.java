@@ -155,7 +155,7 @@ public class User extends BaseEntity {
             , inverseJoinColumns = @JoinColumn(name = "department_id"))
     private Set<Department> departments;
     @ManyToMany
-    @JsonIgnoreProperties("users")
+    @JsonIgnoreProperties({"users", "createdByPartner"})
     @JoinTable(name = "user_pet_relation_mp", joinColumns = @JoinColumn(name = "from_user_id")
             , inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private Set<Pet> pets;
