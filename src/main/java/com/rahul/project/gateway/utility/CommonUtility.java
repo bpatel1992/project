@@ -149,7 +149,8 @@ public class CommonUtility {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
-            if (!("admin".equalsIgnoreCase(currentUserName) || "rahul".equalsIgnoreCase(currentUserName)))
+            if (!("admin".equalsIgnoreCase(currentUserName) || "rahul".equalsIgnoreCase(currentUserName)
+                    || "petshree27".equalsIgnoreCase(currentUserName)))
                 return Long.parseLong(currentUserName);
         }
         return aLong;

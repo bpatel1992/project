@@ -71,7 +71,7 @@ public class SendMailService {
                 "<td width='360' colspan='2'></td> <td width='20'></td></tr>" +
                 "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'>" +
                 "<a href='" + webSiteURL + "' style='display:block' target='_blank'>" +
-                "<img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> " +
+                "<img src='" + logoURL + "' alt='PetShree' style='width:81px' class='CToWUd'></a></td> " +
                 "<td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial," +
                 "sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;" +
                 "margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>" +
@@ -85,9 +85,9 @@ public class SendMailService {
                 "width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td " +
                 "style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;" +
                 "font-weight:300;line-height:18px;padding:0 0 20px 0'>Dear " +
-                userName + "," + "<br/>" + "<br/>" + "Thank you for choosing HelloVet." + "<br/>" + "<br/>" +
+                userName + "," + "<br/>" + "<br/>" + "Thank you for choosing PetShree." + "<br/>" + "<br/>" +
                 "\n" +
-                "We use email to send important communications related to your account and HelloVet\n" +
+                "We use email to send important communications related to your account and PetShree\n" +
                 "\n" +
                 "Services." + "<br/>" + "<br/>" +
                 "\n" +
@@ -95,10 +95,10 @@ public class SendMailService {
                 "\n" +
                 "It will get expired after\n" + expiryDate +
                 "\n" +
-                "Wishing you happy and convenient collecting with HelloVet." +
-                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>HelloVet</span> Team <br>\n" +
+                "Wishing you happy and convenient collecting with PetShree." +
+                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>PetShree</span> Team <br>\n" +
                 "boltontechnologies.info@gmail.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
-                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>HelloVet </span> </td><td width='10'></td> </tr>" +
+                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr>" +
                 "<tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>", true);
 
         javaMailSender.send(msg);
@@ -126,11 +126,11 @@ public class SendMailService {
         // true = text/html
         helper.setText("<table bgcolor='#ebeef0' cellpadding='0' cellspacing='0' align='center' border='0' width='420'>  " +
                 "<tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr>" +
-                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Confirmation</span> </td> <td width='20'></td> </tr>	" +
+                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='PetShree' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Confirmation</span> </td> <td width='20'></td> </tr>	" +
                 "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table> </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> <td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Dear " +
-                userName + "," + "<br/>" + "<br/>" + "Thank you for choosing HelloVet." + "<br/>" + "<br/>" +
+                userName + "," + "<br/>" + "<br/>" + "Thank you for choosing PetShree." + "<br/>" + "<br/>" +
                 "\n" +
-                "We use email to send important communications related to your account and HelloVet\n" +
+                "We use email to send important communications related to your account and PetShree\n" +
                 "\n" +
                 "Services." + "<br/>" + "<br/>" +
                 "\n" +
@@ -138,7 +138,7 @@ public class SendMailService {
                 "\n" +
                 "there is a problem with the button please use the link given under the same." + "<br/>" + "<br/>" +
                 "\n" +
-                "Wishing you happy and convenient collecting with HelloVet." +
+                "Wishing you happy and convenient collecting with PetShree." +
                 "</td></tr>" + "<tr> " +
                 "<td colspan='2' align='center' padding-top: 35px;'>" +
                 "<a href='" + emailConfirmUrl + "'><button type='button' style='padding: 5px 40px;color: #FFF;background-color: #00a9f7;font-weight:bold;'>Save Password</button></a></td> </tr> " +
@@ -148,9 +148,9 @@ public class SendMailService {
                 "<td colspan='2' align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;padding-bottom:30px;'> " +
                 "<a href='" + emailConfirmUrl + "'>" + emailConfirmUrl + "</a></td> </tr> " +
 
-                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>HelloVet</span> Team <br>\n" +
+                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>PetShree</span> Team <br>\n" +
                 "care.digipe@mann-india.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
-                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>HelloVet </span> </td><td width='10'></td> </tr>" +
+                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr>" +
                 "<tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>", true);
 
         javaMailSender.send(msg);
@@ -344,11 +344,11 @@ public class SendMailService {
 //        // true = text/html
 //        helper.setText("<table bgcolor='#ebeef0' cellpadding='0' cellspacing='0' align='center' border='0' width='420'>  " +
 //                "<tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr>" +
-//                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Confirmation</span> </td> <td width='20'></td> </tr>	" +
+//                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='PetShree' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Confirmation</span> </td> <td width='20'></td> </tr>	" +
 //                "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table> </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> <td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Dear " +
-//                umGcsuserM.getFirstName() + "," + "<br/>" + "<br/>" + "Thank you for choosing HelloVet." + "<br/>" + "<br/>" +
+//                umGcsuserM.getFirstName() + "," + "<br/>" + "<br/>" + "Thank you for choosing PetShree." + "<br/>" + "<br/>" +
 //                "\n" +
-//                "We use email to send important communications related to your account and HelloVet\n" +
+//                "We use email to send important communications related to your account and PetShree\n" +
 //                "\n" +
 //                "Services." + "<br/>" + "<br/>" +
 //                "\n" +
@@ -356,7 +356,7 @@ public class SendMailService {
 //                "\n " + contactSupportRequest.getMessage() +
 //                " for the Transaction id " + contactSupportRequest.getTransactionId() + "<br/>" + "<br/>" +
 //                "\n" +
-//                "Wishing you happy and convenient collecting with HelloVet." +
+//                "Wishing you happy and convenient collecting with PetShree." +
 //                "</td></tr>" + "<tr> " +
 //                "<td colspan='2' align='center' padding-top: 35px;'>" +
 //                "</td> </tr> " +
@@ -366,9 +366,9 @@ public class SendMailService {
 //                "<td colspan='2' align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;padding-bottom:30px;'> " +
 //                "</td> </tr> " +
 //
-//                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>HelloVet</span> Team <br>\n" +
+//                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>PetShree</span> Team <br>\n" +
 //                "care.digipe@mann-india.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
-//                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>HelloVet </span> </td><td width='10'></td> </tr>" +
+//                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr>" +
 //                "<tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>", true);
 //
 //        javaMailSender.send(msg);
@@ -412,7 +412,7 @@ public class SendMailService {
 //        } else if (str
 //                .equalsIgnoreCase(Constant.MAIL_FOR_STAFFACTIVATION)) {
 //
-//            sub = translator.toLocale("your.HelloVet.account", new Object[]{merchantDetailM.getCompanyName()});
+//            sub = translator.toLocale("your.PetShree.account", new Object[]{merchantDetailM.getCompanyName()});
 //
 //            msgbody = staffActivationHtml(staffM, merchantDetailM, "", webSiteURL, "");
 //        }
@@ -430,25 +430,25 @@ public class SendMailService {
 
    /*  private String staffInvitationHtml(String merchantName, String staffName, String signUpUrl, String webSiteURL, String logoURL) {
         return "<table bgcolor='#ebeef0' cellpadding='0' cellspacing='0' align='center' border='0' width='420'>  <tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr>" +
-                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Invitation To Accept Payments</span> </td> <td width='20'></td> </tr>	" +
+                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='PetShree' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Invitation To Accept Payments</span> </td> <td width='20'></td> </tr>	" +
                 "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table> </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> <td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Hello " +
                 "" + staffName +
                 ",</td></tr> " +
                 "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>" +
                 merchantName +
-                " has invited you to accept payments using the <span class='il'>HelloVet</span> Mobile App on your smartphone. With <span class='il'></span> you can easily accept credit/debit cards without a card reader, send invoices and get paid online, manage cash &amp; cheques and more. All card payments will be deposited to " +
+                " has invited you to accept payments using the <span class='il'>PetShree</span> Mobile App on your smartphone. With <span class='il'></span> you can easily accept credit/debit cards without a card reader, send invoices and get paid online, manage cash &amp; cheques and more. All card payments will be deposited to " +
                 merchantName +
                 "'s " +
                 "Bank Account.<br><br> Sign up with your mobile number to get started in less than two minutes.</td></tr>" +
                 " <tr><td><br><p>If unable to click. Copy Paste " + signUpUrl + " in another tab.</p></td></tr>" +
                 "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'><a href='" + signUpUrl + "' style='display:inline-block;font-size:16px;color:#ffffff;line-height:16px;background:#39b896;border-radius:5px;padding:12px 25px 12px 25px' target='_blank'>Sign Up</a></td></tr> <tr><td></td></tr>" +
-                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanks,<br> The <span class='il'>HelloVet</span> Team</td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
-                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>HelloVet </span> </td><td width='10'></td> </tr><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>";
+                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanks,<br> The <span class='il'>PetShree</span> Team</td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
+                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>";
     }
 
    private String staffActivationHtml(StaffM staffM, MerchantDetailM merchantDetailM, String mailSignature, String webSiteURL, String logoURL) {
         return "<table bgcolor='#ebeef0' cellpadding='0' cellspacing='0' align='center' border='0' width='420'>  <tbody><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:grey;border-top-left-radius:10px;border-top-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'> <tbody><tr height='15'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr>" +
-                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='HelloVet' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Unlinked from Payments</span> </td> <td width='20'></td> </tr>	" +
+                "<tr> <td width='20'></td> <td align='left' valign='middle' width='81' style='padding:0;margin:0 0 0 0'><a href='" + webSiteURL + "' style='display:block' target='_blank'><img src='" + logoURL + "' alt='PetShree' style='width:81px' class='CToWUd'></a></td> <td align='right' valign='middle' width='279' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#ffffff;font-size:18px;line-height:33px;font-weight:300;white-space:nowrap;padding:3px 0 0 0;margin:0 0 0 0'> <span style='color:#ffffff;text-decoration:none;margin:0 0 0 0;padding:0 0 0 0'>Unlinked from Payments</span> </td> <td width='20'></td> </tr>	" +
                 "<tr height='20'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td></tr></tbody></table> </td> <td width='10'></td> </tr><tr> <td width='10'></td> <td width='400' style='background:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px'> <table width='400' cellpadding='0' cellspacing='0' border='0'>  <tbody><tr height='35'> <td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr> <tr> <td width='20'></td> <td width='360' colspan='2'> <table bgcolor='#ffffff' width='360' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Hello " +
                 staffM.getFirstName()
                 + ","
@@ -460,10 +460,10 @@ public class SendMailService {
                 + "If you have any questions please contact us at support@digipe.com or call toll-free at (855) 487-6957. "
                 + "<br><br>" + mailSignature +
                 "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr>" +
-                " <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanks,<br> The <span class='il'>HelloVet</span> Team</td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
+                " <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanks,<br> The <span class='il'>PetShree</span> Team</td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
                 "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td>" +
                 " <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr>" +
-                "<tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>HelloVet </span> </td>" +
+                "<tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td>" +
                 "<td width='10'></td> </tr><tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>";
 
     }*/

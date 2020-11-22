@@ -14,7 +14,7 @@ public class CheckIdentifierDTO {
 
     @NotNull(message = "Validator.notNullMsg")
     private String identifier;
-
+    private Long countryId;
     private String userType;
 
 }

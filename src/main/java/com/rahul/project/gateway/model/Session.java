@@ -22,23 +22,16 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
-public class User extends BaseEntity {
+@Table(name = "session")
+public class Session extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
     @Basic
-    @Column(name = "activated", columnDefinition = "boolean default false", nullable = false)
-    private Boolean activated;
-    @Basic
-    @Column(name = "user_name", unique = true)
-    private String userName;
-    // in months
-    @Basic
-    @Column(name = "user_experience")
-    private Integer userExperience;
+    @Column(name = "active", columnDefinition = "boolean default false", nullable = false)
+    private Boolean active;
     @Basic
     @Column(name = "user_charges")
     private BigDecimal userCharges;
@@ -152,7 +145,7 @@ public class User extends BaseEntity {
     private Partner createdByPartner;
     @ManyToOne
     @JoinColumn(name = "created_by_user_id")
-    private User createdByUserId;
+    private Session createdByUserId;
     @ManyToOne
     @JoinColumn(name = "profession_id", referencedColumnName = "id")
     private Profession profession;
@@ -197,7 +190,7 @@ public class User extends BaseEntity {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date lastVisit;
 
-    public User(Long id) {
+    public Session(Long id) {
         this.id = id;
     }
 

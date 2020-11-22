@@ -1,5 +1,6 @@
 package com.rahul.project.gateway.service;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
@@ -20,11 +21,13 @@ import com.rahul.project.gateway.utility.Translator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +53,8 @@ public class SignUpService {
 
     @Autowired
     AESPasswordUtil passwordUtil;
-
+    @Autowired
+    Environment environment;
     @Autowired
     OTPService otpService;
     @Autowired
@@ -257,9 +261,13 @@ public class SignUpService {
     }
 
     public OauthResponse loginAfterSignUp(String userName, String password) throws Exception {
+        String auth = environment.getRequiredProperty("spring.security.oauth2.client.registration.my-client.client-id")
+                + ":" + environment.getRequiredProperty("spring.security.oauth2.client.registration.my-client.client-secret");
+        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
+        String authHeaderValue = "Basic " + new String(encodedAuth);
 
         Call<OauthResponse> oauthResponseCall = apiServiceFactory.getRetrofitGateway().create(GatewayApi.class)
-                .authenticate("Basic YWRtaW46bWFsaG90cmExMjM=", userName, password, "password", password);
+                .authenticate(authHeaderValue, userName, password, "password", password);
         Response<OauthResponse> oauthResponseResponse = oauthResponseCall.execute();
         if (oauthResponseResponse.isSuccessful()) {
             return oauthResponseResponse.body();
@@ -280,7 +288,7 @@ public class SignUpService {
                 authority = "ROLE_ADMIN";
         }
 
-        User user = userDao.findByUserName(checkIdentifierDTO.getIdentifier(), authority);
+        User user = userDao.findByUserNameCountryId(checkIdentifierDTO.getIdentifier(), authority, checkIdentifierDTO.getCountryId());
         if (user == null) {
             responseDTO.setResponseMessage(translator.toLocale("user.not.found", new String[]{checkIdentifierDTO.getIdentifier()}));
         } else {

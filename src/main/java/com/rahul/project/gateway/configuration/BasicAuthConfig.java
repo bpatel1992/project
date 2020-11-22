@@ -49,7 +49,7 @@ public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
                 .password("{noop}rahul123")
 //                .password("{bcrypt}$2a$16$jLzKwu1oP4XV.IJ0VsR2EeSjfw4O4iq6Hg9/cnj8g327V7dq.xRUG")
                 .roles("USER").and()
-                .withUser("admin").password("{noop}malhotra123").roles("ADMIN");
+                .withUser("petshree27").password("{noop}petshree27Ram@").roles("ADMIN");
     }
 
     @Override

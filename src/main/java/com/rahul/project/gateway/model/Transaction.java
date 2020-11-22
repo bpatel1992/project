@@ -1,16 +1,14 @@
 package com.rahul.project.gateway.model;
 
-import com.rahul.project.gateway.serialize.TransactionStatusSerializer;
+import com.rahul.project.gateway.enums.TransactionStatus;
 import lombok.Getter;
 import lombok.Setter;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
 
 
 @Getter
@@ -111,69 +109,6 @@ public class Transaction extends BaseEntity {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    public enum TransactionStatusType {
-        SUCCESS, FAILED, INPROGRESS,
-    }
 
-    @JsonSerialize(using = TransactionStatusSerializer.class)
-    public enum TransactionStatus {
-
-        SUCCESS("SUCCESS", TransactionStatusType.SUCCESS),
-        FAILED("FAILED", TransactionStatusType.FAILED),
-        INPROGRESS("IN PROGRESS", TransactionStatusType.INPROGRESS);
-
-        private final String name;
-
-        private final Transaction.TransactionStatusType type;
-
-        TransactionStatus(final String name,
-                          final Transaction.TransactionStatusType type) {
-            this.name = name;
-            this.type = type;
-        }
-
-        public static List<Transaction.TransactionStatus> getTransactionStatusByTypes(
-                List<Transaction.TransactionStatusType> transactionStatusTypes) {
-
-            List<Transaction.TransactionStatus> transactionStatuses = new ArrayList<Transaction.TransactionStatus>();
-
-            for (Transaction.TransactionStatus transactionStatus : Transaction.TransactionStatus
-                    .values()) {
-                if (transactionStatusTypes
-                        .contains(transactionStatus.getType())) {
-                    transactionStatuses.add(transactionStatus);
-                }
-            }
-
-            return transactionStatuses;
-        }
-
-        public static List<Transaction.TransactionStatus> getTransactionStatusByType(
-                Transaction.TransactionStatusType transactionStatusType) {
-            return getTransactionStatusByTypes(Collections
-                    .singletonList(transactionStatusType));
-        }
-
-        public static List<Transaction.TransactionStatus> getNotCancelledAppointmentStatuses() {
-            return getTransactionStatusByTypes(Arrays.asList(
-                    TransactionStatusType.SUCCESS,
-                    TransactionStatusType.FAILED,
-                    TransactionStatusType.INPROGRESS));
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public Transaction.TransactionStatusType getType() {
-            return this.type;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-    }
 
 }

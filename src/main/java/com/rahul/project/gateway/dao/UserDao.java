@@ -78,6 +78,47 @@ public class UserDao implements IUserDao {
         return user;
     }
 
+    public User findByUserNameCountryId(String userName, String userType, Long countryId) {
+        User user = null;
+        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+        if (userType == null) {
+            if (countryId == null)
+                criteria.add((Restrictions.or(Restrictions.eq("userName", userName),
+                        Restrictions.eq("email", userName),
+                        Restrictions.eq("mobile", userName))));
+            else {
+                criteria.createAlias("country", "c");
+                criteria.add(Restrictions.and((Restrictions.or(
+                        Restrictions.eq("userName", userName),
+                        Restrictions.eq("email", userName),
+                        Restrictions.eq("mobile", userName))),
+                        Restrictions.eq("c.id", countryId)));
+            }
+
+        } else {
+            if (countryId == null) {
+                criteria.createAlias("authorities", "a");
+                criteria.add(Restrictions.and((Restrictions.or(
+                        Restrictions.eq("userName", userName),
+                        Restrictions.eq("email", userName),
+                        Restrictions.eq("mobile", userName))),
+                        Restrictions.eq("a.name", userType)));
+            } else {
+                criteria.createAlias("country", "c");
+                criteria.add(Restrictions.and((Restrictions.or(
+                        Restrictions.eq("userName", userName),
+                        Restrictions.eq("email", userName),
+                        Restrictions.eq("mobile", userName))),
+                        Restrictions.eq("a.name", userType), Restrictions.eq("c.id", countryId)));
+            }
+        }
+        List<User> userList = (List<User>) abstractDao.getHibernateTemplate().findByCriteria(criteria);
+        if (!CollectionUtils.isEmpty(userList)) {
+            user = userList.get(0);
+        }
+        return user;
+    }
+
     public User findByUserName(String userName, String password, String loginType, String userAuthority) throws Exception {
         User user;
         String query = " select ulp from UserLoginPassword as ulp,UserAuthority as ua,User u " +
@@ -94,7 +135,7 @@ public class UserDao implements IUserDao {
             if (!user.getActivated())
                 throw new BusinessException(translator.toLocale("user.not.activated", new String[]{userName}));
         } else
-            throw new BusinessException(translator.toLocale("user.type.not.found", new String[]{userName, loginType}));
+            throw new BusinessException(translator.toLocale("user.type.not.found", new String[]{userName, userAuthority}));
         return user;
     }
 
