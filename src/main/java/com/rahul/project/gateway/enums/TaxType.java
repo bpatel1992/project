@@ -1,6 +1,5 @@
 package com.rahul.project.gateway.enums;
 
-import com.rahul.project.gateway.model.Fee;
 import com.rahul.project.gateway.serialize.TaxStatusSerializer;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -9,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @JsonSerialize(using = TaxStatusSerializer.class)
-public enum TaxStatus {
+public enum TaxType {
 
     FIXED("FIXED", FeeType.FIXED),
     VARIABLE("VARIABLE", FeeType.VARIABLE);
@@ -17,29 +16,29 @@ public enum TaxStatus {
     private final String name;
     private final FeeType type;
 
-    TaxStatus(final String name,
-              final FeeType type) {
+    TaxType(final String name,
+            final FeeType type) {
         this.name = name;
         this.type = type;
     }
 
-    public static List<TaxStatus> getTaxStatusByTypes(
+    public static List<TaxType> getTaxStatusByTypes(
             List<FeeType> feeTypes) {
 
-        List<TaxStatus> taxStatuses = new ArrayList<TaxStatus>();
+        List<TaxType> taxTypes = new ArrayList<TaxType>();
 
-        for (TaxStatus taxStatus : TaxStatus
+        for (TaxType taxType : TaxType
                 .values()) {
             if (feeTypes
-                    .contains(taxStatus.getType())) {
-                taxStatuses.add(taxStatus);
+                    .contains(taxType.getType())) {
+                taxTypes.add(taxType);
             }
         }
 
-        return taxStatuses;
+        return taxTypes;
     }
 
-    public static List<TaxStatus> getTaxStatusByType(
+    public static List<TaxType> getTaxStatusByType(
             FeeType feeType) {
         return getTaxStatusByTypes(Collections
                 .singletonList(feeType));

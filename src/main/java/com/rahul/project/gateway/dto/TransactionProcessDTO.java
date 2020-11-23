@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionProcessDTO {
 
-    @NotNull(message = "Validator.notNullMsg")
     private Long id;
 
     @NotNull(message = "Validator.notNullMsg")
@@ -28,11 +27,7 @@ public class TransactionProcessDTO {
 
     @NotNull(message = "Validator.notNullMsg")
     private Long appointmentId;
-
-//    @NotNull(message = "Validator.notNullMsg")
-//    private String transactionType;
-
-
+    private Long authorityId;
     private BigDecimal fee;
 
     private BigDecimal tax;
@@ -45,15 +40,12 @@ public class TransactionProcessDTO {
 
     private String bankName;
 
-    // private Long referenceId;
-
-
     private String Status;
-
+    @NotNull(message = "Validator.mandatory")
+    private String timeZone;
 
     private String respKey;
     private String pgKey;
     private String transactionId;
-    private String transactionTime;
-
+    private String logDate;
 }

@@ -1,25 +1,31 @@
 package com.rahul.project.gateway.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class FeeDTO {
 
+    private Long servicesId;
+
     private long id;
-
-    private Long servicesId;//request param
-
-    private Long authorityId;//request param
+    private Long authorityId;
+    private BigDecimal amount;
 
     private BigDecimal fee;
 
     private BigDecimal tax;
 
-    private BigDecimal amount;//request param
+    public FeeDTO(Long servicesId, Long authorityId, BigDecimal amount) {
+        this.servicesId = servicesId;
+        this.authorityId = authorityId;
+        this.amount = amount;
+    }
 
     private BigDecimal payableAmount;
 

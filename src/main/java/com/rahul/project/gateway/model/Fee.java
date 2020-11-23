@@ -2,12 +2,9 @@ package com.rahul.project.gateway.model;
 
 
 import com.rahul.project.gateway.enums.FeeStatus;
-import com.rahul.project.gateway.enums.FeeType;
-import com.rahul.project.gateway.enums.TaxStatus;
-import com.rahul.project.gateway.serialize.TaxStatusSerializer;
+import com.rahul.project.gateway.enums.TaxType;
 import lombok.Getter;
 import lombok.Setter;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -41,7 +38,7 @@ public class Fee extends BaseEntity{
     private BigDecimal tax;
 
     @Column(name = "tax_type")
-    private TaxStatus taxType;
+    private TaxType taxType;
 
     @Column(name = "fee_type")
     private FeeStatus feeType;

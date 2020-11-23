@@ -1,9 +1,7 @@
 package com.rahul.project.gateway.serialize;
 
 import com.rahul.project.gateway.enums.FeeStatus;
-import com.rahul.project.gateway.enums.TaxStatus;
 import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
@@ -13,7 +11,7 @@ public class FeeStatusSerializer extends JsonSerializer<FeeStatus> {
 
 
     @Override
-    public void serialize(FeeStatus feeStatus, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(FeeStatus feeStatus, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("code");
         jsonGenerator.writeString(feeStatus.name());
