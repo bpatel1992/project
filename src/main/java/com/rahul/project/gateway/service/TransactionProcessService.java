@@ -44,6 +44,25 @@ public class TransactionProcessService {
 
     String SUCCESS_FLAG = "success";
 
+    public TransactionProcessDTO processGatewayResponse(TransactionProcessDTO transactionProcessDTO) throws Exception {
+        Transaction transaction = transactionRepository.getByTransactionId(transactionProcessDTO.getTransactionId());
+
+        if ("S".equalsIgnoreCase(transactionProcessDTO.getStatus())) {
+            transaction.setStatus(TransactionStatus.SUCCESS);
+        } else {
+            transaction.setStatus(TransactionStatus.FAILED);
+        }
+        transaction.setTransactionGatewayReferenceId(transactionProcessDTO.getTransactionGatewayReferenceId());
+        abstractDao.saveOrUpdateEntity(transaction);
+
+
+        if (transaction.getRedirectUrl() != null)
+            transactionProcessDTO.setRedirectURL(transaction.getRedirectUrl());
+        transactionProcessDTO.setRespKey(SUCCESS_FLAG);
+        transactionProcessDTO.setTransactionId(transaction.getTransactionId());
+        transactionProcessDTO.setLogDate(commonUtility.getDateConverted(transaction.getLogTime()));
+        return transactionProcessDTO;
+    }
 
     public TransactionProcessDTO processGatewayHostedSave(TransactionProcessDTO transactionProcessDTO) throws Exception {
 
@@ -60,12 +79,13 @@ public class TransactionProcessService {
 
         transaction.setCustomerUserId(sendByUser);
         FeeDTO feeDTO = new FeeDTO(transactionProcessDTO.getServiceId(), transactionProcessDTO.getAuthorityId(), transactionProcessDTO.getAmount());
-        processFee(feeDTO);
+        feeDTO = processFee(feeDTO);
         if (feeDTO != null) {
             transaction.setFee(feeDTO.getFee());
             transaction.setTax(feeDTO.getTax());
-        }
-        transaction.setPayableAmount(transaction.getAmount().add(transaction.getFee().add(transaction.getTax())));
+            transaction.setPayableAmount(transaction.getAmount().add(transaction.getFee().add(transaction.getTax())));
+        } else
+            transaction.setPayableAmount(transaction.getAmount());
         transaction.setServices(new Services(transactionProcessDTO.getServiceId()));
         transaction.setIsApproved(false);
         transaction.setIsReconciled(false);
@@ -80,7 +100,7 @@ public class TransactionProcessService {
 
         transactionProcessDTO.setRespKey(SUCCESS_FLAG);
         transactionProcessDTO.setTransactionId(transaction.getTransactionId());
-        transactionProcessDTO.setLogDate(commonUtility.getDateString(transaction.getLogTime()));
+        transactionProcessDTO.setLogDate(commonUtility.getDateConverted(transaction.getLogTime()));
         transactionProcessDTO.setRedirectURL(environment.getRequiredProperty("payment.aggregator.url") + "?pgcode=PGIND001&callBackURL="
                 + environment.getRequiredProperty("payment.aggregator.callback.url") + "&txnRef=" + transaction.getTransactionId()
                 + "&currency=inr&mobileNo=" + sendByUser.getMobile() + ((sendByUser.getEmail() != null
@@ -92,27 +112,6 @@ public class TransactionProcessService {
         return transactionProcessDTO;
     }
 
-
-    public TransactionProcessDTO processGatewayHostedUpdate(TransactionProcessDTO transactionProcessDTO) throws Exception {
-
-        Transaction transaction = transactionRepository.getByTransactionId(transactionProcessDTO.getTransactionId());
-
-        if (transactionProcessDTO.getStatus().equals("S")) {
-            transaction.setStatus(TransactionStatus.SUCCESS);
-        } else {
-            transaction.setStatus(TransactionStatus.FAILED);
-        }
-        transaction.setTransactionGatewayReferenceId(transactionProcessDTO.getTransactionGatewayReferenceId());
-        abstractDao.saveOrUpdateEntity(transaction);
-
-
-        if (transaction.getRedirectUrl() != null)
-            transactionProcessDTO.setRedirectURL(transaction.getRedirectUrl());
-        transactionProcessDTO.setRespKey(SUCCESS_FLAG);
-        transactionProcessDTO.setTransactionId(transaction.getTransactionId());
-        transactionProcessDTO.setLogDate(commonUtility.getDateString(transaction.getLogTime()));
-        return transactionProcessDTO;
-    }
 
 
     PropertyMap<FeeDTO, Fee> feeMapping = new PropertyMap<FeeDTO, Fee>() {

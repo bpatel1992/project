@@ -74,6 +74,11 @@ public class CommonUtility {
         return dateFormat.parse(date);
     }
 
+    public String getDateConverted(Date date) throws ParseException {
+//        dateFormat.setTimeZone(TimeZone.getTimeZone(timezone));
+        return dateFormat.format(date);
+    }
+
     public Date getDateConvertedDay(String date) throws ParseException {
         return dateFormatDay.parse(date);
     }
@@ -365,10 +370,10 @@ public class CommonUtility {
         return transactionID;
     }
 
-    public String getDateString(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_IST);
-        return simpleDateFormat.format(date);
-    }
+//    public String getDateString(Date date) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_IST);
+//        return simpleDateFormat.format(date);
+//    }
 
     public String currencyFormat(BigDecimal n) {
         return NumberFormat.getInstance(Locale.US).format(n);
