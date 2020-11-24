@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -43,6 +44,12 @@ public class PartnerAddress implements Serializable {
     @Basic
     @Column(name = "displayOrder")
     private Integer displayOrder;
+    @Basic
+    @Column(name = "user_charges")
+    private BigDecimal userCharges;
+    @Basic
+    @Column(name = "charges_slot_in_minutes")
+    private Integer chargesSlotInMin;
 
     // clinic, private practice or hospital
     @ManyToOne

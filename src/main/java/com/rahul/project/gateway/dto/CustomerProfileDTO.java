@@ -46,4 +46,10 @@ public class CustomerProfileDTO {
     private Set<PartnerAddressDTO> partnerAddresses;
     private String eCardUrl;
     private Boolean canCreatePartner;
+
+    private String bankAccountHolderName;
+    private String bankName;
+    private String ifsc;
+    private String bankAccountNumber;
+
 }

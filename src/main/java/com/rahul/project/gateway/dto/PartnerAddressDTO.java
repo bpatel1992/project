@@ -3,6 +3,7 @@ package com.rahul.project.gateway.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -16,6 +17,8 @@ public class PartnerAddressDTO {
     private Long id;
     private Long partnerId;
     private Boolean isPartner;
+    private BigDecimal userCharges;
+    private Integer chargesSlotInMin;
     //    private PartnerDTO partner;
     private String address;
     private String name;

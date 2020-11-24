@@ -91,7 +91,8 @@ public class User extends BaseEntity {
     @Type(type = "text")
     @Column(name = "award_recognition")
     private String awardRecognition;
-
+    @JoinColumn(name = "bank_account_holder_name")
+    private String bankAccountHolderName;
     @JoinColumn(name = "bank_name")
     private String bankName;
     @JoinColumn(name = "ifsc")

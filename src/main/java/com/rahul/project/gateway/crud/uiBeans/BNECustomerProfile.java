@@ -57,14 +57,14 @@ public class BNECustomerProfile implements BNE {
                         "assets/user/avatar?randomKey=" + user.getRandomKey() : null);
         profileDTO.setCoverURL(user.getCoverName() != null ?
                 environment.getRequiredProperty("gateway.api.url") + "assets/user/cover?randomKey=" + user.getRandomKey() : null);
-        if (user.getCertificates() != null) {
+       /* if (user.getCertificates() != null) {
             List<String> certificateURLs = new ArrayList<>();
             for (Certificate certificate : user.getCertificates()) {
                 certificateURLs.add(environment.getRequiredProperty("gateway.api.url") + "assets/user/certificate?randomKey="
                         + user.getRandomKey() + "&fileName=" + certificate.getName());
             }
             profileDTO.setCertificateURLs(certificateURLs);
-        }
+        }*/
         /*if (user.getGalleries() != null) {
             List<String> galleryURLs = null;
             if (user.getGalleries() != null && user.getGalleries().size() > 0) {
