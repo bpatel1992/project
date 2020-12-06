@@ -15,7 +15,11 @@ public class PetSign implements Serializable {
     @SequenceGenerator(name = "pet_sign_gen", allocationSize = 1, sequenceName = "pet_sign_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pet_sign_gen")
     private Long id;
-
+    @Column(name = "code", length = 50)
+    private String code;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
     @ManyToOne
     @JsonIgnoreProperties({"assessment", "petType", "symptomNode"})
     @JoinColumn(name = "symptom_node_id")

@@ -33,7 +33,8 @@ public class PartnerAddress implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
+    private Boolean status;
     @Basic
     @Column(name = "address")
     @Type(type = "text")
@@ -51,7 +52,7 @@ public class PartnerAddress implements Serializable {
     @Column(name = "charges_slot_in_minutes")
     private Integer chargesSlotInMin;
 
-    // clinic, private practice or hospital
+    // clinic, private practice, hospital or Online Consultation
     @ManyToOne
     @JoinColumn(name = "address_type_id")
     private AddressType addressType;

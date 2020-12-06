@@ -25,7 +25,12 @@ public class AddressType implements Serializable {
     private Long id;
 
     @Column(name = "address_type")
-    private String name;
+    private String addressType;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
+    @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
+    private Boolean status;
 
     @JsonIgnore
     @OneToMany(mappedBy = "addressTypeEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -39,6 +44,6 @@ public class AddressType implements Serializable {
 
     public String getLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 }

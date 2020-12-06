@@ -18,7 +18,11 @@ public class PossibleCause implements Serializable {
     @SequenceGenerator(name = "possible_cause_gen", allocationSize = 1, sequenceName = "possible_cause_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "possible_cause_gen")
     private Long id;
-
+    @Column(name = "code", length = 50)
+    private String code;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
     @ManyToOne
     @JsonIgnoreProperties({"assessment", "petType", "symptomNodeAssessment"})
     @JoinColumn(name = "symptom_node_id")

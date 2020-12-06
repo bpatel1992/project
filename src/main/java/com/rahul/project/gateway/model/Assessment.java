@@ -24,9 +24,13 @@ public class Assessment implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assessment_gen")
     private Long id;
 
-    @Column(name = "assessment_name", length = 250)
+    @Column(name = "assessment_name")
     private String assessment;
-
+    @Column(name = "code", length = 50)
+    private String code;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
     @ManyToMany
     @JoinTable(name = "assessment_options_mp", joinColumns = @JoinColumn(name = "assessment_id")
             , inverseJoinColumns = @JoinColumn(name = "assessment_option_id"))

@@ -41,7 +41,11 @@ public class Symptom implements Serializable {
     @Field(store = Store.YES, analyzer = @Analyzer(definition = "custom_analyzer"/*impl = CustomLowerCaseAnalyzer.class*/))
     @Column(name = "symptom_name", length = 100)
     private String symptomName;
-
+    @Column(name = "code", length = 50)
+    private String code;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
     @ManyToOne
     @JoinColumn(name = "symptom_node")
     @JsonIgnoreProperties({"symptomNode", "symptomNodeAssessments"})

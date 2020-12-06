@@ -2,6 +2,7 @@ package com.rahul.project.gateway.repository;
 
 import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.crud.core.ApplicationMap;
+import com.rahul.project.gateway.crud.util.ObjectUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +44,13 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
 
     protected EntityManager entityManager;
     private JpaEntityInformation<T, ?> entityInformation;
+//    private ObjectUtil objectUtil;
 
-    public BaseRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+    public BaseRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager/*,ObjectUtil objectUtil*/) {
         super(entityInformation, entityManager);
         this.entityInformation = entityInformation;
         this.entityManager = entityManager;
+//        this.objectUtil=objectUtil;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -170,7 +173,8 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
     @Override
     public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, ApplicationMap<String, Object> conditionalMap
             , Class<?> clz, Pageable pageable) throws BusinessException {
-        if (qualifierMap == null || qualifierMap.isEmpty()) {
+        ObjectUtil objectUtil = new ObjectUtil();
+        if (objectUtil.isNonEmptyMap(qualifierMap) && objectUtil.isNonEmptyMap(conditionalMap)) {
             return null;
         }
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();

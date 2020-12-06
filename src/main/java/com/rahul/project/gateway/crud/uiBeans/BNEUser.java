@@ -1,5 +1,6 @@
 package com.rahul.project.gateway.crud.uiBeans;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.annotation.UIBeanSpecifier;
 import com.rahul.project.gateway.dto.CustomerProfileDTO;
@@ -23,9 +24,15 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @UIBeanSpecifier(id = "1", beanClass = BNEUser.class)
 @TransactionalService(value = "BNEUser")
 public class BNEUser implements BNE {
+    private Long id;
+
+    public BNEUser(User user) {
+        this.id = user.getId();
+    }
 
     @Autowired
     Environment environment;

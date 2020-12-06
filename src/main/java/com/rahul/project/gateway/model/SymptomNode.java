@@ -21,6 +21,11 @@ public class SymptomNode implements Serializable {
 
     @Column(name = "symptom_node_name", length = 100)
     private String symptomNode;
+    @Column(name = "code", length = 50)
+    private String code;
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
 
     @ManyToMany(mappedBy = "symptomNode")
     @JsonIgnore

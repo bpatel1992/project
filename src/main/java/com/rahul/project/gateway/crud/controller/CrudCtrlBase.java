@@ -294,7 +294,7 @@ public class CrudCtrlBase extends BNEBase {
     }
 
     private Object searchResult(ApplicationMap<String, Object> objHash, ApplicationMap<String, Object> conditionalHash, BaseRepository<?, ?> repository) throws BusinessException {
-        return objectUtil.isNonEmptyMap(objHash) ? this.searchMerged(repository, objHash, conditionalHash) : this.findAll(repository);
+        return objectUtil.isNonEmptyMap(objHash) || objectUtil.isNonEmptyMap(conditionalHash) ? this.searchMerged(repository, objHash, conditionalHash) : this.findAll(repository);
     }
 
     private CRUDResponse apiResult(Object result) throws BusinessException {
