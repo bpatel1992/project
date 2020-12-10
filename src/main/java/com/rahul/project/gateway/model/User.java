@@ -131,6 +131,18 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "language_code")
     private Language preferLanguage;
+    @Basic
+    @Column(name = "fbLink")
+    private String fbLink;//": "",
+    @Basic
+    @Column(name = "youtubeLink")
+    private String youtubeLink;//": "",
+    @Basic
+    @Column(name = "instagramLink")
+    private String instagramLink;//": ""
+    @Basic
+    @Column(name = "twitterLink")// ,
+    private String twitterLink;//": "",
     @ManyToOne
     @JoinColumn(name = "title_id", referencedColumnName = "id")
     private Title title;

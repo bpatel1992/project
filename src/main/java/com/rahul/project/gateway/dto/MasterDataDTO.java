@@ -18,5 +18,7 @@ public class MasterDataDTO {
     private String data;
     private String description;
     private Integer code;
+    private String addressType;
+    private Boolean status;
 }
 

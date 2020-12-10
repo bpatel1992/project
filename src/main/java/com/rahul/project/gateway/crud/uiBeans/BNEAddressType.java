@@ -40,9 +40,4 @@ public class BNEAddressType implements BNE {
         }
         return masterDataDTOS;
     }
-
-    @Override
-    public Object process(Object o) {
-        return modelMapper.map(o, MasterDataDTO.class);
-    }
 }
