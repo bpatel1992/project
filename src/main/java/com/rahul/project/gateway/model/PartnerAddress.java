@@ -33,7 +33,7 @@ public class PartnerAddress implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
+    @Column(name = "status", columnDefinition = "boolean default true")
     private Boolean status;
     @Basic
     @Column(name = "address")
