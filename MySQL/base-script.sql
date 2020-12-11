@@ -226,3 +226,10 @@ INSERT INTO appointment_reason_m(
     'Tossing Head',
     1
  );
+
+-- Dump data of "address_type_m" ---------------------------
+INSERT INTO `address_type_m`(`id`,`address_type`,`status`,`image_name`) VALUES
+( '1', 'Clinic', '1', NULL ),
+( '2', 'Hospital', '1', NULL ),
+( '3', 'OnLine Consultation', '1', NULL );
+-- ---------------------------------------------------------
