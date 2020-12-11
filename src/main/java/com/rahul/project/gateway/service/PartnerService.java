@@ -98,10 +98,11 @@ public class PartnerService {
                     , partnerAddress, businessTimings);
             abstractDao.saveOrUpdateEntity(partnerAddressTiming);
         } else {
-            if (partnerAddress.getId() != null)
-                partnerAddress = abstractDao.getEntityById(PartnerAddress.class, partnerAddress.getId());
-            else
-                abstractDao.saveOrUpdateEntity(partnerAddress);
+           /* if (partnerAddress.getId() != null) {
+                PartnerAddress entity = abstractDao.getEntityById(PartnerAddress.class, partnerAddress.getId());
+                CrudCtrlBase.copyNonNullProperties(entity, partnerAddress);
+            }*/
+            abstractDao.saveOrUpdateEntity(partnerAddress);
             UserAddressTiming userAddressTiming = new UserAddressTiming(
                     abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser()), partnerAddress, businessTimings);
             abstractDao.saveOrUpdateEntity(userAddressTiming);

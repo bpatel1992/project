@@ -21,6 +21,7 @@ public class PartnerAddressDTO {
     private Integer chargesSlotInMin;
     //    private PartnerDTO partner;
     private String address;
+    private MasterDataDTO addressType;
     private String name;
     private Integer displayOrder;
     private CountryDTO country;
@@ -30,6 +31,7 @@ public class PartnerAddressDTO {
     private Double latitude;
     private Double longitude;
     private Set<PartnerContactNumberDTO> partnerContactNumbers;
+    private Boolean status;
     private Set<BusinessTimingDTO> businessTimings;
 }
 
