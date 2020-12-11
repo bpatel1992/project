@@ -150,6 +150,7 @@ public class PartnerService {
             for (PartnerAddress partnerAddress : partnerAddresses) {
                 BusinessAddress businessAddress = new BusinessAddress();
                 businessAddress.setId(partnerAddress.getId());
+                businessAddress.setAddressTypeId(partnerAddress.getAddressType() != null ? partnerAddress.getAddressType().getId() : null);
                 businessAddress.setBusinessAddress(partnerAddress.getAddress());
                 businessAddress.setBusinessAddressLink("https://www.google.com/maps/search/" + partnerAddress.getAddress());
                 businessAddress.setTitle(partnerAddress.getName());
