@@ -179,16 +179,21 @@ public class AppointmentService {
         List<AppointmentAvailabilitySlotDto> slotDtoArrayList = new ArrayList<>();
         List<AppointmentAvailabilityDto> morning = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
                 LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time6) &&
-                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time12)
-        ).collect(Collectors.toList());
+                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time12))
+                .sorted(Comparator.comparing(AppointmentAvailabilityDto::getDisplayOrder))
+                .collect(Collectors.toList());
+
         createSlotEntry(slotDtoArrayList, morning, "morning");
         List<AppointmentAvailabilityDto> afternoon = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
                 LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time12) &&
-                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time16)
-        ).collect(Collectors.toList());
+                        LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isBefore(time16))
+                .sorted(Comparator.comparing(AppointmentAvailabilityDto::getDisplayOrder))
+                .collect(Collectors.toList());
         createSlotEntry(slotDtoArrayList, afternoon, "afternoon");
         List<AppointmentAvailabilityDto> evening = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
-                LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time16)).collect(Collectors.toList());
+                LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time16))
+                .sorted(Comparator.comparing(AppointmentAvailabilityDto::getDisplayOrder))
+                .collect(Collectors.toList());;
         createSlotEntry(slotDtoArrayList, evening, "evening");
         return slotDtoArrayList;
 
