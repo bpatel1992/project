@@ -97,6 +97,7 @@ public class BNEUser implements BNE {
         }
         customerProfileDTO.setGenderId(user.getGender().getId());
         customerProfileDTO.setLanguageCode(user.getPreferLanguage() != null ? user.getPreferLanguage().getCode() : null);
+        customerProfileDTO.setSubscribed(user.getSubscribed());
         return customerProfileDTO;
     }
 }
