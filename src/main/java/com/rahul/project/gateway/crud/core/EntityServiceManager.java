@@ -1,6 +1,9 @@
 package com.rahul.project.gateway.crud.core;
 
-import com.rahul.project.gateway.repository.*;
+import com.rahul.project.gateway.configuration.BusinessException;
+import com.rahul.project.gateway.repository.BaseRepository;
+import com.rahul.project.gateway.repository.BaseRepositoryImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -18,7 +21,19 @@ public class EntityServiceManager {
     @Autowired
     ApplicationContext applicationContext;
 
-    @SuppressWarnings("unchecked")
+
+    public <T, ID> BaseRepository<T, ID> serviceForEntity(String entityName)throws BusinessException{
+        try {
+            String packageName= StringUtils.replaceIgnoreCase(String.valueOf(BaseRepositoryImpl.class.getPackage()),"package ",StringUtils.EMPTY);
+            String repoName = packageName+"."+entityName+ "Repository";
+            return  (BaseRepository<T, ID>) getBean(Class.forName(repoName));
+        }
+        catch (Exception e){
+            throw new BusinessException("Technical exception occured");
+        }
+    }
+
+   /* @SuppressWarnings("unchecked")
     public <T, ID> BaseRepository<T, ID> serviceForEntity(String entityName) {
         BaseRepository<T, ID> service = null;
         if ("Role".equalsIgnoreCase(entityName)) {
@@ -79,7 +94,7 @@ public class EntityServiceManager {
             service = (BaseRepository<T, ID>) getBean(entityName + "Repository");
         }
 
-		/*if (USER.equalsIgnoreCase(entityName)) {
+		*//*if (USER.equalsIgnoreCase(entityName)) {
 			service = (BaseRepository<T, ID>) crudCtrl.userRepository;
 		} else if (ROLE.equalsIgnoreCase(entityName)) {
 			service = (BaseRepository<T, ID>) applicationContext.getBean("RoleRepository");
@@ -109,9 +124,9 @@ public class EntityServiceManager {
 			service = (BaseRepository<T, ID>) crudCtrl.businessSubCategoryMPRepository;
 		} else if (TpagoNetFeeConfigurationS.equals(entityName)) {
 			service = (BaseRepository<T, ID>) crudCtrl.tpagoNetFeeConfigurationSRepository;
-		}*/
+		}*//*
         return service;
-    }
+    }*/
 
     public <T> T getBean(Class<T> clz) {
         return applicationContext.getBean(clz);

@@ -1,5 +1,6 @@
 package com.rahul.project.gateway.crud.controller;
 
+import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.RESTController;
 import com.rahul.project.gateway.crud.core.CRUDRequest;
 import com.rahul.project.gateway.crud.core.EntityServiceManager;
@@ -51,7 +52,7 @@ public class CrudCtrl {
      * @return CRUDResponse
      */
     @RequestMapping(method = RequestMethod.POST, value = {"/api/crud", "/oauth2/api/crud"})
-    public Map<String, Object> genericOperation(@RequestBody CRUDRequest request) {
+    public Map<String, Object> genericOperation(@RequestBody CRUDRequest request) throws BusinessException {
 //        logger.info("request is {}.", request);
         crudCtrlBase.setCRUDRequest(request);
         crudCtrlBase.setRepository(entityServiceManager.serviceForEntity(request.entityName()));
