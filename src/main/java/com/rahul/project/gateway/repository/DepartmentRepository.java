@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @author Rahul Malhotra
  * @Date : 21-May-2019 at 4:20:57 pm
  */
-@Repository
+@Repository(value = "DepartmentRepository")
 public interface DepartmentRepository extends BaseRepository<Department, Long> {
 
 }

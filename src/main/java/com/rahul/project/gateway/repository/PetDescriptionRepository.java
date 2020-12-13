@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "PetDescriptionRepository")
 public interface PetDescriptionRepository extends BaseRepository<PetDescription, Long> {
 }

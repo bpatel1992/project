@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "RemedyRepository")
 public interface RemedyRepository extends BaseRepository<Remedy, Long> {
 }

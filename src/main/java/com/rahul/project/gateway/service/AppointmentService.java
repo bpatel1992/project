@@ -10,9 +10,11 @@ import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.AppointmentRepository;
 import com.rahul.project.gateway.repository.UserAddressTimingRepository;
+import com.rahul.project.gateway.repository.UserAvailabilityRepository;
 import com.rahul.project.gateway.repository.UserRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -20,8 +22,11 @@ import org.modelmapper.spi.MappingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -45,6 +50,8 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserAvailabilityRepository  userAvailabilityRepository;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -124,7 +131,8 @@ public class AppointmentService {
         Date date = appointment.getAppointmentDate();
         Calendar time = Calendar.getInstance();
         time.setTime(date);
-        int day = time.get(Calendar.DAY_OF_WEEK);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
+        int day = localDateTime.getDayOfWeek().getValue();
         Set<TimeRange> timeRanges = userAddressTimingRepository.getTimeRange(appointment.getAttendant().getId(),
                 appointment.getClinic().getId(), String.valueOf(day));
         if (timeRanges != null && timeRanges.size() > 0) {
@@ -193,7 +201,8 @@ public class AppointmentService {
         List<AppointmentAvailabilityDto> evening = appointmentAvailabilityDtos.stream().filter(appointmentAvailabilityDto ->
                 LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time16))
                 .sorted(Comparator.comparing(AppointmentAvailabilityDto::getDisplayOrder))
-                .collect(Collectors.toList());;
+                .collect(Collectors.toList());
+        ;
         createSlotEntry(slotDtoArrayList, evening, "evening");
         return slotDtoArrayList;
 
@@ -243,4 +252,69 @@ public class AppointmentService {
         }
         return createAppointmentDto;
     }
+
+    public CreateAppointmentDto getAvailableDatesForNext7days(CreateAppointmentDto createAppointmentDto) throws Exception {
+        Appointment appointment = modelMapper.map(createAppointmentDto, Appointment.class);
+        Integer slotInMin = userRepository.getSlotTime(appointment.getAttendant().getId());
+        if (slotInMin == null)
+            throw new BusinessException("slot time not set");
+        Date date = appointment.getAppointmentDate();
+        Calendar time = Calendar.getInstance();
+        time.setTime(date);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
+        int day = localDateTime.getDayOfWeek().getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
+                appointment.getClinic().getId());
+        List<UserAvailability> userAvailabilityList =
+                userAvailabilityRepository.getByAttendantAndClinic(appointment.getAttendant().getId(),
+                appointment.getClinic().getId(),date);
+        List<AppointmentAvailabilityDto> appointmentAvailabilityDtos = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(businessTimings)) {
+            int c = 0;
+            for (BusinessTiming businessTiming : businessTimings) {
+                List<Integer> dayCodes = businessTiming.getDays().stream().filter(day1 -> day1.isStatus())
+                        .map(day1 -> Integer.parseInt(day1.getCode())).sorted()
+                        .collect(Collectors.toList());
+                int i = 0;
+                if (appointmentAvailabilityDtos.size() < 8) {
+                    while (i < 7) {
+                        LocalDateTime newDate = localDateTime.plusDays(i);
+                       List<UserAvailability> onLeaveList =  userAvailabilityList.stream().filter(userAvailability ->{
+                                    Calendar fromTime = Calendar.getInstance();
+                                    fromTime.setTime(userAvailability.getFromTime());
+                                    Calendar toTime = Calendar.getInstance();
+                                    toTime.setTime(userAvailability.getToTime());
+                                    return LocalDateTime.ofInstant(fromTime.toInstant(),fromTime.getTimeZone().toZoneId()).isAfter(localDateTime) &&
+                                            LocalDateTime.ofInstant(toTime.toInstant(),toTime.getTimeZone().toZoneId()).isBefore(localDateTime) &&
+                                            StringUtils.endsWithIgnoreCase(userAvailability.getStatusType().getStatusTypeDesc(),"active");
+                                }).collect(Collectors.toList());
+                        if (CollectionUtils.isEmpty(onLeaveList) && dayCodes.contains(newDate.getDayOfWeek().getValue())) {
+                            appointmentAvailabilityDtos.add(createAvailabilityEntry(newDate.toLocalDate(),
+                                    appointmentAvailabilityDtos.size() + 1, Boolean.TRUE));
+                        } else {
+                            appointmentAvailabilityDtos.add(createAvailabilityEntry(newDate.toLocalDate(),
+                                    appointmentAvailabilityDtos.size() + 1, Boolean.FALSE));
+                        }
+                        i++;
+                    }
+                }
+            }
+        }
+        List<AppointmentAvailabilitySlotDto> slotDtoArrayList = new ArrayList<>();
+        createSlotEntry(slotDtoArrayList, appointmentAvailabilityDtos, StringUtils.EMPTY);
+        createAppointmentDto.setAppointmentAvailabilitySlotDtos(slotDtoArrayList);
+        return createAppointmentDto;
+    }
+
+    private AppointmentAvailabilityDto createAvailabilityEntry(LocalDate localTime, int c, boolean isAvailable) {
+        AppointmentAvailabilityDto appointmentAvailabilityDto = new AppointmentAvailabilityDto();
+        appointmentAvailabilityDto.setTime(localTime.toString());
+        appointmentAvailabilityDto.setAvailable(isAvailable);
+        appointmentAvailabilityDto.setDisplayOrder(c);
+        return appointmentAvailabilityDto;
+    }
 }
+
+
+

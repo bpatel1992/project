@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "UserLoginTypeRepository")
 public interface UserLoginTypeRepository extends BaseRepository<UserLoginType, Long> {
     UserLoginType getByLoginType(String s);
 }

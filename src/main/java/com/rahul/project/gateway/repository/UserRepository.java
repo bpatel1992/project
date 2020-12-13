@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "UserRepository")
 public interface UserRepository extends BaseRepository<User, Long> {
 
     @Query(value = "SELECT u.chargesSlotInMin FROM User u WHERE u.id= ?1")

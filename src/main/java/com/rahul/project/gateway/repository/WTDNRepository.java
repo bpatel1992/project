@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "WTDNRepository")
 public interface WTDNRepository extends BaseRepository<WTDN, Long> {
 }

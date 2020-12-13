@@ -45,4 +45,10 @@ public class AppointmentController {
         return appointmentService.getAvailability(createAppointmentDto);
     }
 
+    @RequestMapping(path = {"/oauth2/api/appointment/getAvailableDatesForNext7days"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public CreateAppointmentDto getAvailableDates(@Valid @RequestBody CreateAppointmentDto createAppointmentDto) throws Exception {
+        return appointmentService.getAvailableDatesForNext7days(createAppointmentDto);
+    }
+
 }

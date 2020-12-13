@@ -1,9 +1,6 @@
 package com.rahul.project.gateway.crud.core;
 
-import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.repository.BaseRepository;
-import com.rahul.project.gateway.repository.BaseRepositoryImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,19 +18,12 @@ public class EntityServiceManager {
     @Autowired
     ApplicationContext applicationContext;
 
-
-    public <T, ID> BaseRepository<T, ID> serviceForEntity(String entityName)throws BusinessException{
-        try {
-            String packageName= StringUtils.replaceIgnoreCase(String.valueOf(BaseRepositoryImpl.class.getPackage()),"package ",StringUtils.EMPTY);
-            String repoName = packageName+"."+entityName+ "Repository";
-            return  (BaseRepository<T, ID>) getBean(Class.forName(repoName));
-        }
-        catch (Exception e){
-            throw new BusinessException("Technical exception occured");
-        }
+    @SuppressWarnings("unchecked")
+    public <T, ID> BaseRepository<T, ID> serviceForEntity(String entityName) {
+        return (BaseRepository<T, ID>) getBean(entityName + "Repository");
     }
 
-   /* @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     public <T, ID> BaseRepository<T, ID> serviceForEntity(String entityName) {
         BaseRepository<T, ID> service = null;
         if ("Role".equalsIgnoreCase(entityName)) {

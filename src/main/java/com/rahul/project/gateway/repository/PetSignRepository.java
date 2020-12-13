@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "PetSignRepository")
 public interface PetSignRepository extends BaseRepository<PetSign, Long> {
 }

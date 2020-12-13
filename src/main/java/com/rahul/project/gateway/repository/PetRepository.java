@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "PetRepository")
 public interface PetRepository extends BaseRepository<Pet, Long> {
     Pet getByRandomKey(String s);
 }

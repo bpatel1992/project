@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "PrivilegeRepository")
 public interface PrivilegeRepository extends BaseRepository<Privilege, Long> {
 
     Privilege findByPrivilege(String privilege);

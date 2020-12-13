@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Rahul Malhotra
  */
-@Repository
+@Repository(value = "UserLoginPasswordRepository")
 public interface UserLoginPasswordRepository extends BaseRepository<UserLoginPassword, Long> {
     UserLoginPassword getByUserAndLoginType(User user, UserLoginType userLoginType);
 }
