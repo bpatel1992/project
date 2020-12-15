@@ -233,3 +233,13 @@ INSERT INTO `address_type_m`(`id`,`address_type`,`status`,`image_name`) VALUES
 ( '2', 'Hospital', '1', NULL ),
 ( '3', 'OnLine Consultation', '1', NULL );
 -- ---------------------------------------------------------
+
+-- Dump data of "status_type_m" ---------------------------
+INSERT INTO `status_type_m`
+(`id`,
+`status_type_code`,
+`status_type_desc`,
+`status_type_name`)
+VALUES(2, '35', 'A', 'ACTIVE');
+VALUES(3, '36', 'C', 'CANCELLED');
+-- ---------------------------------------------------------

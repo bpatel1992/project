@@ -262,13 +262,10 @@ public class AppointmentService {
         Calendar time = Calendar.getInstance();
         time.setTime(date);
         LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
-        int day = localDateTime.getDayOfWeek().getValue();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
                 appointment.getClinic().getId());
         List<UserAvailability> userAvailabilityList =
-                userAvailabilityRepository.getByAttendantAndClinic(appointment.getAttendant().getId(),
-                appointment.getClinic().getId(),date);
+                userAvailabilityRepository.getByAttendant(appointment.getAttendant().getId(),date);
         List<AppointmentAvailabilityDto> appointmentAvailabilityDtos = new ArrayList<>();
         if (!CollectionUtils.isEmpty(businessTimings)) {
             int c = 0;
@@ -285,9 +282,9 @@ public class AppointmentService {
                                     fromTime.setTime(userAvailability.getFromTime());
                                     Calendar toTime = Calendar.getInstance();
                                     toTime.setTime(userAvailability.getToTime());
-                                    return LocalDateTime.ofInstant(fromTime.toInstant(),fromTime.getTimeZone().toZoneId()).isAfter(localDateTime) &&
-                                            LocalDateTime.ofInstant(toTime.toInstant(),toTime.getTimeZone().toZoneId()).isBefore(localDateTime) &&
-                                            StringUtils.endsWithIgnoreCase(userAvailability.getStatusType().getStatusTypeDesc(),"active");
+                                    return (newDate.compareTo(LocalDateTime.ofInstant(fromTime.toInstant(),fromTime.getTimeZone().toZoneId())) >= 0) &&
+                                            (newDate.compareTo(LocalDateTime.ofInstant(toTime.toInstant(),toTime.getTimeZone().toZoneId())) <= 0) &&
+                                            StringUtils.endsWithIgnoreCase(userAvailability.getStatusType().getStatusTypeName(),"active");
                                 }).collect(Collectors.toList());
                         if (CollectionUtils.isEmpty(onLeaveList) && dayCodes.contains(newDate.getDayOfWeek().getValue())) {
                             appointmentAvailabilityDtos.add(createAvailabilityEntry(newDate.toLocalDate(),

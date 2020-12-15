@@ -132,3 +132,13 @@ INSERT INTO `weight_unit_m`(
     'Kg'
  );
 
+
+ALTER TABLE user_availability
+MODIFY COLUMN fromTime datetime;
+
+ALTER TABLE user_availability
+MODIFY COLUMN toTime datetime;
+
+INSERT INTO dev.user_availability
+(id, creation_date, fromTime, modification_date, toTime, attendant_id, clinic_id, status_type_id)
+VALUES(1, current_date, current_date, current_date, current_date+1, 70, 178, 2);

@@ -20,5 +20,9 @@ public interface UserAvailabilityRepository extends BaseRepository<UserAvailabil
             " ")
     List<UserAvailability> getByAttendantAndClinic(Long user, Long partnerAddress, Date date);
 
+    @Query(value = "FROM UserAvailability ua WHERE ua.attendant.id = ?1 and " +
+            "?2 between ua.fromTime AND ua.toTime ")
+    List<UserAvailability> getByAttendant(Long user, Date date);
+
 
 }
