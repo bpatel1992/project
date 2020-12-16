@@ -5,3 +5,6 @@ update day_m set code='4',name='Thursday',short_code='T'  where id='4';
 update day_m set code='5',name='Friday',short_code='F' where id='5';
 update day_m set code='6',name='Saturday',short_code='S'  where id='6';
 update day_m set code='7',name='Sunday',short_code='S'  where id='7';
+
+
+RENAME TABLE user_availability TO user_holidays;

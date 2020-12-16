@@ -10,7 +10,7 @@ import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.AppointmentRepository;
 import com.rahul.project.gateway.repository.UserAddressTimingRepository;
-import com.rahul.project.gateway.repository.UserAvailabilityRepository;
+import com.rahul.project.gateway.repository.UserHolidaysRepository;
 import com.rahul.project.gateway.repository.UserRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
@@ -51,7 +51,7 @@ public class AppointmentService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserAvailabilityRepository  userAvailabilityRepository;
+    private UserHolidaysRepository userHolidaysRepository;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -264,8 +264,8 @@ public class AppointmentService {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
         Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
                 appointment.getClinic().getId());
-        List<UserAvailability> userAvailabilityList =
-                userAvailabilityRepository.getByAttendant(appointment.getAttendant().getId(),date);
+        List<UserHolidays> userHolidaysList =
+                userHolidaysRepository.getByAttendant(appointment.getAttendant().getId(),date);
         List<AppointmentAvailabilityDto> appointmentAvailabilityDtos = new ArrayList<>();
         if (!CollectionUtils.isEmpty(businessTimings)) {
             int c = 0;
@@ -277,14 +277,14 @@ public class AppointmentService {
                 if (appointmentAvailabilityDtos.size() < 8) {
                     while (i < 7) {
                         LocalDateTime newDate = localDateTime.plusDays(i);
-                       List<UserAvailability> onLeaveList =  userAvailabilityList.stream().filter(userAvailability ->{
+                       List<UserHolidays> onLeaveList =  userHolidaysList.stream().filter(userHolidays ->{
                                     Calendar fromTime = Calendar.getInstance();
-                                    fromTime.setTime(userAvailability.getFromTime());
+                                    fromTime.setTime(userHolidays.getFromTime());
                                     Calendar toTime = Calendar.getInstance();
-                                    toTime.setTime(userAvailability.getToTime());
+                                    toTime.setTime(userHolidays.getToTime());
                                     return (newDate.compareTo(LocalDateTime.ofInstant(fromTime.toInstant(),fromTime.getTimeZone().toZoneId())) >= 0) &&
                                             (newDate.compareTo(LocalDateTime.ofInstant(toTime.toInstant(),toTime.getTimeZone().toZoneId())) <= 0) &&
-                                            StringUtils.endsWithIgnoreCase(userAvailability.getStatusType().getStatusTypeName(),"active");
+                                            StringUtils.endsWithIgnoreCase(userHolidays.getStatusType().getStatusTypeName(),"active");
                                 }).collect(Collectors.toList());
                         if (CollectionUtils.isEmpty(onLeaveList) && dayCodes.contains(newDate.getDayOfWeek().getValue())) {
                             appointmentAvailabilityDtos.add(createAvailabilityEntry(newDate.toLocalDate(),

@@ -13,8 +13,8 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_availability")
-public class UserAvailability extends BaseEntity {
+@Table(name = "user_holidays")
+public class UserHolidays extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "user_availability_gen", allocationSize = 1, sequenceName = "user_availability_seq")
