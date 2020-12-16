@@ -2,27 +2,17 @@ package com.rahul.project.gateway.crud.uiBeans;
 
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.annotation.UIBeanSpecifier;
-import com.rahul.project.gateway.crud.service.BNECustomerTxn;
-import com.rahul.project.gateway.dto.Functionality;
 import com.rahul.project.gateway.dto.RoleDTO;
-import com.rahul.project.gateway.dto.RoleFunctionality;
-import com.rahul.project.gateway.dto.TransactionProcessDTO;
-import com.rahul.project.gateway.model.BusinessTiming;
 import com.rahul.project.gateway.model.Role;
-import com.rahul.project.gateway.model.Transaction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Getter

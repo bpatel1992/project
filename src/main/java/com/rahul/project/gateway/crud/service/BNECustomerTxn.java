@@ -3,22 +3,12 @@ package com.rahul.project.gateway.crud.service;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.crud.annotation.UIBeanSpecifier;
 import com.rahul.project.gateway.crud.uiBeans.BNE;
-import com.rahul.project.gateway.dao.AbstractDao;
-import com.rahul.project.gateway.dto.CreateAppointmentDto;
-import com.rahul.project.gateway.dto.DayDTO;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
-import com.rahul.project.gateway.model.Appointment;
 import com.rahul.project.gateway.model.Transaction;
-import com.rahul.project.gateway.repository.UserAddressTimingRepository;
-import com.rahul.project.gateway.service.SendMailService;
-import com.rahul.project.gateway.service.SmsService;
-import com.rahul.project.gateway.utility.CommonUtility;
-import com.rahul.project.gateway.utility.Translator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -61,12 +51,12 @@ public class BNECustomerTxn implements BNE {
     @Autowired
     public BNECustomerTxn(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
-        modelMapper.addMappings(transactionMapping);
-        modelMapper.addMappings(transactionFieldMapping);
+//        modelMapper.addMappings(transactionMapping);
+//        modelMapper.addMappings(transactionFieldMapping);
     }
 
 
-    PropertyMap<TransactionProcessDTO, Transaction> transactionMapping = new PropertyMap<TransactionProcessDTO, Transaction>() {
+    /*PropertyMap<TransactionProcessDTO, Transaction> transactionMapping = new PropertyMap<TransactionProcessDTO, Transaction>() {
         protected void configure() {
             map().getServices().setId(source.getServiceId());
         }
@@ -76,6 +66,6 @@ public class BNECustomerTxn implements BNE {
             map().setServiceId(source.getServices().getId());
 
         }
-    };
+    };*/
 
 }

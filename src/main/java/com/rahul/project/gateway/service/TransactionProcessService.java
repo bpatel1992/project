@@ -4,15 +4,12 @@ import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.FeeDTO;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
-import com.rahul.project.gateway.enums.FeeStatus;
-import com.rahul.project.gateway.enums.TaxType;
 import com.rahul.project.gateway.enums.TransactionStatus;
 import com.rahul.project.gateway.hash.AESSecurity;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.FeeRepository;
 import com.rahul.project.gateway.repository.TransactionRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -52,7 +49,7 @@ public class TransactionProcessService {
         } else {
             transaction.setStatus(TransactionStatus.FAILED);
         }
-        transaction.setTransactionGatewayReferenceId(transactionProcessDTO.getTransactionGatewayReferenceId());
+        transaction.setAggregatorReferenceNumber(transactionProcessDTO.getTransactionGatewayReferenceId());
         abstractDao.saveOrUpdateEntity(transaction);
 
 
@@ -86,7 +83,7 @@ public class TransactionProcessService {
             transaction.setPayableAmount(transaction.getAmount().add(transaction.getFee().add(transaction.getTax())));
         } else
             transaction.setPayableAmount(transaction.getAmount());
-        transaction.setServices(new Services(transactionProcessDTO.getServiceId()));
+        transaction.setService(new Services(transactionProcessDTO.getServiceId()));
         transaction.setIsApproved(false);
         transaction.setIsReconciled(false);
         transaction.setRedirectUrl(transactionProcessDTO.getRedirectURL());
@@ -114,7 +111,7 @@ public class TransactionProcessService {
 
 
 
-    PropertyMap<FeeDTO, Fee> feeMapping = new PropertyMap<FeeDTO, Fee>() {
+    /*PropertyMap<FeeDTO, Fee> feeMapping = new PropertyMap<FeeDTO, Fee>() {
         protected void configure() {
             map().getService().setId(source.getServicesId());
             map().getAuthority().setAuthorityId(source.getAuthorityId());
@@ -127,7 +124,7 @@ public class TransactionProcessService {
             map().setServicesId(source.getService().getId());
 
         }
-    };
+    };*/
 
   /*  @Autowired
     public TransactionProcessService(ModelMapper modelMapper) {
@@ -143,7 +140,7 @@ public class TransactionProcessService {
         if (fee != null) {
 //        feeDTO=modelMapper.map(fee, FeeDTO.class);
 
-            feeDTO.setFee(fee.getFee());
+            /*feeDTO.setFee(fee.getFeeAmount());
             feeDTO.setTax(fee.getTax());
             feeDTO.setFeeType(fee.getFeeType().getName());
             feeDTO.setTaxType(fee.getTaxType().getName());
@@ -155,7 +152,7 @@ public class TransactionProcessService {
                 feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getTax()).add(feeDTO.getAmount().multiply(feeDTO.getFee().divide(new BigDecimal(100)))));
             } else {
                 feeDTO.setPayableAmount(feeDTO.getAmount().add(feeDTO.getFee()).add(feeDTO.getTax()));
-            }
+            }*/
         } else
             feeDTO = null;
         return feeDTO;

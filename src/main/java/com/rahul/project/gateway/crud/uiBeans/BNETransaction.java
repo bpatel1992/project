@@ -33,9 +33,9 @@ public class BNETransaction extends BNEBase {
     private boolean isSettled;
 
     public BNETransaction(Transaction transaction) {
-        this.status = transaction.getStatus().getName();
+//        this.status = transaction.getStatus().getName();
         this.txnId = transaction.getId();
-        this.transactionGatewayReferenceId = transaction.getTransactionGatewayReferenceId() != null ? transaction.getTransactionGatewayReferenceId() : "";
+//        this.transactionGatewayReferenceId = transaction.getTransactionGatewayReferenceId() != null ? transaction.getTransactionGatewayReferenceId() : "";
         this.amount = transaction.getAmount().doubleValue();
         this.transactionId = transaction.getTransactionId();
         this.date = transaction.getDate().toString();
