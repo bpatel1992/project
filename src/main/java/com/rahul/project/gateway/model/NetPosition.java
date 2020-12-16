@@ -1,5 +1,4 @@
 package com.rahul.project.gateway.model;
-// Generated Jan 8, 2010 6:42:14 PM by Hibernate Tools 3.2.2.GA
 
 import lombok.Getter;
 import lombok.Setter;

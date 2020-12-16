@@ -136,7 +136,7 @@ public class TransactionProcessService {
 
     public FeeDTO processFee(FeeDTO feeDTO) throws Exception {
 
-        Fee fee = feeRepository.getByServiceAndAuthority(new Services(feeDTO.getServicesId()), new Authority(feeDTO.getAuthorityId()));
+        Fee fee = new Fee();//feeRepository.getByServiceAndAuthority(new Services(feeDTO.getServicesId()), new Authority(feeDTO.getAuthorityId()));
         if (fee != null) {
 //        feeDTO=modelMapper.map(fee, FeeDTO.class);
 
