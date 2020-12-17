@@ -242,4 +242,14 @@ INSERT INTO `status_type_m`
 `status_type_name`)
 VALUES(2, '35', 'A', 'ACTIVE');
 VALUES(3, '36', 'C', 'CANCELLED');
+VALUES(4, '37', 'S', 'SCHEDULED');
+VALUES(5, '38', 'R', 'RESCHEDULED');
+VALUES(6, '39', 'W', 'WALKIN');
+VALUES(7, '40', 'W', 'WAITING');
+VALUES(9, '41', 'I', 'INCONSULTATION');
+VALUES(10, '42', 'C', 'CANCELLED');
+VALUES(11, '43', 'C', 'CANCELLED_AND_NEEDS_RESCHEDULE');
+VALUES(12, '44', 'M', 'MISSED');
+VALUES(13, '45', 'C', 'COMPLETED');
+VALUES(14, '46', 'P', 'PENDING');
 -- ---------------------------------------------------------

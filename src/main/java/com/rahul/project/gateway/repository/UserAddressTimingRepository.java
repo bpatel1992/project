@@ -22,5 +22,9 @@ public interface UserAddressTimingRepository extends BaseRepository<UserAddressT
 
     @Query(value = "SELECT bt FROM UserAddressTiming ua join ua.businessTimings bt " +
             " WHERE ua.user.id = ?1 and ua.partnerAddress.id = ?2 ")
-    Set<BusinessTiming> businessTimings(Long partnerId, Long partnerAddressId);
+    Set<BusinessTiming> businessTimingsByUserIdAndPartnerId(Long partnerId, Long partnerAddressId);
+
+    @Query(value = "SELECT bt FROM UserAddressTiming ua join ua.businessTimings bt join bt.days dy" +
+            " WHERE ua.user.id = ?1 and dy.code = ?2 ")
+    Set<BusinessTiming> businessTimingsByUserId(Long partnerId, String day);
 }

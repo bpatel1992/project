@@ -21,5 +21,7 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Long>
     List<Long> appointmentExist(Long user, Long partnerAddress, Date time, Date date,
                                 List<Appointment.AppointmentStatus> appointmentStatuses);
 
-
+    @Query(value = "SELECT a FROM Appointment a " +
+            "  WHERE a.attendant.id = ?1 and a.appointmentDate= ?2 order by a.appointmentFromTime asc")
+    List<Appointment> appointmentListByDate(Long partnerAddress, Date time);
 }

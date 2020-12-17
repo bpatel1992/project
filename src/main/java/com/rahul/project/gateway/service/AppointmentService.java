@@ -262,7 +262,7 @@ public class AppointmentService {
         Calendar time = Calendar.getInstance();
         time.setTime(date);
         LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
-        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimings(appointment.getAttendant().getId(),
+        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerId(appointment.getAttendant().getId(),
                 appointment.getClinic().getId());
         List<UserHolidays> userHolidaysList =
                 userHolidaysRepository.getByAttendant(appointment.getAttendant().getId(),date);
