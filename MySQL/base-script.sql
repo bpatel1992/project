@@ -252,4 +252,5 @@ VALUES(11, '43', 'C', 'CANCELLED_AND_NEEDS_RESCHEDULE');
 VALUES(12, '44', 'M', 'MISSED');
 VALUES(13, '45', 'C', 'COMPLETED');
 VALUES(14, '46', 'P', 'PENDING');
+VALUES(15, '47', 'A', 'ARRIVED');
 -- ---------------------------------------------------------

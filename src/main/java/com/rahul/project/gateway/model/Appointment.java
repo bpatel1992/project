@@ -83,7 +83,7 @@ public class Appointment extends BaseEntity {
     private Date modificationDate;
 
     public enum AppointmentStatusType {
-        SCHEDULED, ACTIVE, CANCELLED, MISSED, COMPLETED,PENDING
+        SCHEDULED, ACTIVE, CANCELLED, MISSED, COMPLETED,PENDING,ARRIVED
     }
 
     // TODO confirm that "WALK-IN" should be considered active and "RESCHEDULED"
@@ -100,7 +100,8 @@ public class Appointment extends BaseEntity {
         CANCELLED_AND_NEEDS_RESCHEDULE("Cancelled and Needs Reschedule", AppointmentStatusType.CANCELLED),
         MISSED("Missed", AppointmentStatusType.MISSED),
         COMPLETED("Completed", AppointmentStatusType.COMPLETED),
-        PENDING("PENDING", AppointmentStatusType.PENDING);
+        PENDING("PENDING", AppointmentStatusType.PENDING),
+        ARRIVED("ARRIVED", AppointmentStatusType.ARRIVED);
 
         private final String name;
 

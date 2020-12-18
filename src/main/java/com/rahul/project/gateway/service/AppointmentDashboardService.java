@@ -1,9 +1,6 @@
 package com.rahul.project.gateway.service;
 
-import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
-import com.rahul.project.gateway.dao.AbstractDao;
-import com.rahul.project.gateway.dto.AppointmentAvailabilityDto;
 import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.dto.appointmentdashboard.AddressTypeAppointmentDTO;
 import com.rahul.project.gateway.dto.appointmentdashboard.AppointmentCardDTO;
@@ -16,10 +13,8 @@ import com.rahul.project.gateway.repository.UserAddressTimingRepository;
 import com.rahul.project.gateway.repository.UserHolidaysRepository;
 import com.rahul.project.gateway.repository.UserRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
-import com.rahul.project.gateway.utility.Translator;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.slf4j.Logger;

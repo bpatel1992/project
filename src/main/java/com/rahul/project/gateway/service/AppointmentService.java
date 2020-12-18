@@ -8,10 +8,7 @@ import com.rahul.project.gateway.dto.AppointmentAvailabilityDto;
 import com.rahul.project.gateway.dto.AppointmentAvailabilitySlotDto;
 import com.rahul.project.gateway.dto.CreateAppointmentDto;
 import com.rahul.project.gateway.model.*;
-import com.rahul.project.gateway.repository.AppointmentRepository;
-import com.rahul.project.gateway.repository.UserAddressTimingRepository;
-import com.rahul.project.gateway.repository.UserHolidaysRepository;
-import com.rahul.project.gateway.repository.UserRepository;
+import com.rahul.project.gateway.repository.*;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +49,8 @@ public class AppointmentService {
     private UserRepository userRepository;
     @Autowired
     private UserHolidaysRepository userHolidaysRepository;
+    @Autowired
+    private StatusTypeRepository statusTypeRepository;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -310,6 +309,23 @@ public class AppointmentService {
         appointmentAvailabilityDto.setAvailable(isAvailable);
         appointmentAvailabilityDto.setDisplayOrder(c);
         return appointmentAvailabilityDto;
+    }
+
+
+    public boolean updateCustomerArrivalStatus(CreateAppointmentDto createAppointmentDto) throws Exception {
+        Appointment appointment = abstractDao.getEntityById(Appointment.class, createAppointmentDto.getId());
+        if (Objects.isNull(appointment)) {
+            throw new BusinessException("Appointment details not found");
+        }
+        try{
+            StatusType statusType = statusTypeRepository.findByStatusTypeName(Appointment.AppointmentStatus.ARRIVED.name());
+            appointment.setStatusType(statusType);
+            abstractDao.saveOrUpdateEntity(appointment);
+            return Boolean.TRUE;
+        }catch (Exception e){
+            logger.error("Error occured while updating arrival status :: {} ",e.getMessage());
+        }
+        return Boolean.FALSE;
     }
 }
 
