@@ -27,5 +27,6 @@ public class UserDTO {
     private List<RoleDTO> roles;
     private String title;
     private Long id;
-
+    private List<PetDTO> pets;
+    private String image;
 }

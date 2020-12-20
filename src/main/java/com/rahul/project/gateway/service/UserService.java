@@ -18,6 +18,7 @@ import com.rahul.project.gateway.utility.Translator;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -25,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
@@ -36,10 +38,8 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Rahul Malhotra
@@ -624,6 +624,51 @@ public class UserService {
         user.setRandomKey(commonUtility.generateUserRandomKey());
         abstractDao.saveOrUpdateEntity(user);
         return modelMapper.map(user, AddClientDto.class);
+    }
+
+    public UserDTO fetchClientDetails(UserDTO userDTO) throws Exception {
+           if(Objects.nonNull(userDTO.getId())){
+                User user = abstractDao.getEntityById(User.class, userDTO.getId());;
+                if (Objects.isNull(user)) {
+                  new BusinessException("User not found!");
+                }
+                if(!CollectionUtils.isEmpty(user.getAuthorities())) {
+                    boolean isClient = user.getAuthorities().stream().anyMatch(authority -> StringUtils.equalsAnyIgnoreCase(authority.getName(),"ROLE_CUSTOMER"));
+                    if(isClient) {
+                        CrudCtrlBase.copyNonNullProperties(user, userDTO);
+                        setUserDetails(user, userDTO);
+                    }
+                }
+           }
+        return userDTO;
+    }
+
+    private UserDTO setUserDetails(User user,UserDTO userDTO){
+        userDTO.setPhone("+"+user.getCountry().getCode()+"-"+user.getMobile());
+        Set<PartnerAddressDTO> partnerAddresses = user.getPartnerAddresses().stream()
+                .filter(address -> address.getDisplayOrder().equals(1))
+                .map(address ->
+                {
+                    PartnerAddressDTO partnerAddressDTO= new PartnerAddressDTO();
+                    partnerAddressDTO.setAddress(address.getAddress());
+                    return partnerAddressDTO;
+                }).collect(Collectors.toSet());
+        userDTO.setPartnerAddresses(partnerAddresses);
+        userDTO.setImage(user.getImageName());
+        List<PetDTO> petDTOS = user.getPets()
+                .stream()
+                .map(pet -> {
+                    PetDTO petDTO = new PetDTO();
+                    petDTO.setGender(petDTO.getGender());
+                    petDTO.setImageURL(pet.getImageName());
+                    PetBreedDTO petBreedDTO = new PetBreedDTO();
+                    petBreedDTO.setName(pet.getName());
+                    petDTO.setPetBreed(petBreedDTO);
+                    petDTO.setYearOld(pet.getYearOld());
+                    return petDTO;
+                }).collect(Collectors.toList());
+        userDTO.setPets(petDTOS);
+        return userDTO;
     }
 
 

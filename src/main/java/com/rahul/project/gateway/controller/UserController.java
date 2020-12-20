@@ -164,4 +164,10 @@ public class UserController {
         return userService.addClient(addClientDto);
     }
 
+    @RequestMapping(path = {"/api/user/fetchClientDetails"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO fetchClientDetails(@Valid @RequestBody UserDTO userDTO) throws Exception {
+        return userService.fetchClientDetails(userDTO);
+    }
+
 }

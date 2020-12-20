@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "StatusTypeRepository")
 public interface StatusTypeRepository extends BaseRepository<StatusType, Long> {
-    @Query("SELECT s FROM StatusType s WHERE s.StatusTypeName = ?1")
+
     StatusType findByStatusTypeName(String statusTypeName);
 
 }

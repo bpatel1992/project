@@ -26,13 +26,13 @@ public class StatusType implements Serializable {
     private Long id;
     @Basic
     @Column(name = "status_type_name")
-    private String StatusTypeName;
+    private String statusTypeName;
     @Basic
     @Column(name = "status_type_desc")
-    private String StatusTypeDesc;
+    private String statusTypeDesc;
     @Basic
     @Column(name = "status_type_code")
-    private String StatusTypeCode;
+    private String statusTypeCode;
     @JsonIgnore
     @OneToMany(mappedBy = "statusTypeEntity",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
