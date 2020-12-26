@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Chat Service Application</title>
+<link rel="stylesheet" href="../../service/static/css/style.css" />
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+	{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-weight: 400;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1rem;
+	line-height: 1.58;
+	color: #333;
+	background-color: #f4f4f4;
+	height: 100%;
+}
+
+.clearfix:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.hidden {
+	display: none;
+}
+
+input {
+	padding-left: 10px;
+	outline: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+h1 {
+	font-size: 1.7em;
+}
+
+a {
+	color: #128ff2;
+}
+
+button {
+	box-shadow: none;
+	border: 1px solid transparent;
+	font-size: 14px;
+	outline: none;
+	line-height: 100%;
+	white-space: nowrap;
+	vertical-align: middle;
+	padding: 0.6rem 1rem;
+	border-radius: 2px;
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;
+	min-height: 38px;
+}
+
+button.default {
+	background-color: #e8e8e8;
+	color: #333;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+button.primary {
+	background-color: #128ff2;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+	color: #fff;
+}
+
+}
+button.accent {
+	background-color: #ff4743;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+	color: #fff;
+}
+
+#welcome-page {
+	text-align: center;
+}
+
+.welcome-page-container {
+	background-color: grey;
+	width: 100%;
+	max-width: 500px;
+	display: inline-block;
+	margin-top: 42px;
+	vertical-align: middle;
+	position: relative;
+	padding: 35px 55px 35px;
+	min-height: 250px;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	margin-top: -160px;
+}
+
+#dialogue-page {
+	position: relative;
+	height: 100%;
+}
+
+.dialogue-container {
+	background-color: green;
+	margin: 10px 0;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+	margin-top: 30px;
+	height: calc(100% - 60px);
+	max-height: 600px;
+	position: relative;
+}
+
+#dialogue-page ul {
+	list-style-type: none;
+	background-color: #FFF;
+	margin: 0;
+	overflow: auto;
+	overflow-y: scroll;
+	padding: 0 20px 0px 20px;
+	height: calc(100% - 150px);
+}
+
+#dialogue-page #dialogueForm {
+	padding: 20px;
+}
+
+#dialogue-page ul li {
+	line-height: 1.5rem;
+	padding: 10px 20px;
+	margin: 0;
+	border-bottom: 1px solid #f4f4f4;
+}
+
+#dialogue-page ul li p {
+	margin: 0;
+}
+
+#dialogue-page .event-data {
+	width: 100%;
+	text-align: center;
+	clear: both;
+}
+
+#dialogue-page .event-data p {
+	color: #777;
+	font-size: 14px;
+	word-wrap: break-word;
+}
+
+#dialogue-page .message-data {
+	padding-left: 68px;
+	position: relative;
+}
+
+#dialogue-page .message-data i {
+	position: absolute;
+	width: 42px;
+	height: 42px;
+	overflow: hidden;
+	left: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 18px;
+	line-height: 42px;
+	color: #fff;
+	text-align: center;
+	border-radius: 50%;
+	font-style: normal;
+	text-transform: uppercase;
+}
+
+#dialogue-page .message-data span {
+	color: #333;
+	font-weight: 600;
+}
+
+#dialogue-page .message-data p {
+	color: #43464b;
+}
+
+#dialogueForm .input-group input {
+	border: 0;
+	padding: 10px;
+	background: whitesmoke;
+	float: left;
+	width: calc(100% - 85px);
+}
+
+#dialogueForm .input-group button {
+	float: left;
+	width: 80px;
+	height: 38px;
+	margin-left: 5px;
+}
+
+.dialogue-header {
+	text-align: center;
+	padding: 15px;
+	border-bottom: 1px solid #ececec;
+}
+
+.dialogue-header h2 {
+	margin: 0;
+	font-weight: 500;
+}
+
+@media screen and (max-width: 730px) {
+	.dialogue-container {
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 10px;
+	}
+}
+</style>
+
+</head>
+<body>
+
+	<div id="welcome-page">
+		<div class="welcome-page-container">
+			<h1 class="title">Welcome - To join the chat group enter your
+				name</h1>
+			<form id="welcomeForm" name="welcomeForm">
+				<div class="form-group">
+					<input type="text" id="name" placeholder="name"
+						class="form-control" />
+				</div>
+				<div class="form-group">
+					<button type="submit" onclass="accent username-submit">Lets
+						Begin</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<div id="dialogue-page" class="hidden">
+		<div class="dialogue-container">
+			<div class="dialogue-header">
+				<h2>Chat Service Application</h2>
+			</div>
+			<ul id="messageList">
+
+			</ul>
+			<form id="dialogueForm" name="dialogueForm" nameForm="dialogueForm">
+				<div class="form-group">
+					<div class="input-group clearfix">
+						<input type="text" id="chatMessage"
+							placeholder="Enter a message...." autocomplete="off"
+							class="form-control" />
+						<button type="submit" class="glyphicon glyphicon-share-alt">Send</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+	<script inline="javascript">
+				/*<![CDATA[*/
+				'use strict';
+				var url= 'http://localhost:8083/service';
+				var channelUuid;
+				var senderId =1;
+				var receiverId =2
+				var welcomeForm = document.querySelector('#welcomeForm');
+				var dialogueForm = document.querySelector('#dialogueForm');
+				welcomeForm.addEventListener('submit', connect, true)
+				dialogueForm.addEventListener('submit', sendMessage, true)
+
+				var stompClient = null;
+				var name = null;
+
+				function connect(event) {
+				name = document.querySelector('#name').value.trim();
+
+				if(name == 'user2'){
+				senderId =2;
+				receiverId =1;
+				}
+				var request = JSON.stringify({
+						  senderId:senderId ,
+						  receiverId:receiverId });
+
+				$.ajax({
+				type: 'post',
+				url: url +'/oauth2/api/private-chat/channel',
+				headers : {
+						"Content-Type": "application/json; charset=utf-8",
+						"Authorization": "Bearer 50b002dc-2067-44bd-916f-f9e5e403b8a3"
+				},
+				data: request,
+				async: false,
+				success: function (data) {
+				  channelUuid = data.channelUuid;
+				},
+				error : function(data){
+						console.log(data);
+				}
+				});
+
+				if (channelUuid) {
+				document.querySelector('#welcome-page').classList.add('hidden');
+				document.querySelector('#dialogue-page').classList.remove('hidden');
+				var channelName = '/queue/private.chat/'+channelUuid;
+				var socket = new SockJS('/service/secured/room');
+				stompClient = Stomp.over(socket);
+				stompClient.connect({}, function(frame) {
+				console.log("connected: " + frame);
+				stompClient.subscribe(channelName, function(response) {
+					var message = JSON.parse(response.body);
+					onMessageReceived(message);
+				});
+				stompClient.send(channelName, {}, JSON.stringify({
+									senderId:senderId ,
+									receiverId:receiverId,
+									senderName : name,
+									receiverName : "user2",
+									type : 'newUser'
+								}))
+				});
+
+				}
+				event.preventDefault();
+				}
+
+				function sendMessage(event) {
+				var messageContent = document.querySelector('#chatMessage').value.trim();
+				var channelName ='/app/private.chat/'+channelUuid;
+				if (messageContent && stompClient) {
+				var chatMessage = {
+				senderId:senderId ,
+				receiverId:receiverId,
+				senderName : name,
+				receiverName : "user2",
+				message : messageContent,
+				type : 'CHAT'
+				};
+				stompClient.send(channelName, {}, JSON
+				.stringify(chatMessage));
+				document.querySelector('#chatMessage').value = '';
+				//onMessageReceived(chatMessage);
+				}
+				event.preventDefault();
+				}
+
+				function onMessageReceived(message) {
+
+				var messageElement = document.createElement('li');
+
+				if (message.type === 'newUser') {
+				messageElement.classList.add('event-data');
+				message.message = message.senderName + ' has joined the chat';
+				} else if (message.type === 'Leave') {
+				messageElement.classList.add('event-data');
+				message.message = message.senderName + 'has left the chat';
+				} else {
+				messageElement.classList.add('message-data');
+
+				var element = document.createElement('i');
+				var text = document.createTextNode(message.senderName[0]);
+				element.appendChild(text);
+
+				messageElement.appendChild(element);
+
+				var usernameElement = document.createElement('span');
+				var usernameText = document.createTextNode(message.senderName);
+				usernameElement.appendChild(usernameText);
+				messageElement.appendChild(usernameElement);
+				}
+
+				var textElement = document.createElement('p');
+				var messageText = document.createTextNode(message.message);
+				textElement.appendChild(messageText);
+
+				messageElement.appendChild(textElement);
+
+				document.querySelector('#messageList').appendChild(messageElement);
+				document.querySelector('#messageList').scrollTop = document
+				.querySelector('#messageList').scrollHeight;
+
+				}
+				/*]]>*/
+	</script>
+</body>
+</html>

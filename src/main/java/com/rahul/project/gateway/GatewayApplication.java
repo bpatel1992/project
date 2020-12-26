@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @since 1.0
  * Date 2019-05-21
  */
+@ComponentScan(basePackages = "com.rahul")
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.rahul.project.gateway.repository", repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableJpaAuditing
