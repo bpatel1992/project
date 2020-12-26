@@ -53,6 +53,7 @@ public class BNECustomer implements BNE {
                 environment.getRequiredProperty("gateway.api.url") + "assets/user/profile?randomKey=" + user.getRandomKey() : null);
         clients.add(client);
         customerReportDTO.setClients(clients);
+        customerReportDTO.setGender(user.getGender().getName());
 
         if (user.getPets() != null && user.getPets().size() > 0) {
             List<Pet> pets = new ArrayList<>();

@@ -303,9 +303,9 @@ public class AppointmentService {
         return createAppointmentDto;
     }
 
-    private AppointmentAvailabilityDto createAvailabilityEntry(LocalDate localTime, int c, boolean isAvailable) {
+    private AppointmentAvailabilityDto createAvailabilityEntry(LocalDate localDate, int c, boolean isAvailable) {
         AppointmentAvailabilityDto appointmentAvailabilityDto = new AppointmentAvailabilityDto();
-        appointmentAvailabilityDto.setTime(localTime.toString());
+        appointmentAvailabilityDto.setTime(localDate.toString());
         appointmentAvailabilityDto.setAvailable(isAvailable);
         appointmentAvailabilityDto.setDisplayOrder(c);
         return appointmentAvailabilityDto;
