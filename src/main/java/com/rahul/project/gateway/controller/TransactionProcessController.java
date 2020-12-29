@@ -4,6 +4,9 @@ package com.rahul.project.gateway.controller;
 import com.rahul.project.gateway.dto.FeeDTO;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
 import com.rahul.project.gateway.service.TransactionProcessService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +27,17 @@ public class TransactionProcessController {
         this.transactionProcessService = transactionProcessService;
     }
 
-
+    @ApiOperation(value = "Transaction service api", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @RequestMapping(path = {"/api/process/txn/save", "/oauth2/api/process/txn/save"},
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public TransactionProcessDTO processTxn(@Valid @RequestBody TransactionProcessDTO transactionProcessDTO) throws Exception {
         return transactionProcessService.processGatewayHostedSave(transactionProcessDTO);
     }
 
-
+    @ApiOperation(value = "Fetch fee details", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(path = {"/api/process/fee", "/oauth2/api/process/fee"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public FeeDTO processFee(@Valid @RequestBody FeeDTO feeDto) throws Exception {
         return transactionProcessService.processFee(feeDto);

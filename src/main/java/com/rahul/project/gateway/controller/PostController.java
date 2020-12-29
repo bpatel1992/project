@@ -6,6 +6,9 @@ import com.rahul.project.gateway.model.Post;
 import com.rahul.project.gateway.model.PostCommentsMapping;
 import com.rahul.project.gateway.service.PostService;
 import com.rahul.project.gateway.utility.CommonUtility;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,7 @@ class PostController {
     @Autowired
     private CommonUtility commonUtility;
 
+    @ApiOperation(value = "Fetch user post details by user", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/get-user-posts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -53,6 +57,7 @@ class PostController {
         return postResponseDTO;
     }
 
+    @ApiOperation(value = "Fetch post comment details by post Id", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/get-post-comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -66,6 +71,7 @@ class PostController {
         return postCommentResponseDTO;
     }
 
+    @ApiOperation(value = "Create post by user", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -75,6 +81,7 @@ class PostController {
         return convertToDto(postCreated);
     }
 
+    @ApiOperation(value = "Add comment by user", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -84,6 +91,7 @@ class PostController {
         return convertCommentEntity(comment);
     }
 
+    @ApiOperation(value = "Like post by user", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/likePost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -92,6 +100,7 @@ class PostController {
         return result;
     }
 
+    @ApiOperation(value = "Fetch post by id", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public PostDto getPost(@PathVariable("id") Long id) {

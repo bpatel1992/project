@@ -6,6 +6,7 @@ import com.rahul.project.gateway.dto.ReSendOtpDTO;
 import com.rahul.project.gateway.dto.ResponseDTO;
 import com.rahul.project.gateway.dto.VerifyOtpDTO;
 import com.rahul.project.gateway.service.OTPService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +31,21 @@ public class OTPController {
     @Autowired
     OTPService OTPService;
 
+    @ApiOperation(value = "Send OTP to user by random key and timezone", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/sendOtp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO sendOtp(@Valid @RequestBody OtpDTO otpDTO) throws Exception {
         return OTPService.sendOtp(otpDTO, new ResponseDTO());
     }
 
+    @ApiOperation(value = "Resend OTP to user by random key and timezone", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/reSendOtp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO reSendOtp(@Valid @RequestBody ReSendOtpDTO reSendOtpDTO) throws Exception {
         return OTPService.reSendOtp(reSendOtpDTO, new ResponseDTO());
     }
 
+    @ApiOperation(value = "verify OTP to user by random key and otp", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/verifyOtp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO verifyOtp(@Valid @RequestBody VerifyOtpDTO verifyOtpDTO) throws Exception {

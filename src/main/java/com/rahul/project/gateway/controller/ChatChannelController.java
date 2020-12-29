@@ -10,9 +10,13 @@ import com.rahul.project.gateway.interfaces.IChatChannelController;
 import com.rahul.project.gateway.service.ChatService;
 import com.rahul.project.gateway.service.UserService;
 import com.rahul.project.gateway.utility.JSONResponseHelper;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -30,41 +34,49 @@ import java.util.UUID;
 @Controller
 public class ChatChannelController implements IChatChannelController {
 
-  private ChatService chatService;
-  private UserService userService;
-  private SimpMessagingTemplate template;
+    private ChatService chatService;
+    private UserService userService;
+    private SimpMessagingTemplate template;
 
-  @Autowired
-  public ChatChannelController(SimpMessagingTemplate template, UserService userService, ChatService chatService) {
-    this.template = template;
-    this.userService = userService;
-    this.chatService = chatService;
-  }
+    @Autowired
+    public ChatChannelController(SimpMessagingTemplate template, UserService userService, ChatService chatService) {
+        this.template = template;
+        this.userService = userService;
+        this.chatService = chatService;
+    }
 
     @MessageMapping("/private.chat/{channelId}")
     @SendTo("/queue/private.chat/{channelId}")
     public ChatMessageDTO chatMessage(@DestinationVariable String channelId, @RequestBody ChatMessageDTO message)
-        throws BeansException {
-      chatService.submitMessage(message);
+            throws BeansException {
+        chatService.submitMessage(message);
         return message;
     }
 
-    @RequestMapping(value="/oauth2/api/private-chat/channel", method=RequestMethod.POST, produces="application/json", consumes="application/json")
+    @ApiOperation(value = "fetch channel details by senderId and receiverId", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
+    @RequestMapping(value = "/oauth2/api/private-chat/channel", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<String> establishChatChannel(@RequestBody ChatChannelInitializationDTO chatChannelInitialization)
-        throws IsSameUserException {
-      String channelUuid = chatService.establishChatSession(chatChannelInitialization);
-      EstablishedChatChannelDTO establishedChatChannel = new EstablishedChatChannelDTO(
-        channelUuid,chatChannelInitialization.getSenderId(),chatChannelInitialization.getSenderName(),
-              chatChannelInitialization.getReceiverId(),chatChannelInitialization.getReceiverName());
-    
-      return JSONResponseHelper.createResponse(establishedChatChannel, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value="/oauth2/api/private-chat/channel/{channelUuid}", method=RequestMethod.GET, produces="application/json")
-    public ResponseEntity<String> getExistingChatMessages(@PathVariable("channelUuid") String channelUuid, @RequestBody PageRequestDTO pageRequestDTO) {
-      List<ChatMessageDTO> messages = chatService.getExistingChatMessages(channelUuid,pageRequestDTO);
+            throws IsSameUserException {
+        String channelUuid = chatService.establishChatSession(chatChannelInitialization);
+        EstablishedChatChannelDTO establishedChatChannel = new EstablishedChatChannelDTO(
+                channelUuid, chatChannelInitialization.getSenderId(), chatChannelInitialization.getSenderName(),
+                chatChannelInitialization.getReceiverId(), chatChannelInitialization.getReceiverName());
 
-      return JSONResponseHelper.createResponse(messages, HttpStatus.OK);
+        return JSONResponseHelper.createResponse(establishedChatChannel, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "fetch chat message by channelId, pageNo and pageSize", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
+    @RequestMapping(value = "/oauth2/api/private-chat/channel/{channelUuid}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> getExistingChatMessages(@PathVariable("channelUuid") String channelUuid, @RequestBody PageRequestDTO pageRequestDTO) {
+        List<ChatMessageDTO> messages = chatService.getExistingChatMessages(channelUuid, pageRequestDTO);
+
+        return JSONResponseHelper.createResponse(messages, HttpStatus.OK);
     }
 
 }

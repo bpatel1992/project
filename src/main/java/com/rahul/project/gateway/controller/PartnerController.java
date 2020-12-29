@@ -5,6 +5,9 @@ import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Partner;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,7 @@ public class PartnerController {
     @Autowired
     PartnerService partnerService;
 
+    @ApiOperation(value = "Register partner details", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/add-update-partner", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO registerPartner(@Valid @RequestBody PartnerDTO partnerDTO) throws Exception {
@@ -43,6 +47,10 @@ public class PartnerController {
         return responseDTO;
     }
 
+    @ApiOperation(value = "Save partner business timings", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @RequestMapping(value = "/oauth2/api/user/partner/update/create", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO userCreateBusinessTimings() throws Exception {
@@ -50,6 +58,10 @@ public class PartnerController {
         return partnerService.userUpdateCreate(new ResponseDTO());
     }
 
+    @ApiOperation(value = "Save partner address details", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @RequestMapping(value = "/oauth2/api/partner/address/update/create", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PartnerAddressDTO createUpdatePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
@@ -57,7 +69,7 @@ public class PartnerController {
         return partnerService.createUpdatePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }
 
-
+    @ApiOperation(value = "Fetch partner address by location", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/get-partner-location-wise", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<PartnerResponseDTO> fetchPartnersLocationWise(@Valid @RequestBody PartnerRequestDTO partnerRequestDTO) throws Exception {

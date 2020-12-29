@@ -6,6 +6,10 @@ import com.rahul.project.gateway.dto.CustomerProfileDTO;
 import com.rahul.project.gateway.dto.ResponseDTO;
 import com.rahul.project.gateway.service.UserService;
 import com.rahul.project.gateway.utility.Translator;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,10 @@ public class AppController {
     @Autowired
     private TokenStore tokenStore;
 
+    @ApiOperation(value ="Logout user")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @RequestMapping(value = "/oauth/logout", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request) throws BusinessException {
@@ -54,12 +62,20 @@ public class AppController {
         }
     }
 
+    @ApiOperation(value ="Register user for news subscription by user email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @GetMapping(value = {"/oauth2/api/newsletter/subscribe", "/api/newsletter/subscribe"}
             , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseDTO user(@RequestParam(value = "email", required = false) String email) throws Exception {
+    public ResponseDTO user(@ApiParam(name = "email",value = "", required = false) String email) throws Exception {
         return userService.userNewsLetterSubscription(email, new ResponseDTO());
     }
 
+    @ApiOperation(value ="Get user details", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
     @GetMapping(value = "/oauth2/api/user/data", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public CustomerProfileDTO getUserData() throws Exception {

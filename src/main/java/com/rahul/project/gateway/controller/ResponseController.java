@@ -4,9 +4,11 @@ import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
 import com.rahul.project.gateway.model.User;
 import com.rahul.project.gateway.service.TransactionProcessService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ public class ResponseController {
     @Autowired
     private AbstractDao abstractDao;
 
-
+    @ApiOperation(value = "This API processes transaction response", produces = MediaType.TEXT_HTML_VALUE)
     @RequestMapping("/process/txn/response")
     public String getProcessTxnResponse(HttpServletRequest request, Model model) throws Exception {
         logger.info("in getProcessTxnResponse");
@@ -59,7 +61,7 @@ public class ResponseController {
         return "pgResult";
     }
 
-
+    @ApiOperation(value = "This API updates email verification status of user", produces = MediaType.TEXT_HTML_VALUE)
     @RequestMapping("update/email-status")
     public String updateEmailStatus(HttpServletRequest request, Model model) throws Exception {
         logger.info("in getProcessTxnResponse");
