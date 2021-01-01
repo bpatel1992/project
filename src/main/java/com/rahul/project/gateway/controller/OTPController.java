@@ -6,6 +6,7 @@ import com.rahul.project.gateway.dto.ReSendOtpDTO;
 import com.rahul.project.gateway.dto.ResponseDTO;
 import com.rahul.project.gateway.dto.VerifyOtpDTO;
 import com.rahul.project.gateway.service.OTPService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,11 @@ import java.lang.invoke.MethodHandles;
  * Date 2019-05-21
  */
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Send OTP to user by random key and timezone, " + "\n" +
+                "2. Resend OTP to user by random key and timezone, " + "\n" +
+                "3. Verify OTP to user by random key and otp",tags = { "OTP based services" })
 public class OTPController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -45,7 +51,7 @@ public class OTPController {
         return OTPService.reSendOtp(reSendOtpDTO, new ResponseDTO());
     }
 
-    @ApiOperation(value = "verify OTP to user by random key and otp", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Verify OTP to user by random key and otp", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/verifyOtp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO verifyOtp(@Valid @RequestBody VerifyOtpDTO verifyOtpDTO) throws Exception {

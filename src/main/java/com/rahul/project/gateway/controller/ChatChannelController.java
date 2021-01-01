@@ -10,6 +10,7 @@ import com.rahul.project.gateway.interfaces.IChatChannelController;
 import com.rahul.project.gateway.service.ChatService;
 import com.rahul.project.gateway.service.UserService;
 import com.rahul.project.gateway.utility.JSONResponseHelper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Fetch channel details by senderId and receiverId, " + "\n" +
+                "2. Fetch chat message by channelId, pageNo and pageSize",tags = { "Chat services" })
 public class ChatChannelController implements IChatChannelController {
 
     private ChatService chatService;
@@ -54,9 +59,9 @@ public class ChatChannelController implements IChatChannelController {
     }
 
     @ApiOperation(value = "fetch channel details by senderId and receiverId", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @RequestMapping(value = "/oauth2/api/private-chat/channel", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<String> establishChatChannel(@RequestBody ChatChannelInitializationDTO chatChannelInitialization)
             throws IsSameUserException {
@@ -69,9 +74,9 @@ public class ChatChannelController implements IChatChannelController {
     }
 
     @ApiOperation(value = "fetch chat message by channelId, pageNo and pageSize", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @RequestMapping(value = "/oauth2/api/private-chat/channel/{channelUuid}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<String> getExistingChatMessages(@PathVariable("channelUuid") String channelUuid, @RequestBody PageRequestDTO pageRequestDTO) {
         List<ChatMessageDTO> messages = chatService.getExistingChatMessages(channelUuid, pageRequestDTO);

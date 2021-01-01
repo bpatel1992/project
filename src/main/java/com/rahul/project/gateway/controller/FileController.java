@@ -11,8 +11,17 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Api(value = "Used for file upload and fetching")
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Fetch symptom checker file by file name, " + "\n" +
+                "2. Fetch assets file by file name, " + "\n" +
+                "3. Fetch assets file by random key of user, "+ "\n" +
+                "4. Fetch avatar file by random key of user, "+ "\n" +
+                "5. Fetch cover file by random key of user, "+ "\n" +
+                "6. Fetch user certificates file by random key of user and file name, "+ "\n" +
+                "7. Fetch user gallery files by random key of user and file name, "+ "\n" +
+                "8. Fetch user pet assets files by random key of user",tags = { "File based services" })
 public class FileController {
 
     private final

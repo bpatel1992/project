@@ -4,6 +4,7 @@ import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.TransactionProcessDTO;
 import com.rahul.project.gateway.model.User;
 import com.rahul.project.gateway.service.TransactionProcessService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,10 @@ import java.util.Map;
 
 
 @Controller
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Process transaction response, " + "\n" +
+                "2. Updates email verification status of user",tags = { "Transaction response services" })
 public class ResponseController {
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

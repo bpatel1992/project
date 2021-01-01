@@ -6,6 +6,7 @@ import com.rahul.project.gateway.model.Post;
 import com.rahul.project.gateway.model.PostCommentsMapping;
 import com.rahul.project.gateway.service.PostService;
 import com.rahul.project.gateway.utility.CommonUtility;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,14 @@ import java.util.stream.Collectors;
  * @since 1.0
  * Date 2019-05-21
  */
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Fetch user post details by user, " + "\n" +
+                "2. Fetch post comment details by post Id, " + "\n" +
+                "3. Create post by user, "+ "\n" +
+                "4. Add comment by user, "+ "\n" +
+                "5. Like post by user, "+ "\n" +
+                "6. Fetch post by Id",tags = { "User post based services" })
 @Controller
 @RequestMapping("/oauth2/api/post/")
 class PostController {
@@ -100,7 +109,7 @@ class PostController {
         return result;
     }
 
-    @ApiOperation(value = "Fetch post by id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Fetch post by Id", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public PostDto getPost(@PathVariable("id") Long id) {

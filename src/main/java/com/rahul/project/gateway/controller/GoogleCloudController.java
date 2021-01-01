@@ -34,10 +34,13 @@ import java.util.stream.Collectors;
  * @since 1.0
  * Date 2019-05-21
  */
-@Api(value = "Guidelines")
 @RESTController
 @TransactionalService
 @RequestMapping({"/oauth2/api", "/api"})
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Upload breed identification file and get breed related information, " + "\n" +
+                "2. Fetch the list of pet breeds",tags = { "Google cloud services" })
 public class GoogleCloudController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -72,7 +75,7 @@ public class GoogleCloudController {
 
     @RequestMapping(value = "/getPetBreeds", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ApiOperation(value = "Make a POST request to upload the file",
+    @ApiOperation(value = "Fetch the list of pet breeds",
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The POST call is Successful"),

@@ -5,6 +5,7 @@ import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Partner;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,12 @@ import java.text.ParseException;
 import java.util.List;
 
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Register partner details, " + "\n" +
+                "2. Save partner business timings, " + "\n" +
+                "3. Save partner address details, "+ "\n" +
+                "4. Fetch partner address by location",tags = { "Partner services" })
 public class PartnerController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -48,9 +55,9 @@ public class PartnerController {
     }
 
     @ApiOperation(value = "Save partner business timings", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @RequestMapping(value = "/oauth2/api/user/partner/update/create", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO userCreateBusinessTimings() throws Exception {
@@ -59,9 +66,9 @@ public class PartnerController {
     }
 
     @ApiOperation(value = "Save partner address details", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @RequestMapping(value = "/oauth2/api/partner/address/update/create", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PartnerAddressDTO createUpdatePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {

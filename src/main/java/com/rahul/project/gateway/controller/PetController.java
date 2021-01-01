@@ -3,6 +3,7 @@ package com.rahul.project.gateway.controller;
 import com.rahul.project.gateway.configuration.annotations.RESTController;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
 import com.rahul.project.gateway.service.PetService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,9 @@ import java.lang.invoke.MethodHandles;
  */
 
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Register Pet details by admin",tags = { "Pet services" })
 public class PetController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -31,9 +35,9 @@ public class PetController {
     PetService petService;
 
     @ApiOperation(value = "Register Pet details by admin", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @PostMapping(value = "/oauth2/api/pet/admin", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreatePetDTO createPetAdmin(@Valid @RequestBody CreatePetDTO createPetDTO) throws Exception {

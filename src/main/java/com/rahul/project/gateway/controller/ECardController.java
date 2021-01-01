@@ -7,10 +7,7 @@ import com.rahul.project.gateway.dto.EnquiryDTO;
 import com.rahul.project.gateway.dto.ResponseDTO;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +21,17 @@ import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. Fetch e-card details of the user, " + "\n" +
+                "2. Fetch partner detail by username, " + "\n" +
+                "3. Save enquiry details for partner, "+ "\n" +
+                "4. Fetch e-card assets of partner, "+ "\n" +
+                "5. Fetch e-card assets of user by key, "+ "\n" +
+                "6. Fetch e-card assets of partner by key, "+ "\n" +
+                "7. Delete e-card assets of partner by key, "+ "\n" +
+                "8. Delete e-card assets of user by key, "+ "\n" +
+                "9. Upload partner document by document Id and partner Id",tags = { "E-card services" })
 public class ECardController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -47,7 +55,7 @@ public class ECardController {
         return partnerService.getECardDetails(userName, partnerUserName);
     }
 
-    @ApiOperation(value = "Fetch partner detail by username", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Fetch partner details by username", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/partner/user/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ECardDTO getDetailsUser(@ApiParam(name = "userName", value = "userName of the partner", required = true) String userName) throws Exception {
@@ -85,26 +93,27 @@ public class ECardController {
     }
 
     @ApiOperation(value = "Delete e-card assets of partner by key", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @DeleteMapping(value = {"/oauth2/api/assets/delete/partner/e/card"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO deleteAssetsPartner(@ApiParam(name = "key", value = "key value to fetch assets of partner", required = true) String key) throws Exception {
         return partnerService.deleteECardAssetsPartner(key, new ResponseDTO());
     }
 
     @ApiOperation(value = "Delete e-card assets of user by key", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})
+                    , required = true, dataType = "String", paramType = "header")})*/
     @DeleteMapping(value = {"/oauth2/api/assets/delete/user/e/card"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO deleteAssetsUser(@ApiParam(name = "key", value = "key value to fetch assets of user", required = true) String key) throws Exception {
         return partnerService.deleteECardAssetsUser(key, new ResponseDTO());
     }
 
+    @ApiOperation(value = "Upload partner document by document Id and partner Id", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header"),
+            /*@ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header"),*/
             @ApiImplicitParam(name = "file", value = "document to be uploaded against"
                     , required = true, dataType = "String", paramType = "request"),
             @ApiImplicitParam(name = "id", value = "Partner document Id"

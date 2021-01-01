@@ -26,8 +26,12 @@ import java.text.ParseException;
  * @since 1.0
  * Date 2019-05-21
  */
-@Api(description = "Sign Up Services")
 @RESTController
+@Api(value = "API provide product basic functionalities",
+        description = "This API provides below functionalities : " + "\n" +
+                "1. To check identity of the user, " + "\n" +
+                "2. Sign Up stage one, " + "\n" +
+                "3. Sign Up stage two",tags = { "Sign-Up services" })
 public class SignUpController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -51,6 +55,7 @@ public class SignUpController {
 
     }
 
+    @ApiOperation(value = "To check identity of the user", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/check/identifier", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO checkIdentifier(@Valid @RequestBody CheckIdentifierDTO checkIdentifierDTO) throws Exception {
