@@ -6,7 +6,9 @@ import com.rahul.project.gateway.dto.services.OauthResponse;
 import com.rahul.project.gateway.service.SignUpService;
 import com.rahul.project.gateway.service.UserService;
 import com.rahul.project.gateway.utility.CommonUtility;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,10 +165,10 @@ public class UserController {
         return userService.updateUserCover(file, randomKey, new ResponseDTO());
     }
 
-    @ApiOperation(value = "Upload user certificate by random key or User Id", produces = MediaType.APPLICATION_JSON_VALUE)
-    /*@ApiImplicitParams({
+    /*  @ApiOperation(value = "Upload user certificate by random key or User Id", produces = MediaType.APPLICATION_JSON_VALUE)
+     *//*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})*/
+                    , required = true, dataType = "String", paramType = "header")})*//*
     @PostMapping(value = "/oauth2/api/user/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO saveUserCertificate(@RequestParam("files") MultipartFile[] files, @RequestParam(value = "randomKey", required = false) String randomKey) throws Exception {
@@ -174,14 +176,14 @@ public class UserController {
     }
 
     @ApiOperation(value = "Upload user document by document Id", produces = MediaType.APPLICATION_JSON_VALUE)
-    /*@ApiImplicitParams({
+    *//*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})*/
+                    , required = true, dataType = "String", paramType = "header")})*//*
     @PostMapping(value = "/oauth2/api/user/gallery", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO saveUserGallery(@RequestParam("files") MultipartFile[] files, @RequestParam(value = "randomKey", required = false) String randomKey) throws Exception {
         return userService.updateUserGallery(files, randomKey, new ResponseDTO());
-    }
+    }*/
 
     @ApiOperation(value = "Remove user profile pic by User Id", produces = MediaType.APPLICATION_JSON_VALUE)
     /*@ApiImplicitParams({

@@ -158,11 +158,11 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "partner_id"))
     @JsonIgnoreProperties("users")
     private Set<Partner> partners;
-    @ManyToMany()
+    /*@ManyToMany()
     @JoinTable(name = "appointment_m", joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "partner_id"))
     @JsonIgnoreProperties("users")
-    private Set<Partner> partnersBooking;
+    private Set<Partner> partnersBooking;*/
     @ManyToOne
     @JoinColumn(name = "created_by_partner_id")
     private Partner createdByPartner;
@@ -172,14 +172,14 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "profession_id", referencedColumnName = "id")
     private Profession profession;
-    @ManyToMany()
+    /*@ManyToMany()
     @JoinTable(name = "user_certificate", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "certificate_id"))
     private Set<Certificate> certificates;
     @ManyToMany()
     @JoinTable(name = "user_gallery_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "gallery_id"))
-    private Set<Gallery> galleries;
+    private Set<Gallery> galleries;*/
     @ManyToMany()
     @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
