@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "partner_address_user1")
+@Table(name = "partner_address_user_mp")
 public class UserAddressTiming implements Serializable {
 
     @ManyToMany

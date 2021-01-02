@@ -150,7 +150,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "title_id", referencedColumnName = "id")
     private Title title;
     @ManyToMany()
-    @JoinTable(name = "partner_address_user1", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "partner_address_user_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Set<PartnerAddress> partnerAddresses;
     @ManyToMany()
