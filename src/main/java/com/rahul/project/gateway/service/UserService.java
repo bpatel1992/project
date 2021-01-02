@@ -38,7 +38,10 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -253,74 +256,74 @@ public class UserService {
         return responseDTO;
     }
 
-    public ResponseDTO updateUserCertificate(MultipartFile[] files, String randomKey, ResponseDTO responseDTO) throws Exception {
-        User user;
+    /*  public ResponseDTO updateUserCertificate(MultipartFile[] files, String randomKey, ResponseDTO responseDTO) throws Exception {
+          User user;
 
-        if (randomKey != null) {
-            user = userRepository.getByRandomKey(randomKey);
-            if (user == null)
-                throw new BusinessException("user.not.found");
-        } else {
-            user = userRepository.getOne(commonUtility.getLoggedInUser());
-        }
-        String filePath = commonUtility.getEnvironmentProperty("location.file.certificates") + user.getId();
-        Set<String> strings = processFile(filePath, user.getId(), files);
-        Set<Certificate> certificates = user.getCertificates();
-        if (certificates == null)
-            certificates = new HashSet<>();
-        if (strings != null && strings.size() > 0) {
-            List<String> certificateURLs = new ArrayList<>();
-            for (String s : strings) {
-                Certificate certificate = new Certificate(s);
-                certificateRepository.save(certificate);
-                certificates.add(certificate);
-                certificateURLs.add(environment.getRequiredProperty("gateway.api.url") + "assets/user/certificate?randomKey="
-                        + user.getRandomKey() + "&fileName=" + certificate.getName());
-            }
-            user.setCertificates(certificates);
-            userRepository.save(user);
-            responseDTO.setResponseMessage(translator.toLocale("user.image.update.success"));
-            responseDTO.setCertificateURLs(certificateURLs);
-            return responseDTO;
-        } else
-            throw new BusinessException("no file found");
+          if (randomKey != null) {
+              user = userRepository.getByRandomKey(randomKey);
+              if (user == null)
+                  throw new BusinessException("user.not.found");
+          } else {
+              user = userRepository.getOne(commonUtility.getLoggedInUser());
+          }
+          String filePath = commonUtility.getEnvironmentProperty("location.file.certificates") + user.getId();
+          Set<String> strings = processFile(filePath, user.getId(), files);
+          Set<Certificate> certificates = user.getCertificates();
+          if (certificates == null)
+              certificates = new HashSet<>();
+          if (strings != null && strings.size() > 0) {
+              List<String> certificateURLs = new ArrayList<>();
+              for (String s : strings) {
+                  Certificate certificate = new Certificate(s);
+                  certificateRepository.save(certificate);
+                  certificates.add(certificate);
+                  certificateURLs.add(environment.getRequiredProperty("gateway.api.url") + "assets/user/certificate?randomKey="
+                          + user.getRandomKey() + "&fileName=" + certificate.getName());
+              }
+              user.setCertificates(certificates);
+              userRepository.save(user);
+              responseDTO.setResponseMessage(translator.toLocale("user.image.update.success"));
+              responseDTO.setCertificateURLs(certificateURLs);
+              return responseDTO;
+          } else
+              throw new BusinessException("no file found");
 
-    }
+      }
 
-    public ResponseDTO updateUserGallery(MultipartFile[] files, String randomKey, ResponseDTO responseDTO) throws Exception {
-        User user;
+      public ResponseDTO updateUserGallery(MultipartFile[] files, String randomKey, ResponseDTO responseDTO) throws Exception {
+          User user;
 
-        if (randomKey != null) {
-            user = userRepository.getByRandomKey(randomKey);
-            if (user == null)
-                throw new BusinessException("user.not.found");
-        } else {
-            user = userRepository.getOne(commonUtility.getLoggedInUser());
-        }
-        String filePath = commonUtility.getEnvironmentProperty("location.file.gallery") + user.getId();
-        Set<String> strings = processFile(filePath, user.getId(), files);
-        Set<Gallery> galleries = user.getGalleries();
-        if (galleries == null)
-            galleries = new HashSet<>();
-        if (strings != null && strings.size() > 0) {
-            List<String> galleryURLs = new ArrayList<>();
-            for (String s : strings) {
-                Gallery gallery = new Gallery(s);
-                galleryRepository.save(gallery);
-                galleries.add(gallery);
-                galleryURLs.add(environment.getRequiredProperty("gateway.api.url") + "assets/user/gallery?randomKey="
-                        + user.getRandomKey() + "&fileName=" + gallery.getName());
-            }
-            user.setGalleries(galleries);
-            userRepository.save(user);
-            responseDTO.setResponseMessage(translator.toLocale("user.image.update.success"));
-            responseDTO.setGalleryURLs(galleryURLs);
-            return responseDTO;
-        } else
-            throw new BusinessException("no file found");
+          if (randomKey != null) {
+              user = userRepository.getByRandomKey(randomKey);
+              if (user == null)
+                  throw new BusinessException("user.not.found");
+          } else {
+              user = userRepository.getOne(commonUtility.getLoggedInUser());
+          }
+          String filePath = commonUtility.getEnvironmentProperty("location.file.gallery") + user.getId();
+          Set<String> strings = processFile(filePath, user.getId(), files);
+          Set<Gallery> galleries = user.getGalleries();
+          if (galleries == null)
+              galleries = new HashSet<>();
+          if (strings != null && strings.size() > 0) {
+              List<String> galleryURLs = new ArrayList<>();
+              for (String s : strings) {
+                  Gallery gallery = new Gallery(s);
+                  galleryRepository.save(gallery);
+                  galleries.add(gallery);
+                  galleryURLs.add(environment.getRequiredProperty("gateway.api.url") + "assets/user/gallery?randomKey="
+                          + user.getRandomKey() + "&fileName=" + gallery.getName());
+              }
+              user.setGalleries(galleries);
+              userRepository.save(user);
+              responseDTO.setResponseMessage(translator.toLocale("user.image.update.success"));
+              responseDTO.setGalleryURLs(galleryURLs);
+              return responseDTO;
+          } else
+              throw new BusinessException("no file found");
 
-    }
-
+      }
+  */
     public DocumentDTO processUserDocument(DocumentDTO documentDTO) {
         DocumentType documentType = abstractDao.getEntityById(DocumentType.class, documentDTO.getDocTypeId());
         User user = abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser());
@@ -628,8 +631,8 @@ public class UserService {
 
     public UserDTO fetchClientDetails(UserDTO userDTO) throws Exception {
            if(Objects.nonNull(userDTO.getId())){
-                User user = abstractDao.getEntityById(User.class, userDTO.getId());;
-                if (Objects.isNull(user)) {
+               User user = abstractDao.getEntityById(User.class, userDTO.getId());
+               if (Objects.isNull(user)) {
                   new BusinessException("User not found!");
                 }
                 if(!CollectionUtils.isEmpty(user.getAuthorities())) {
