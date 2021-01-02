@@ -9,6 +9,7 @@ public class PartnerRequestDTO {
     private int pageNumber;
     private int pageSize;
     private String distanceUnit;
+    private String date;
 
     public String getDistanceUnit() {
         return distanceUnit;
@@ -65,4 +66,9 @@ public class PartnerRequestDTO {
     public void setPartnerTypeId(long partnerTypeId) {
         this.partnerTypeId = partnerTypeId;
     }
+
+    public String getDate() {  return date; }
+
+    public void setDate(String date) {  this.date = date; }
+
 }
