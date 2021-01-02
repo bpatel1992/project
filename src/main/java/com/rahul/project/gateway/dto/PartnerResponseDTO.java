@@ -1,23 +1,23 @@
 package com.rahul.project.gateway.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PartnerResponseDTO {
 
     private String partnerName;
     private Long id;
-
     private String address;
-
     private double lattitude;
     private double longitude;
     private Float partnerExperience;
-
     private String partnerDesc;
-
     private String mobile;
-
     private String email;
     private Long addressId;
     private Double distance;
+    private boolean isClinicOpen;
+    private List<String> timeRange;
 
     public Double getDistance() {
         return distance;
@@ -106,4 +106,21 @@ public class PartnerResponseDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<String> getTimeRange() {
+        return timeRange;
+    }
+
+    public void setTimeRange(List<String> timeRange) {
+        this.timeRange = timeRange;
+    }
+
+    public boolean isClinicOpen() {
+        return isClinicOpen;
+    }
+
+    public void setClinicOpen(boolean clinicOpen) {
+        isClinicOpen = clinicOpen;
+    }
+
 }

@@ -81,8 +81,7 @@ public class PartnerController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<PartnerResponseDTO> fetchPartnersLocationWise(@Valid @RequestBody PartnerRequestDTO partnerRequestDTO) throws Exception {
         logger.info("inside fetchPartnersLocationWise  !!");
-        List<PartnerResponseDTO> partnerResponseDTOList = partnerService.fetchPartnerLocationWise(partnerRequestDTO);
-        return partnerResponseDTOList;
+        return partnerService.fetchPartnerLocationWise(partnerRequestDTO);
     }
 
 
