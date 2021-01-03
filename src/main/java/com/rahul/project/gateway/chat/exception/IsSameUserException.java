@@ -1,4 +1,4 @@
-package com.rahul.project.gateway.configuration;
+package com.rahul.project.gateway.chat.exception;
 
 public class IsSameUserException extends Exception {
   private static final long serialVersionUID = 1L;

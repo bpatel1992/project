@@ -1,4 +1,4 @@
-package com.rahul.project.gateway.utility;
+package com.rahul.project.gateway.chat.utility;
 
 import com.google.gson.GsonBuilder;
 import org.springframework.http.HttpStatus;

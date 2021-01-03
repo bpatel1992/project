@@ -1,4 +1,4 @@
-package com.rahul.project.gateway.configuration;
+package com.rahul.project.gateway.chat.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

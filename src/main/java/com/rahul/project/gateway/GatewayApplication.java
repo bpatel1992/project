@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 @ComponentScan(basePackages = "com.rahul")
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.rahul.project.gateway.repository", repositoryBaseClass = BaseRepositoryImpl.class)
+@EnableJpaRepositories(basePackages = {"com.rahul.project.gateway.repository","com.rahul.project.gateway.chat.repository"}, repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableJpaAuditing
 @EnableAsync
 public class GatewayApplication extends SpringBootServletInitializer {

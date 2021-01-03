@@ -1,9 +1,8 @@
-package com.rahul.project.gateway.repository;
+package com.rahul.project.gateway.chat.repository;
 
-import com.rahul.project.gateway.model.ChatChannel;
-import com.rahul.project.gateway.model.Gallery;
+import com.rahul.project.gateway.chat.model.ChatChannel;
+import com.rahul.project.gateway.repository.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-@Repository
+@Repository(value = "ChatChannelRepository")
 public interface ChatChannelRepository extends BaseRepository<ChatChannel, String> {
   @Query(" FROM"
       + "    ChatChannel c"

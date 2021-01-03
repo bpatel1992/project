@@ -1,4 +1,4 @@
-package com.rahul.project.gateway.dto.chat;
+package com.rahul.project.gateway.chat.dto;
 
 import lombok.Data;
 

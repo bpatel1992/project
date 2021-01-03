@@ -1,6 +1,6 @@
-package com.rahul.project.gateway.configuration;
+package com.rahul.project.gateway.chat.configuration;
 
-import com.rahul.project.gateway.dto.chat.ChatMessageDTO;
+import com.rahul.project.gateway.chat.dto.ChatMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

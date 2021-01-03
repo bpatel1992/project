@@ -1,18 +1,15 @@
-package com.rahul.project.gateway.controller;
+package com.rahul.project.gateway.chat.controller;
 
 
-import com.rahul.project.gateway.configuration.IsSameUserException;
-import com.rahul.project.gateway.dto.chat.ChatChannelInitializationDTO;
-import com.rahul.project.gateway.dto.chat.ChatMessageDTO;
-import com.rahul.project.gateway.dto.chat.EstablishedChatChannelDTO;
-import com.rahul.project.gateway.dto.chat.PageRequestDTO;
-import com.rahul.project.gateway.interfaces.IChatChannelController;
-import com.rahul.project.gateway.service.ChatService;
-import com.rahul.project.gateway.service.UserService;
-import com.rahul.project.gateway.utility.JSONResponseHelper;
+import com.rahul.project.gateway.chat.service.ChatService;
+import com.rahul.project.gateway.chat.exception.IsSameUserException;
+import com.rahul.project.gateway.chat.dto.ChatChannelInitializationDTO;
+import com.rahul.project.gateway.chat.dto.ChatMessageDTO;
+import com.rahul.project.gateway.chat.dto.EstablishedChatChannelDTO;
+import com.rahul.project.gateway.chat.dto.PageRequestDTO;
+import com.rahul.project.gateway.chat.interfaces.IChatChannelController;
+import com.rahul.project.gateway.chat.utility.JSONResponseHelper;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @Api(value = "API provide product basic functionalities",
@@ -40,13 +35,9 @@ import java.util.UUID;
 public class ChatChannelController implements IChatChannelController {
 
     private ChatService chatService;
-    private UserService userService;
-    private SimpMessagingTemplate template;
 
     @Autowired
-    public ChatChannelController(SimpMessagingTemplate template, UserService userService, ChatService chatService) {
-        this.template = template;
-        this.userService = userService;
+    public ChatChannelController(ChatService chatService) {
         this.chatService = chatService;
     }
 
