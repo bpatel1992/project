@@ -1,9 +1,9 @@
-package com.rahul.project.gateway.utility;
+package com.rahul.project.gateway.chat.utility;
 
 
 
-import com.rahul.project.gateway.dto.chat.ChatMessageDTO;
-import com.rahul.project.gateway.model.ChatMessage;
+import com.rahul.project.gateway.chat.dto.ChatMessageDTO;
+import com.rahul.project.gateway.chat.model.ChatMessage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

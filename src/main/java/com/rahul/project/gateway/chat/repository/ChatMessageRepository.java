@@ -1,9 +1,9 @@
-package com.rahul.project.gateway.repository;
+package com.rahul.project.gateway.chat.repository;
 
-import com.rahul.project.gateway.model.ChatMessage;
+import com.rahul.project.gateway.chat.model.ChatMessage;
+import com.rahul.project.gateway.repository.BaseRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +11,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-@Repository
-public interface ChatMessageRepository extends CrudRepository<ChatMessage, String> {
+@Repository(value = "ChatMessageRepository")
+public interface ChatMessageRepository extends BaseRepository<ChatMessage, String> {
     @Query(" FROM"
         + "    ChatMessage m"
         + "  WHERE"

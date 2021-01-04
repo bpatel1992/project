@@ -1,5 +1,6 @@
-package com.rahul.project.gateway.model;
+package com.rahul.project.gateway.chat.model;
 
+import com.rahul.project.gateway.model.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;

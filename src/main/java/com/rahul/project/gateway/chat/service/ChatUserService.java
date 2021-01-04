@@ -1,7 +1,7 @@
-package com.rahul.project.gateway.service;
+package com.rahul.project.gateway.chat.service;
 
 
-import com.rahul.project.gateway.dto.chat.NotificationDTO;
+import com.rahul.project.gateway.chat.dto.NotificationDTO;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

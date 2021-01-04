@@ -1,9 +1,9 @@
-package com.rahul.project.gateway.interfaces;
+package com.rahul.project.gateway.chat.interfaces;
 
-import com.rahul.project.gateway.configuration.IsSameUserException;
-import com.rahul.project.gateway.dto.chat.ChatChannelInitializationDTO;
-import com.rahul.project.gateway.dto.chat.ChatMessageDTO;
-import com.rahul.project.gateway.dto.chat.PageRequestDTO;
+import com.rahul.project.gateway.chat.exception.IsSameUserException;
+import com.rahul.project.gateway.chat.dto.ChatChannelInitializationDTO;
+import com.rahul.project.gateway.chat.dto.ChatMessageDTO;
+import com.rahul.project.gateway.chat.dto.PageRequestDTO;
 import org.springframework.beans.BeansException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

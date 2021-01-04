@@ -1,4 +1,4 @@
-package com.rahul.project.gateway.model;
+package com.rahul.project.gateway.chat.model;
 
 import lombok.Data;
 
