@@ -47,9 +47,16 @@ public class CustomerProfileDTO {
     private String eCardUrl;
     private Boolean canCreatePartner;
     private Boolean subscribed;
+
     private String bankAccountHolderName;
     private String bankName;
     private String ifsc;
     private String bankAccountNumber;
+
+    private String registrationNumber;
+    private String registrationCouncil;
+    private String registrationYear;
+    private String degree;
+    private String awardRecognition;
 
 }

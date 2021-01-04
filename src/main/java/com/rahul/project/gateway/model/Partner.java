@@ -38,6 +38,8 @@ public class Partner implements Serializable {
     @Basic
     @Column(name = "partner_type")
     private String partnerType;
+    @Column(name = "partner_name")
+    private String partnerName;
     @ManyToOne
     @JoinColumn(name = "title_id", referencedColumnName = "id")
     private Title title;

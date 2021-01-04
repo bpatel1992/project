@@ -3,6 +3,7 @@ package com.rahul.project.gateway.dao;
 import com.rahul.project.gateway.configuration.annotations.RepositoryDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,5 +106,15 @@ public class AbstractDao {
 
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
+    }
+
+    public List getQueryForListSQL(String pQuery) {
+
+        List returnList = null;
+
+        Query query = getSession().createNativeQuery(pQuery);
+        returnList = query.list();
+
+        return returnList;
     }
 }
