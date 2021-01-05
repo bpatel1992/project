@@ -2,11 +2,13 @@ package com.rahul.project.gateway.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rahul.project.gateway.chat.dto.PageRequestDTO;
 import com.rahul.project.gateway.utility.Patterns;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,5 +28,9 @@ public class AddClientDto {
     private String randomKey;
     @NotNull
     private String mobile;
-
+    private Long petId;
+    private String clientImageName;
+    private String petImage;
+    private PageRequestDTO pageRequestDTO;
+    private Date lastVisit;
 }

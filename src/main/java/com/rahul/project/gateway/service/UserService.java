@@ -629,50 +629,5 @@ public class UserService {
         return modelMapper.map(user, AddClientDto.class);
     }
 
-    public UserDTO fetchClientDetails(UserDTO userDTO) throws Exception {
-           if(Objects.nonNull(userDTO.getId())){
-               User user = abstractDao.getEntityById(User.class, userDTO.getId());
-               if (Objects.isNull(user)) {
-                  new BusinessException("User not found!");
-                }
-                if(!CollectionUtils.isEmpty(user.getAuthorities())) {
-                    boolean isClient = user.getAuthorities().stream().anyMatch(authority -> StringUtils.equalsAnyIgnoreCase(authority.getName(),"ROLE_CUSTOMER"));
-                    if(isClient) {
-                        CrudCtrlBase.copyNonNullProperties(user, userDTO);
-                        setUserDetails(user, userDTO);
-                    }
-                }
-           }
-        return userDTO;
-    }
-
-    private UserDTO setUserDetails(User user,UserDTO userDTO){
-        userDTO.setPhone("+"+user.getCountry().getCode()+"-"+user.getMobile());
-        Set<PartnerAddressDTO> partnerAddresses = user.getPartnerAddresses().stream()
-                .filter(address -> address.getDisplayOrder().equals(1))
-                .map(address ->
-                {
-                    PartnerAddressDTO partnerAddressDTO= new PartnerAddressDTO();
-                    partnerAddressDTO.setAddress(address.getAddress());
-                    return partnerAddressDTO;
-                }).collect(Collectors.toSet());
-        userDTO.setPartnerAddresses(partnerAddresses);
-        userDTO.setImage(user.getImageName());
-        List<PetDTO> petDTOS = user.getPets()
-                .stream()
-                .map(pet -> {
-                    PetDTO petDTO = new PetDTO();
-                    petDTO.setGender(petDTO.getGender());
-                    petDTO.setImageURL(pet.getImageName());
-                    PetBreedDTO petBreedDTO = new PetBreedDTO();
-                    petBreedDTO.setName(pet.getName());
-                    petDTO.setPetBreed(petBreedDTO);
-                    petDTO.setYearOld(pet.getYearOld());
-                    return petDTO;
-                }).collect(Collectors.toList());
-        userDTO.setPets(petDTOS);
-        return userDTO;
-    }
-
 
 }

@@ -46,7 +46,8 @@ import java.lang.invoke.MethodHandles;
                 "17. Create admin user, "+ "\n" +
                 "18. Update admin role details, "+ "\n" +
                 "19. Create client, "+ "\n" +
-                "20. Fetch client details",tags = { "User services" })
+                "20. Fetch client details" + "\n" +
+                "21. Fetch client list by partner Id, pagination is applied for this api",tags = { "User services" })
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -262,16 +263,6 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public AddClientDto addClient(@Valid @RequestBody AddClientDto addClientDto) throws Exception {
         return userService.addClient(addClientDto);
-    }
-
-    @ApiOperation(value = "Fetch client details", produces = MediaType.APPLICATION_JSON_VALUE)
-    /*@ApiImplicitParams({
-            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
-                    , required = true, dataType = "String", paramType = "header")})*/
-    @RequestMapping(path = {"/api/user/fetchClientDetails"}, method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO fetchClientDetails(@Valid @RequestBody UserDTO userDTO) throws Exception {
-        return userService.fetchClientDetails(userDTO);
     }
 
 }

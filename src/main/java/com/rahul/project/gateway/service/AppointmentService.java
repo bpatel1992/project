@@ -51,6 +51,8 @@ public class AppointmentService {
     private UserHolidaysRepository userHolidaysRepository;
     @Autowired
     private StatusTypeRepository statusTypeRepository;
+    @Autowired
+    private PartnerClientManagementService partnerClientManagementService;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -231,9 +233,10 @@ public class AppointmentService {
         if (createAppointmentDto != null) {
             User customer = abstractDao.getEntityById(User.class, createAppointmentDto.getCustomerId());
             User attendant = abstractDao.getEntityById(User.class, createAppointmentDto.getAttendantId());
+            Partner partner = abstractDao.getEntityById(Partner.class, createAppointmentDto.getPartnerId());
             PartnerAddress clinic = abstractDao.getEntityById(PartnerAddress.class, createAppointmentDto.getClinicId());
-
             Pet pet = abstractDao.getEntityById(Pet.class, createAppointmentDto.getPetId());
+            partnerClientManagementService.saveClientMapping(customer, partner, pet);
             String message = "";
             String mobileNumber = customer.getCountry().getCode() + customer.getMobile();
             if (createAppointmentDto.getAppointmentTypeId() == 1) {
@@ -264,7 +267,7 @@ public class AppointmentService {
         Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerId(appointment.getAttendant().getId(),
                 appointment.getClinic().getId());
         List<UserHolidays> userHolidaysList =
-                userHolidaysRepository.getByAttendant(appointment.getAttendant().getId(),date);
+                userHolidaysRepository.getByAttendant(appointment.getAttendant().getId(), date);
         List<AppointmentAvailabilityDto> appointmentAvailabilityDtos = new ArrayList<>();
         if (!CollectionUtils.isEmpty(businessTimings)) {
             int c = 0;
@@ -276,15 +279,15 @@ public class AppointmentService {
                 if (appointmentAvailabilityDtos.size() < 8) {
                     while (i < 7) {
                         LocalDateTime newDate = localDateTime.plusDays(i);
-                       List<UserHolidays> onLeaveList =  userHolidaysList.stream().filter(userHolidays ->{
-                                    Calendar fromTime = Calendar.getInstance();
-                                    fromTime.setTime(userHolidays.getFromTime());
-                                    Calendar toTime = Calendar.getInstance();
-                                    toTime.setTime(userHolidays.getToTime());
-                                    return (newDate.compareTo(LocalDateTime.ofInstant(fromTime.toInstant(),fromTime.getTimeZone().toZoneId())) >= 0) &&
-                                            (newDate.compareTo(LocalDateTime.ofInstant(toTime.toInstant(),toTime.getTimeZone().toZoneId())) <= 0) &&
-                                            StringUtils.endsWithIgnoreCase(userHolidays.getStatusType().getStatusTypeName(),"active");
-                                }).collect(Collectors.toList());
+                        List<UserHolidays> onLeaveList = userHolidaysList.stream().filter(userHolidays -> {
+                            Calendar fromTime = Calendar.getInstance();
+                            fromTime.setTime(userHolidays.getFromTime());
+                            Calendar toTime = Calendar.getInstance();
+                            toTime.setTime(userHolidays.getToTime());
+                            return (newDate.compareTo(LocalDateTime.ofInstant(fromTime.toInstant(), fromTime.getTimeZone().toZoneId())) >= 0) &&
+                                    (newDate.compareTo(LocalDateTime.ofInstant(toTime.toInstant(), toTime.getTimeZone().toZoneId())) <= 0) &&
+                                    StringUtils.endsWithIgnoreCase(userHolidays.getStatusType().getStatusTypeName(), "active");
+                        }).collect(Collectors.toList());
                         if (CollectionUtils.isEmpty(onLeaveList) && dayCodes.contains(newDate.getDayOfWeek().getValue())) {
                             appointmentAvailabilityDtos.add(createAvailabilityEntry(newDate.toLocalDate(),
                                     appointmentAvailabilityDtos.size() + 1, Boolean.TRUE));
@@ -317,13 +320,13 @@ public class AppointmentService {
         if (Objects.isNull(appointment)) {
             throw new BusinessException("Appointment details not found");
         }
-        try{
+        try {
             StatusType statusType = statusTypeRepository.findByStatusTypeName(Appointment.AppointmentStatus.ARRIVED.name());
             appointment.setStatusType(statusType);
             abstractDao.saveOrUpdateEntity(appointment);
             return Boolean.TRUE;
-        }catch (Exception e){
-            logger.error("Error occured while updating arrival status :: {} ",e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error occured while updating arrival status :: {} ", e.getMessage());
         }
         return Boolean.FALSE;
     }

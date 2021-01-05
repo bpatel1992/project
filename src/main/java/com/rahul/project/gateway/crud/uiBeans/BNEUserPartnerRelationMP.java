@@ -21,6 +21,6 @@ public class BNEUserPartnerRelationMP implements Serializable {
     private Long id;
 
     public BNEUserPartnerRelationMP(UserPartnerRelationMP relationMP) {
-        this.id = relationMP.getId().getId1();
+        this.id = relationMP.getUser().getId();
     }
 }

@@ -89,7 +89,6 @@ public class ChatService implements IChatService {
  
   public List<ChatMessageDTO> getExistingChatMessages(String channelUuid, PageRequestDTO pageRequestDTO) {
     ChatChannel channel = chatChannelRepository.getChannelDetails(channelUuid);
-
     List<ChatMessage> chatMessages =
       chatMessageRepository.getExistingChatMessages(
         channel.getSenderId(),
