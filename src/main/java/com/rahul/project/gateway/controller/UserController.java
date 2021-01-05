@@ -100,7 +100,8 @@ public class UserController {
                     , required = true, dataType = "String", paramType = "header")})*/
     @PostMapping(value = "/oauth2/api/upload/doc", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public DocumentDTO uploadDoc(@ApiParam(name = "file", required = true) MultipartFile file, @ApiParam(name = "id", required = true) Long docId) throws Exception {
+    public DocumentDTO uploadDoc(@ApiParam @RequestParam(name = "file", required = true) MultipartFile file,
+                                 @ApiParam @RequestParam(name = "id", required = true) Long docId) throws Exception {
         return userService.uploadDoc(file, docId);
     }
 

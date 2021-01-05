@@ -9,10 +9,7 @@ import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Country;
 import com.rahul.project.gateway.model.Partner;
 import com.rahul.project.gateway.model.*;
-import com.rahul.project.gateway.repository.PartnerDocumentRepository;
-import com.rahul.project.gateway.repository.PartnerRepository;
-import com.rahul.project.gateway.repository.UserDocumentRepository;
-import com.rahul.project.gateway.repository.UserPartnerRelationMPRepository;
+import com.rahul.project.gateway.repository.*;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
 import org.modelmapper.ModelMapper;
@@ -62,6 +59,10 @@ public class PartnerService {
     private PartnerDocumentRepository partnerDocumentRepository;
     @Autowired
     private UserPartnerRelationMPRepository userPartnerRelationMPRepository;
+    @Autowired
+    private PartnerAddressTimingRepository partnerAddressTimingRepository;
+    @Autowired
+    private UserAddressTimingRepository userAddressTimingRepository;
 
     public void registerPartner(Partner partner) throws Exception {
         partner.getPartnerAddresses().stream().forEach(partnerAddress -> {
@@ -111,6 +112,31 @@ public class PartnerService {
         partnerAddress.setBusinessTimings(businessTimings);
         return modelMapper.map(partnerAddress, PartnerAddressDTO.class);
     }
+
+    public ResponseDTO deletePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
+        PartnerAddress partnerAddress = abstractDao.getEntityById(PartnerAddress.class, partnerAddressDTO.getId());
+
+        if (partnerAddressDTO.getIsPartner()) {
+            PartnerAddressTiming partnerAddressTiming =
+                    partnerAddressTimingRepository.getByPartnerAndPartnerAddress
+                            (new Partner(partnerAddressDTO.getPartnerId()), new PartnerAddress(partnerAddress.getId()));
+            abstractDao.delete(partnerAddressTiming);
+        } else {
+            UserAddressTiming userAddressTiming =
+                    userAddressTimingRepository.getByUserAndPartnerAddress(
+                            abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser()), new PartnerAddress(partnerAddress.getId()));
+            abstractDao.delete(userAddressTiming);
+        }
+        if (partnerAddress.getBusinessTimings() != null && partnerAddress.getBusinessTimings().size() > 0) {
+            partnerAddress.getBusinessTimings().forEach(businessTiming -> abstractDao.delete(businessTiming.getTimeRange()));
+        }
+        if (!partnerAddress.getPartnerContactNumbers().isEmpty()) {
+            abstractDao.delete(partnerAddress.getPartnerContactNumbers());
+        }
+        abstractDao.delete(partnerAddress);
+        return new ResponseDTO();
+    }
+
 
     /*public Set<PartnerAddress> fetchUserPartnerAddress(PartnerAddressDTO partnerAddressDTO) {
 

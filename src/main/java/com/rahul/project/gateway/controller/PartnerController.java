@@ -6,8 +6,6 @@ import com.rahul.project.gateway.model.Partner;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -74,6 +72,17 @@ public class PartnerController {
     public PartnerAddressDTO createUpdatePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
         logger.info("inside createUpdatePartnerAddress  !!");
         return partnerService.createUpdatePartnerAddress(partnerAddressDTO, new ResponseDTO());
+    }
+
+    @ApiOperation(value = "delete partner address details", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})*/
+    @RequestMapping(value = "/oauth2/api/partner/address/delete", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDTO deletePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
+        logger.info("inside createUpdatePartnerAddress  !!");
+        return partnerService.deletePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }
 
     @ApiOperation(value = "Fetch partner address by location", produces = MediaType.APPLICATION_JSON_VALUE)
