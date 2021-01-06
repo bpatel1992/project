@@ -25,10 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @TransactionalService
@@ -157,10 +154,12 @@ public class PartnerService {
         if (partnerAddress == null)
             throw new BusinessException("user.not.found.info");
         if (partnerAddressDTO.getIsPartner()) {
+            Partner partner = abstractDao.getEntityById(Partner.class, partnerAddressDTO.getPartnerId());
             PartnerAddressTiming partnerAddressTiming =
                     partnerAddressTimingRepository.getByPartnerAndPartnerAddress
-                            (new Partner(partnerAddressDTO.getPartnerId()), new PartnerAddress(partnerAddress.getId()));
-            abstractDao.delete(partnerAddressTiming);
+                            (partner, partnerAddress);
+           if(Objects.nonNull(partnerAddressTiming))
+               abstractDao.delete(partnerAddressTiming);
         } else {
 
             UserAddressTiming userAddressTiming =
@@ -173,7 +172,8 @@ public class PartnerService {
                     abstractDao.delete(businessTiming);
                 });
             }
-            abstractDao.delete(userAddressTiming);
+            if(Objects.nonNull(userAddressTiming))
+                abstractDao.delete(userAddressTiming);
         }
         /*if (partnerAddress.getBusinessTimings() != null && partnerAddress.getBusinessTimings().size() > 0) {
             partnerAddress.getBusinessTimings().forEach(businessTiming -> abstractDao.delete(businessTiming.getTimeRange()));
