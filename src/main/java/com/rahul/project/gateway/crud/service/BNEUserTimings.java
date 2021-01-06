@@ -66,7 +66,7 @@ public class BNEUserTimings implements BNE {
 
     public void processPartnerAddresses(Set<PartnerAddressDTO> partnerAddresses, Long id) {
         for (PartnerAddressDTO partnerAddress : partnerAddresses) {
-            Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerId(id, partnerAddress.getId());
+            Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerAddressId(id, partnerAddress.getId());
             Set<BusinessTimingDTO> businessTimingDTOS = businessTimings.stream().map(tim -> modelMapper.map(tim, BusinessTimingDTO.class))
                     .collect(Collectors.toSet());
             partnerAddress.setBusinessTimings(businessTimingDTOS);

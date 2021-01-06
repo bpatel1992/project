@@ -80,16 +80,37 @@ public class PartnerService {
         Set<PartnerAddressDTO> partnerAddressDTOS = null;
         Set<PartnerAddress> partnerAddress = null;
         if (partnerAddressDTO.getIsPartner()) {
+            partnerAddress = partnerAddressTimingRepository.getPartnerAddress(partnerAddressDTO.getPartnerId());
+            partnerAddress.forEach(partnerAddress1 ->
+            {
+                Set<BusinessTiming> businessTimings =
+                        partnerAddressTimingRepository.businessTimings
+                                (partnerAddressDTO.getPartnerId(), partnerAddress1.getId());
+                partnerAddress1.setBusinessTimings(businessTimings);
+            });
         } else {
            /* if (partnerAddress.getId() != null) {
                 PartnerAddress entity = abstractDao.getEntityById(PartnerAddress.class, partnerAddress.getId());
                 CrudCtrlBase.copyNonNullProperties(entity, partnerAddress);
             }*/
             partnerAddress = userAddressTimingRepository.getPartnerAddress(commonUtility.getLoggedInUser());
+            partnerAddress.forEach(partnerAddress1 ->
+            {
+                Set<BusinessTiming> businessTimings = userAddressTimingRepository.
+                        businessTimingsByUserIdAndPartnerAddressId(commonUtility.getLoggedInUser(), partnerAddress1.getId());
+                partnerAddress1.setBusinessTimings(businessTimings);
+            });
         }
-        if (partnerAddress != null)
-            partnerAddressDTOS = partnerAddress.stream().map(address -> modelMapper.map(address, PartnerAddressDTO.class))
-                    .collect(Collectors.toSet());
+        partnerAddressDTOS = partnerAddress.stream()
+                .map(address -> {
+                    PartnerAddressDTO map = modelMapper.map(address, PartnerAddressDTO.class);
+                    Set<BusinessTimingDTO> businessTimingDTOS = address.getBusinessTimings().stream()
+                            .map(tim -> modelMapper.map(tim, BusinessTimingDTO.class))
+                            .collect(Collectors.toSet());
+                    map.setBusinessTimings(businessTimingDTOS);
+                    return map;
+                })
+                .collect(Collectors.toSet());
         return partnerAddressDTOS;
     }
 

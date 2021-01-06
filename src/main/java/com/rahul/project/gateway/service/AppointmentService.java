@@ -203,7 +203,6 @@ public class AppointmentService {
                 LocalTime.parse(appointmentAvailabilityDto.getTime(), formatter).isAfter(time16))
                 .sorted(Comparator.comparing(AppointmentAvailabilityDto::getDisplayOrder))
                 .collect(Collectors.toList());
-        ;
         createSlotEntry(slotDtoArrayList, evening, "evening");
         return slotDtoArrayList;
 
@@ -264,7 +263,7 @@ public class AppointmentService {
         Calendar time = Calendar.getInstance();
         time.setTime(date);
         LocalDateTime localDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
-        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerId(appointment.getAttendant().getId(),
+        Set<BusinessTiming> businessTimings = userAddressTimingRepository.businessTimingsByUserIdAndPartnerAddressId(appointment.getAttendant().getId(),
                 appointment.getClinic().getId());
         List<UserHolidays> userHolidaysList =
                 userHolidaysRepository.getByAttendant(appointment.getAttendant().getId(), date);

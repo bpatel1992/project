@@ -18,6 +18,9 @@ import java.util.Set;
 public interface PartnerAddressTimingRepository extends BaseRepository<PartnerAddressTiming, Long> {
     PartnerAddressTiming getByPartnerAndPartnerAddress(Partner partner, PartnerAddress partnerAddress);
 
+    @Query(value = "SELECT ua.partnerAddress FROM PartnerAddressTiming ua WHERE ua.partner.id = ?1 ")
+    Set<PartnerAddress> getPartnerAddress(Long partnerId);
+
     @Query(value = "SELECT bt FROM PartnerAddressTiming pa join pa.businessTimings bt " +
             " WHERE pa.partner.id = ?1 and pa.partnerAddress.id = ?2 ")
     Set<BusinessTiming> businessTimings(Long partnerId, Long partnerAddressId);
