@@ -3,9 +3,6 @@ package com.rahul.project.gateway.repository;
 import com.rahul.project.gateway.model.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -15,9 +12,6 @@ import java.util.Set;
  * @author Rahul Malhotra
  */
 @Repository(value = "UserAddressTimingRepository")
-@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {NullPointerException.class, Exception.class, Throwable.class}
-        , isolation = Isolation.READ_COMMITTED
-/* , noRollbackFor= {CustomException.class} */)
 public interface UserAddressTimingRepository extends BaseRepository<UserAddressTiming, Long> {
     UserAddressTiming getByUserAndPartnerAddress(User user, PartnerAddress partnerAddress);
 

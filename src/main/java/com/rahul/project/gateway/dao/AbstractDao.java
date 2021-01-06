@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -127,4 +128,15 @@ public class AbstractDao {
 
         return returnList;
     }
+
+    public int executeSQLQuery(String pQuery) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        int i = entityManager.createNativeQuery(pQuery).executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return i;
+    }
+
+
 }

@@ -158,27 +158,46 @@ public class PartnerService {
             PartnerAddressTiming partnerAddressTiming =
                     partnerAddressTimingRepository.getByPartnerAndPartnerAddress
                             (partner, partnerAddress);
-           if(Objects.nonNull(partnerAddressTiming))
-               abstractDao.delete(partnerAddressTiming);
+            if (Objects.nonNull(partnerAddressTiming))
+                abstractDao.delete(partnerAddressTiming);
         } else {
-
             UserAddressTiming userAddressTiming =
                     userAddressTimingRepository.getUserAddressTiming(commonUtility.getLoggedInUser(), partnerAddress.getId());
 //            EntityManager em = abstractDao.getSession().getEntityManagerFactory().createEntityManager();
 //            em.remove(em.contains(userAddressTiming) ? userAddressTiming : em.merge(userAddressTiming));
             if (userAddressTiming.getBusinessTimings() != null && userAddressTiming.getBusinessTimings().size() > 0) {
                 userAddressTiming.getBusinessTimings().forEach(businessTiming -> {
-                    abstractDao.delete(businessTiming.getTimeRange());
-                    abstractDao.delete(businessTiming);
+                    abstractDao.executeSQLQuery
+                            ("delete from business_timing_time_range_mp where business_timing_id = "
+                                    + businessTiming.getId());
+                    if (Objects.nonNull(businessTiming.getTimeRange()))
+                        businessTiming.getTimeRange().forEach(timeRange -> {
+                            abstractDao.executeSQLQuery
+                                    ("delete from time_range where id = "
+                                            + timeRange.getId());
+                        });
+                    abstractDao.executeSQLQuery
+                            ("delete from business_timing_day_mp where business_timing_id = "
+                                    + businessTiming.getId());
+                    abstractDao.executeSQLQuery
+                            ("delete from user_address_business_timing_mp2 where business_timing_id = "
+                                    + businessTiming.getId());
+                    abstractDao.executeSQLQuery
+                            ("delete from business_timing where id = "
+                                    + businessTiming.getId());
                 });
             }
-            if(Objects.nonNull(userAddressTiming))
-                abstractDao.delete(userAddressTiming);
+            abstractDao.executeSQLQuery
+                    ("delete from partner_address_user_mp where user_id = "
+                            + commonUtility.getLoggedInUser() + " and address_id =" + partnerAddress.getId());
         }
         /*if (partnerAddress.getBusinessTimings() != null && partnerAddress.getBusinessTimings().size() > 0) {
             partnerAddress.getBusinessTimings().forEach(businessTiming -> abstractDao.delete(businessTiming.getTimeRange()));
         }*/
         if (!partnerAddress.getPartnerContactNumbers().isEmpty()) {
+            abstractDao.executeSQLQuery
+                    ("delete from partner_addresses_contact_mp where address_id = "
+                            + partnerAddress.getId());
             abstractDao.delete(partnerAddress.getPartnerContactNumbers());
         }
         abstractDao.delete(partnerAddress);
