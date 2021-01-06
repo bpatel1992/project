@@ -6,9 +6,12 @@ import com.rahul.project.gateway.crud.controller.CrudCtrlBase;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Partner;
-import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.model.Pet;
-import com.rahul.project.gateway.repository.*;
+import com.rahul.project.gateway.model.User;
+import com.rahul.project.gateway.model.UserPartnerRelationMP;
+import com.rahul.project.gateway.repository.RelationMRepository;
+import com.rahul.project.gateway.repository.UserAddressTimingRepository;
+import com.rahul.project.gateway.repository.UserPartnerRelationMPRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.MethodHandles;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @TransactionalService
@@ -37,7 +43,8 @@ public class PartnerClientManagementService {
 
     @Autowired
     private RelationMRepository relationMRepository;
-
+    @Autowired
+    private UserAddressTimingRepository userAddressTimingRepository;
 
     public boolean saveClientMapping(AddClientDto addClientDto) {
         UserPartnerRelationMP userPartnerRelationMP = new UserPartnerRelationMP();
@@ -84,7 +91,7 @@ public class PartnerClientManagementService {
 
     private UserDTO setUserDetails(User user, UserDTO userDTO) {
         userDTO.setPhone("+" + user.getCountry().getCode() + "-" + user.getMobile());
-        Set<PartnerAddressDTO> partnerAddresses = user.getPartnerAddresses().stream()
+        Set<PartnerAddressDTO> partnerAddresses = userAddressTimingRepository.getPartnerAddress(user.getId()).stream()
                 .filter(address -> address.getDisplayOrder().equals(1))
                 .map(address ->
                 {

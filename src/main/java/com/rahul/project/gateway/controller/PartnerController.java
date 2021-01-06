@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 @RESTController
 @Api(value = "API provide product basic functionalities",
@@ -74,13 +75,24 @@ public class PartnerController {
         return partnerService.createUpdatePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }
 
+    @ApiOperation(value = "Save partner address details", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})*/
+    @RequestMapping(value = "/oauth2/api/partner/address/fetch", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Set<PartnerAddressDTO> fetchPartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
+        logger.info("inside createUpdatePartnerAddress  !!");
+        return partnerService.fetchPartnerAddress(partnerAddressDTO, new ResponseDTO());
+    }
+
     @ApiOperation(value = "delete partner address details", produces = MediaType.APPLICATION_JSON_VALUE)
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})*/
     @RequestMapping(value = "/oauth2/api/partner/address/delete", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseDTO deletePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) {
+    public ResponseDTO deletePartnerAddress(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) throws Exception {
         logger.info("inside createUpdatePartnerAddress  !!");
         return partnerService.deletePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }

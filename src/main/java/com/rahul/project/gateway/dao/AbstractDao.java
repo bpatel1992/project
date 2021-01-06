@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +27,9 @@ import java.util.Set;
  * Date 2019-05-21
  */
 @RepositoryDao
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {NullPointerException.class, Exception.class, Throwable.class}
+        , isolation = Isolation.READ_COMMITTED
+/* , noRollbackFor= {CustomException.class} */)
 public class AbstractDao {
 
     @Autowired
@@ -42,8 +46,14 @@ public class AbstractDao {
         getSession().persist(entity);
     }
 
-    public void delete(Object entity) {
-        getSession().delete(entity);
+    public <T> void delete(T t) {
+        if (t instanceof Set) {
+            ((Set) t).forEach(o -> {
+                getSession().delete(o);
+            });
+        } else {
+            getSession().delete(t);
+        }
     }
 
     public <T> T saveOrUpdateEntity(T t) {

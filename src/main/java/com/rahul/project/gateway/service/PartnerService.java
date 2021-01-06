@@ -76,6 +76,23 @@ public class PartnerService {
         return responseDTO;
     }
 
+    public Set<PartnerAddressDTO> fetchPartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
+        Set<PartnerAddressDTO> partnerAddressDTOS = null;
+        Set<PartnerAddress> partnerAddress = null;
+        if (partnerAddressDTO.getIsPartner()) {
+        } else {
+           /* if (partnerAddress.getId() != null) {
+                PartnerAddress entity = abstractDao.getEntityById(PartnerAddress.class, partnerAddress.getId());
+                CrudCtrlBase.copyNonNullProperties(entity, partnerAddress);
+            }*/
+            partnerAddress = userAddressTimingRepository.getPartnerAddress(commonUtility.getLoggedInUser());
+        }
+        if (partnerAddress != null)
+            partnerAddressDTOS = partnerAddress.stream().map(address -> modelMapper.map(address, PartnerAddressDTO.class))
+                    .collect(Collectors.toSet());
+        return partnerAddressDTOS;
+    }
+
     public PartnerAddressDTO createUpdatePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
         Set<BusinessTiming> businessTimings = null;
 
@@ -113,27 +130,38 @@ public class PartnerService {
         return modelMapper.map(partnerAddress, PartnerAddressDTO.class);
     }
 
-    public ResponseDTO deletePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) {
+    public ResponseDTO deletePartnerAddress(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) throws Exception {
+//        Transaction transaction = abstractDao.getSession().beginTransaction();
         PartnerAddress partnerAddress = abstractDao.getEntityById(PartnerAddress.class, partnerAddressDTO.getId());
-
+        if (partnerAddress == null)
+            throw new BusinessException("user.not.found.info");
         if (partnerAddressDTO.getIsPartner()) {
             PartnerAddressTiming partnerAddressTiming =
                     partnerAddressTimingRepository.getByPartnerAndPartnerAddress
                             (new Partner(partnerAddressDTO.getPartnerId()), new PartnerAddress(partnerAddress.getId()));
             abstractDao.delete(partnerAddressTiming);
         } else {
+
             UserAddressTiming userAddressTiming =
-                    userAddressTimingRepository.getByUserAndPartnerAddress(
-                            abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser()), new PartnerAddress(partnerAddress.getId()));
+                    userAddressTimingRepository.getUserAddressTiming(commonUtility.getLoggedInUser(), partnerAddress.getId());
+//            EntityManager em = abstractDao.getSession().getEntityManagerFactory().createEntityManager();
+//            em.remove(em.contains(userAddressTiming) ? userAddressTiming : em.merge(userAddressTiming));
+            if (userAddressTiming.getBusinessTimings() != null && userAddressTiming.getBusinessTimings().size() > 0) {
+                userAddressTiming.getBusinessTimings().forEach(businessTiming -> {
+                    abstractDao.delete(businessTiming.getTimeRange());
+                    abstractDao.delete(businessTiming);
+                });
+            }
             abstractDao.delete(userAddressTiming);
         }
-        if (partnerAddress.getBusinessTimings() != null && partnerAddress.getBusinessTimings().size() > 0) {
+        /*if (partnerAddress.getBusinessTimings() != null && partnerAddress.getBusinessTimings().size() > 0) {
             partnerAddress.getBusinessTimings().forEach(businessTiming -> abstractDao.delete(businessTiming.getTimeRange()));
-        }
+        }*/
         if (!partnerAddress.getPartnerContactNumbers().isEmpty()) {
             abstractDao.delete(partnerAddress.getPartnerContactNumbers());
         }
         abstractDao.delete(partnerAddress);
+//        transaction.commit();
         return new ResponseDTO();
     }
 
@@ -167,7 +195,7 @@ public class PartnerService {
         User user = userService.getUserRepository().getByUserName(userName);
         if (user == null)
             throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
-        return processPartnerAddress(user.getPartnerAddresses(), user, new ECardDTO());
+        return processPartnerAddress(userAddressTimingRepository.getPartnerAddress(user.getId()), user, new ECardDTO());
     }
 
     public ECardDTO processPartnerAddress(Set<PartnerAddress> partnerAddresses, User user, ECardDTO eCardDTO) {
@@ -267,7 +295,7 @@ public class PartnerService {
         eCardDTO.setExperience(user.getUserExperience() + " " + translator.toLocale("user.experience.label"));
         eCardDTO.setConsultationFee("₹ " + commonUtility.currencyFormat(user.getUserCharges()) + " " + translator.toLocale("consultation.fees.label"));
 
-        return processPartnerAddress(user.getPartnerAddresses(), user, eCardDTO);
+        return processPartnerAddress(userAddressTimingRepository.getPartnerAddress(user.getId()), user, eCardDTO);
     }
 
 

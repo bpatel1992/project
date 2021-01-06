@@ -149,10 +149,10 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "title_id", referencedColumnName = "id")
     private Title title;
-    @ManyToMany()
+    /*@ManyToMany()
     @JoinTable(name = "partner_address_user_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private Set<PartnerAddress> partnerAddresses;
+    private Set<PartnerAddress> partnerAddresses;*/
     @ManyToMany()
     @JoinTable(name = "user_partner_relation_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "partner_id"))
