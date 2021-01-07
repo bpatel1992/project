@@ -97,6 +97,17 @@ public class PartnerController {
         return partnerService.deletePartnerAddress(partnerAddressDTO, new ResponseDTO());
     }
 
+    @ApiOperation(value = "delete business timings details", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})*/
+    @RequestMapping(value = "/oauth2/api/partner/business/timing/delete", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDTO deleteBusinessTiming(@Valid @RequestBody PartnerAddressDTO partnerAddressDTO) throws Exception {
+        logger.info("inside createUpdatePartnerAddress  !!");
+        return partnerService.deleteBusinessTiming(partnerAddressDTO, new ResponseDTO());
+    }
+
     @ApiOperation(value = "Fetch partner address by location", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(value = "/api/get-partner-location-wise", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)

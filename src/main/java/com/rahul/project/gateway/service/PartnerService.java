@@ -166,8 +166,7 @@ public class PartnerService {
 //            EntityManager em = abstractDao.getSession().getEntityManagerFactory().createEntityManager();
 //            em.remove(em.contains(userAddressTiming) ? userAddressTiming : em.merge(userAddressTiming));
             if (userAddressTiming.getBusinessTimings() != null && userAddressTiming.getBusinessTimings().size() > 0) {
-                userAddressTiming.getBusinessTimings().forEach(businessTiming -> {
-                    abstractDao.executeSQLQuery
+                /* abstractDao.executeSQLQuery
                             ("delete from business_timing_time_range_mp where business_timing_id = "
                                     + businessTiming.getId());
                     if (Objects.nonNull(businessTiming.getTimeRange()))
@@ -184,8 +183,8 @@ public class PartnerService {
                                     + businessTiming.getId());
                     abstractDao.executeSQLQuery
                             ("delete from business_timing where id = "
-                                    + businessTiming.getId());
-                });
+                                    + businessTiming.getId());*/
+                userAddressTiming.getBusinessTimings().forEach(this::deleteBusinessT);
             }
             abstractDao.executeSQLQuery
                     ("delete from partner_address_user_mp where user_id = "
@@ -202,10 +201,40 @@ public class PartnerService {
         }
         abstractDao.delete(partnerAddress);
 //        transaction.commit();
+        return responseDTO;
+    }
+
+    public ResponseDTO deleteBusinessTiming(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) throws Exception {
+//        Transaction transaction = abstractDao.getSession().beginTransaction();
+        BusinessTiming businessTiming = abstractDao.getEntityById(BusinessTiming.class, partnerAddressDTO.getId());
+        if (businessTiming == null)
+            throw new BusinessException("user.not.found.info");
+
+        deleteBusinessT(businessTiming);
+
         return new ResponseDTO();
     }
 
-
+    private void deleteBusinessT(BusinessTiming businessTiming) {
+        abstractDao.executeSQLQuery
+                ("delete from business_timing_time_range_mp where business_timing_id = "
+                        + businessTiming.getId());
+        if (Objects.nonNull(businessTiming.getTimeRange()))
+            businessTiming.getTimeRange().forEach(timeRange -> {
+                abstractDao.executeSQLQuery
+                        ("delete from time_range where id = "
+                                + timeRange.getId());
+            });
+        abstractDao.executeSQLQuery
+                ("delete from business_timing_day_mp where business_timing_id = "
+                        + businessTiming.getId());
+        abstractDao.executeSQLQuery
+                ("delete from user_address_business_timing_mp2 where business_timing_id = "
+                        + businessTiming.getId());
+        abstractDao.executeSQLQuery
+                ("delete from business_timing where id = "
+                        + businessTiming.getId());
+    }
     /*public Set<PartnerAddress> fetchUserPartnerAddress(PartnerAddressDTO partnerAddressDTO) {
 
         if (partnerAddressDTO.getIsPartner()) {
