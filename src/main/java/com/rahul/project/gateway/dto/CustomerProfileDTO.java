@@ -40,7 +40,7 @@ public class CustomerProfileDTO {
     private MasterDataDTO language;
     private MasterDataDTO title;
     private Long titleId;
-    private Set<PartnerDTO> partners;
+    //    private Set<PartnerDTO> partners;
     private Long partnerId;
     private MasterDataDTO profession;
     private Set<PartnerAddressDTO> partnerAddresses;
@@ -59,4 +59,8 @@ public class CustomerProfileDTO {
     private String degree;
     private String awardRecognition;
 
+    private String fbLink;
+    private String youtubeLink;
+    private String instagramLink;
+    private String twitterLink;
 }

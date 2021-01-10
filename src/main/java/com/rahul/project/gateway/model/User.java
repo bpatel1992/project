@@ -153,11 +153,11 @@ public class User extends BaseEntity {
     @JoinTable(name = "partner_address_user_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Set<PartnerAddress> partnerAddresses;*/
-    @ManyToMany()
+    /*@ManyToMany()
     @JoinTable(name = "user_partner_relation_mp", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "partner_id"))
     @JsonIgnoreProperties("users")
-    private Set<Partner> partners;
+    private Set<Partner> partners;*/
     /*@ManyToMany()
     @JoinTable(name = "appointment_m", joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "partner_id"))

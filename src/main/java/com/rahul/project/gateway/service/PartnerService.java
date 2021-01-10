@@ -8,6 +8,7 @@ import com.rahul.project.gateway.dao.PartnerDao;
 import com.rahul.project.gateway.dto.*;
 import com.rahul.project.gateway.model.Country;
 import com.rahul.project.gateway.model.Partner;
+import com.rahul.project.gateway.model.TimeRange;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.*;
 import com.rahul.project.gateway.utility.CommonUtility;
@@ -205,7 +206,6 @@ public class PartnerService {
     }
 
     public ResponseDTO deleteBusinessTiming(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) throws Exception {
-//        Transaction transaction = abstractDao.getSession().beginTransaction();
         BusinessTiming businessTiming = abstractDao.getEntityById(BusinessTiming.class, partnerAddressDTO.getId());
         if (businessTiming == null)
             throw new BusinessException("user.not.found.info");
@@ -213,6 +213,25 @@ public class PartnerService {
         deleteBusinessT(businessTiming);
 
         return new ResponseDTO();
+    }
+
+    public ResponseDTO deleteTimingInSchedule(PartnerAddressDTO partnerAddressDTO, ResponseDTO responseDTO) throws Exception {
+        TimeRange timeRange = abstractDao.getEntityById(TimeRange.class, partnerAddressDTO.getId());
+        if (timeRange == null)
+            throw new BusinessException("user.not.found.info");
+
+        deleteBusinessT(timeRange);
+
+        return new ResponseDTO();
+    }
+
+    private void deleteBusinessT(TimeRange range) {
+        abstractDao.executeSQLQuery
+                ("delete from business_timing_time_range_mp where time_range_id = "
+                        + range.getId());
+        abstractDao.executeSQLQuery
+                ("delete from time_range where id = "
+                        + range.getId());
     }
 
     private void deleteBusinessT(BusinessTiming businessTiming) {

@@ -5,8 +5,9 @@ import com.rahul.project.gateway.crud.annotation.UIBeanSpecifier;
 import com.rahul.project.gateway.dto.BusinessTimingDTO;
 import com.rahul.project.gateway.dto.CustomerProfileDTO;
 import com.rahul.project.gateway.dto.PartnerAddressDTO;
-import com.rahul.project.gateway.dto.PartnerDTO;
-import com.rahul.project.gateway.model.*;
+import com.rahul.project.gateway.model.PartnerAddress;
+import com.rahul.project.gateway.model.User;
+import com.rahul.project.gateway.model.UserAddressTiming;
 import com.rahul.project.gateway.repository.PartnerAddressTimingRepository;
 import com.rahul.project.gateway.repository.UserAddressTimingRepository;
 import com.rahul.project.gateway.repository.UserRepository;
@@ -79,6 +80,7 @@ public class BNECustomerProfile implements BNE {
         profileDTO.setECardUrl(user.getUserName() != null ?
                 environment.getRequiredProperty("gateway.api.url") + "ecard/" + user.getUserName() : null);
 
+/*
         if (profileDTO.getPartners() != null && profileDTO.getPartners().size() > 0) {
             for (PartnerDTO partnerDTO : profileDTO.getPartners()) {
                 if (partnerDTO.getPartnerAddresses() != null && partnerDTO.getPartnerAddresses().size() > 0) {
@@ -97,6 +99,7 @@ public class BNECustomerProfile implements BNE {
                 }
             }
         }
+*/
         if (profileDTO.getPartnerAddresses() != null && profileDTO.getPartnerAddresses().size() > 0) {
             for (PartnerAddressDTO partnerAddress : profileDTO.getPartnerAddresses()) {
                 UserAddressTiming userAddressTiming =
