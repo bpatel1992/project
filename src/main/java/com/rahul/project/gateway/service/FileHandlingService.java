@@ -2,11 +2,13 @@ package com.rahul.project.gateway.service;
 
 import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
+import com.rahul.project.gateway.dto.ResponseDTO;
 import com.rahul.project.gateway.model.Pet;
 import com.rahul.project.gateway.model.User;
 import com.rahul.project.gateway.repository.PetRepository;
 import com.rahul.project.gateway.repository.UserRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
+import com.rahul.project.gateway.utility.Translator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -34,6 +38,8 @@ public class FileHandlingService {
     PetRepository petRepository;
     @Autowired
     private Environment environment;
+    @Autowired
+    private Translator translator;
 
 //    public String uploadFile(String documentId, String userId, MultipartFile files) throws Exception {
 //
@@ -86,6 +92,29 @@ public class FileHandlingService {
         return new FileSystemResource(file.getAbsoluteFile());
     }
 
+    public ResponseDTO saveSymptomCheckerFile(MultipartFile file, String fileName) throws Exception {
+        String base = environment.getRequiredProperty("location.file.symptom.checker");
+        if (checkFileExist(base + fileName))
+            throw new BusinessException(translator.toLocale("file.found", new String[]{fileName}));
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setFileName(saveFile(base, fileName, file));
+        return responseDTO;
+    }
+
+    public ResponseDTO putSymptomCheckerFile(MultipartFile file, String fileName) throws Exception {
+        String base = environment.getRequiredProperty("location.file.symptom.checker");
+        deleteFile(base + fileName);
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setFileName(saveFile(base, fileName, file));
+        return responseDTO;
+    }
+
+    public ResponseDTO deleteSymptomCheckerFile(String fileName) throws Exception {
+        String base = environment.getRequiredProperty("location.file.symptom.checker");
+        deleteFile(base + fileName);
+        return new ResponseDTO();
+    }
+
     public FileSystemResource getAssets(String fileName) {
         String base = environment.getRequiredProperty("location.file.assets");
         File file = new File(base + fileName);
@@ -119,6 +148,39 @@ public class FileHandlingService {
 
     public FileSystemResource getAssetsUserGallery(String randomKey, String fileName) throws Exception {
         return getFile(randomKey, fileName, environment.getRequiredProperty("location.file.gallery"));
+    }
+
+    public String saveFile(String filePath, String fileName, MultipartFile file) throws Exception {
+        String fileExt = file.getOriginalFilename().split("\\.")[1];
+        fileName = (fileName.contains(".") ? fileName.split("\\.")[0] : fileName)
+                + (fileExt.length() > 0 ? "." + fileExt : "");
+        logger.info("fileName=======" + fileName);
+        File outFile = new File(filePath + fileName);
+        outFile.getParentFile().mkdirs();
+        outFile.createNewFile();
+        byte[] bytes = file.getBytes();
+        BufferedOutputStream buffStream = new BufferedOutputStream(new FileOutputStream(outFile));
+        buffStream.write(bytes);
+        buffStream.close();
+        return fileName;
+    }
+
+    public void deleteFile(String absolutePath) {
+        File file = new File(absolutePath);
+        if (file.exists()) {
+            File[] folderFiles = file.listFiles();
+            if (folderFiles != null) {
+                for (File f : folderFiles) {
+                    logger.info("file --> " + f.getName() + " is deleted -> " + f.delete());
+                }
+            } else
+                logger.info("file --> " + file.getName() + " is deleted -> " + file.delete());
+        }
+    }
+
+    public boolean checkFileExist(String absolutePath) {
+        File file = new File(absolutePath);
+        return file.exists();
     }
 
     private FileSystemResource getFile(String randomKey, String fileName, String base) throws Exception {

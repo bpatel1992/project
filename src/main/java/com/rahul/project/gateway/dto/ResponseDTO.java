@@ -23,6 +23,7 @@ public class ResponseDTO {
     private List<String> galleryURLs;
     private Boolean activated;
     private String image;
+    private String fileName;
     private Long id;
     private Boolean allowed;
 
@@ -37,7 +38,13 @@ public class ResponseDTO {
     }
 
     public ResponseDTO(String responseMessage) {
-        this.responseCode = "0000";
-        this.responseMessage = responseMessage;
+        responseMessage = TextSource.getText(responseMessage);
+        if (responseMessage.contains(":")) {
+            this.responseCode = responseMessage.substring(0, responseMessage.lastIndexOf(":"));
+            this.responseMessage = responseMessage.substring(responseMessage.lastIndexOf(":") + 1);
+        } else {
+            this.responseCode = "XXXX";
+            this.responseMessage = responseMessage;
+        }
     }
 }
