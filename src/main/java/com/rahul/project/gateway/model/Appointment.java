@@ -82,6 +82,9 @@ public class Appointment extends BaseEntity {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date modificationDate;
 
+    @Column(name = "is_video_token_generated")
+    private boolean isVideoTokenGenerated;
+
     public enum AppointmentStatusType {
         SCHEDULED, ACTIVE, CANCELLED, MISSED, COMPLETED,PENDING,ARRIVED
     }
