@@ -4,15 +4,18 @@ package com.rahul.project.gateway.video.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.rahul.project.gateway.configuration.BusinessException;
-import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.webclient.WebRequest;
 import com.rahul.project.gateway.model.Appointment;
+import com.rahul.project.gateway.model.StatusType;
 import com.rahul.project.gateway.repository.AppointmentRepository;
+import com.rahul.project.gateway.repository.StatusTypeRepository;
 import com.rahul.project.gateway.utility.WebClientServiceHelper;
+import com.rahul.project.gateway.video.dto.VideoMeetingRequestDTO;
 import com.rahul.project.gateway.video.model.VideoAppointmentMapping;
 import com.rahul.project.gateway.video.model.VideoChannel;
 import com.rahul.project.gateway.video.repository.VideoAppointmentMappingRepository;
 import com.rahul.project.gateway.video.repository.VideoChannelRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @Service
 public class VideoService {
@@ -30,11 +36,9 @@ public class VideoService {
 
     private AppointmentRepository appointmentRepository;
 
-    private AbstractDao abstractDao;
-
-    private final int MAX_PAGABLE_CHAT_MESSAGES = 100;
-
     private WebClientServiceHelper webClient;
+
+    private StatusTypeRepository statusTypeRepository;
 
     @Value("${video.service.baseurl}")
     private String baseurl;
@@ -51,30 +55,46 @@ public class VideoService {
             VideoChannelRepository videoChannelRepository,
             AppointmentRepository appointmentRepository,
             WebClientServiceHelper webClient,
-            AbstractDao abstractDao) {
+            StatusTypeRepository statusTypeRepository) {
         this.videoAppointmentMappingRepository = videoAppointmentMappingRepository;
         this.videoChannelRepository = videoChannelRepository;
         this.appointmentRepository = appointmentRepository;
         this.webClient = webClient;
-        this.abstractDao = abstractDao;
+        this.statusTypeRepository = statusTypeRepository;
     }
 
-    public VideoAppointmentMapping fetchVideoAppointmentMapping(Long appointmentId) throws BusinessException {
-        VideoAppointmentMapping videoAppointmentMapping = videoAppointmentMappingRepository.findByAppointmentId(appointmentId);
+    public String fetchVideoAppointmentMapping(VideoMeetingRequestDTO videoMeetingRequestDTO) throws BusinessException {
+        VideoAppointmentMapping videoAppointmentMapping = videoAppointmentMappingRepository.findByAppointmentId(videoMeetingRequestDTO.getAppointmentId());
         if (Objects.isNull(videoAppointmentMapping)) {
-            videoAppointmentMapping = generateTokenForGivenAppointment(appointmentId);
+            videoAppointmentMapping = generateTokenForGivenAppointment(videoMeetingRequestDTO.getAppointmentId());
             if (Objects.isNull(videoAppointmentMapping)) {
                 throw new BusinessException("Error occurred while joining meeting");
             }
+        }
+        String joiningKey = null;
+        if (Objects.nonNull(videoMeetingRequestDTO.getUserType())
+                && StringUtils.equalsIgnoreCase(videoMeetingRequestDTO.getUserType(), "partner")) {
+            joiningKey = videoAppointmentMapping.getPartnerKey();
+        } else {
+            joiningKey = videoAppointmentMapping.getUserKey();
+        }
+        return joiningKey;
+    }
+
+    public VideoAppointmentMapping fetchVideoAppointmentMappingByJoiningKey(String joiningKey) throws BusinessException {
+        VideoAppointmentMapping videoAppointmentMapping = videoAppointmentMappingRepository.findByUserKeyOrPartnerKey(joiningKey);
+        if (Objects.isNull(videoAppointmentMapping)) {
+            throw new BusinessException("Error occurred while joining meeting");
         }
         return videoAppointmentMapping;
     }
 
 
-    public void generateTokenForNewAppointments() {
-        List<Long> approvedAppointmentStatus = new ArrayList<>();
-        approvedAppointmentStatus.add(Long.valueOf(2));
-        approvedAppointmentStatus.add(Long.valueOf(4));
+    /*public void generateTokenForNewAppointments() {
+        List<StatusType> statusTypeList =
+                statusTypeRepository.findByStatusTypeNameIn(newArrayList(Appointment.AppointmentStatusType.ACTIVE.name(),
+                        Appointment.AppointmentStatusType.SCHEDULED.name()));
+        List<Long> approvedAppointmentStatus = statusTypeList.stream().map(StatusType::getId).collect(Collectors.toList());
         List<Appointment> appointmentList =
                 appointmentRepository.findAppointmentsByAppointmentTypeAndStatus("Online Consultation", Boolean.FALSE,
                         approvedAppointmentStatus);
@@ -83,12 +103,13 @@ public class VideoService {
             buildAndSaveVideoAppointmentMapping(appointment);
         });
 
-    }
+    }*/
 
     public VideoAppointmentMapping generateTokenForGivenAppointment(Long appointmentId) {
-        List<Long> approvedAppointmentStatus = new ArrayList<>();
-        approvedAppointmentStatus.add(Long.valueOf(2));
-        approvedAppointmentStatus.add(Long.valueOf(4));
+        List<StatusType> statusTypeList =
+                statusTypeRepository.findByStatusTypeNameIn(newArrayList(Appointment.AppointmentStatusType.ACTIVE.name(),
+                        Appointment.AppointmentStatusType.SCHEDULED.name()));
+        List<Long> approvedAppointmentStatus = statusTypeList.stream().map(StatusType::getId).collect(Collectors.toList());
         Appointment appointment =
                 appointmentRepository.findByOnlineConsultationAppointmentId("Online Consultation", appointmentId, Boolean.FALSE,
                         approvedAppointmentStatus);
@@ -115,7 +136,7 @@ public class VideoService {
         if (Objects.isNull(videoAppointmentMapping)) {
             videoAppointmentMapping = buildAndSaveVideoAppointmentMapping(appointment, videoChannel.getSessionId(), token, expiryInMins);
         }
-        if(Objects.nonNull(token)) {
+        if (Objects.nonNull(token)) {
             appointment.setVideoTokenGenerated(Boolean.TRUE);
             appointmentRepository.save(appointment);
         }
@@ -148,7 +169,7 @@ public class VideoService {
         LocalDateTime expiryDateTime = LocalDateTime.ofInstant(time.toInstant(), time.getTimeZone().toZoneId());
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tempDateTime = LocalDateTime.from(now);
-        long minutes = tempDateTime.until(expiryDateTime, ChronoUnit.MINUTES);
+        long minutes = tempDateTime.until(expiryDateTime, ChronoUnit.MINUTES) + 5;
         return minutes;
     }
 
@@ -167,8 +188,9 @@ public class VideoService {
         videoAppointmentMapping.setAppointmentId(appointment.getId());
         videoAppointmentMapping.setAppointmentFromTime(appointment.getAppointmentFromTime());
         videoAppointmentMapping.setExpiryInMin(expiryInMin);
+        videoAppointmentMapping.setUserKey(UUID.randomUUID().toString());
+        videoAppointmentMapping.setPartnerKey(UUID.randomUUID().toString());
         return videoAppointmentMappingRepository.save(videoAppointmentMapping);
     }
-
 
 }
