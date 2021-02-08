@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Documented
 @RestController
 @Validated
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Order(value = 3)
 public @interface RESTController {
 
