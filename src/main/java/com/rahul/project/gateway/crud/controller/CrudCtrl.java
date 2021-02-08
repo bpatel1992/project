@@ -1,13 +1,10 @@
-package com.rahul.project.gateway.controller;
+package com.rahul.project.gateway.crud.controller;
 
 import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.RESTController;
-import com.rahul.project.gateway.crud.controller.CrudCtrlBase;
 import com.rahul.project.gateway.crud.core.CRUDRequest;
 import com.rahul.project.gateway.crud.core.EntityServiceManager;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +39,7 @@ import java.util.Map;
  */
 @RESTController
 @Api(value = "API provide product basic functionalities",
-        description = "This API provides all the functionalities like search, update, etc for the given criteria",tags = { "Crud services" })
+        description = "This API provides all the functionalities like search, update, etc for the given criteria", tags = {"Crud services"})
 public class CrudCtrl {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -60,7 +57,7 @@ public class CrudCtrl {
      * @return CRUDResponse
      */
     @ApiOperation(value = "This API provides all the functionalities like search, update, etc for the given criteria. " +
-             "Sample request payload : " +
+            "Sample request payload : " +
             "{\n" +
             "    \"commonParamHash\": {\n" +
             "        \"entityName\": \"User\" - Entity name for which the criteria is to be applied,\n" +
@@ -94,9 +91,7 @@ public class CrudCtrl {
     @RequestMapping(method = RequestMethod.POST, value = {"/api/crud", "/oauth2/api/crud"})
     public Map<String, Object> genericOperation(@RequestBody CRUDRequest request) throws BusinessException {
 //        logger.info("request is {}.", request);
-        crudCtrlBase.setCRUDRequest(request);
-        crudCtrlBase.setRepository(entityServiceManager.serviceForEntity(request.entityName()));
-        return crudCtrlBase.executeOperation();
+        return crudCtrlBase.executeOperation(request, entityServiceManager.serviceForEntity(request.entityName()));
     }
 
 }

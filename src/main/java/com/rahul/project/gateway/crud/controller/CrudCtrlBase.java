@@ -57,14 +57,12 @@ public class CrudCtrlBase extends BNEBase {
     EntityServiceManager entityServiceManager;
     @Autowired
     ObjectUtil objectUtil;
-    private CRUDRequest CRUDRequest;
     @Autowired
     private UIBeanMapper uiBeanMapper;
 
 //    private boolean checkPrivilege = false;
 
     //    private Map<String, Privilege> privilegeHash = new HashMap<>();
-    private BaseRepository repository = null;
 
     public static void copyNonNullProperties(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
@@ -81,14 +79,6 @@ public class CrudCtrlBase extends BNEBase {
         }
         String[] result = new String[emptyNames.size()];
         return emptyNames.toArray(result);
-    }
-
-    public BaseRepository getRepository() {
-        return repository;
-    }
-
-    public void setRepository(BaseRepository repository) {
-        this.repository = repository;
     }
 
     private boolean canTakeAction(String privilege) {
@@ -158,10 +148,10 @@ public class CrudCtrlBase extends BNEBase {
         return isExist;
     }
 
-    public <T, ID> Page<T> findAll(BaseRepository<T, ID> repo) {
+    public <T, ID> Page<T> findAll(BaseRepository<T, ID> repo, CRUDRequest request) {
         Page<T> page = null;
         if (canTakeAction(READ)) {
-            page = repo.findAll(this.request().pageRequest());
+            page = repo.findAll(request.pageRequest());
             //Sort sort= Sort.by(Sort.Order.asc(""));
 //			PageRequest pageRequest=PageRequest.of(0,10,Sort.unsorted());
         }
@@ -176,29 +166,29 @@ public class CrudCtrlBase extends BNEBase {
         return list;
     }
 
-    public <T, ID> Page<?> search(BaseRepository<T, ID> repo, String namedQ) {
+    public <T, ID> Page<?> search(BaseRepository<T, ID> repo, String namedQ, CRUDRequest request) {
         Page<?> result = null;
         if (canTakeAction(READ)) {
-            result = repo.executeNamedQuery(namedQ, this.request().getObjectHash(), this.request().pageRequest());
+            result = repo.executeNamedQuery(namedQ, request.getObjectHash(), request.pageRequest());
         }
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    public <T, ID> Page<T> search(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash) throws BusinessException {
+    public <T, ID> Page<T> search(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash, CRUDRequest request) throws BusinessException {
         Page<T> list = null;
         if (canTakeAction(READ)) {
-            list = (Page<T>) repo.evaluateQual(objHash, this.request().pageRequest());
+            list = (Page<T>) repo.evaluateQual(objHash, request.pageRequest());
         }
         return list;
     }
 
     @SuppressWarnings("unchecked")
     public <T, ID> Page<T> searchMerged(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash,
-                                        ApplicationMap<String, Object> conditionalHash) throws BusinessException {
+                                        ApplicationMap<String, Object> conditionalHash, CRUDRequest request) throws BusinessException {
         Page<T> list = null;
         if (canTakeAction(READ)) {
-            list = (Page<T>) repo.evaluateQual(objHash, conditionalHash, this.request().pageRequest());
+            list = (Page<T>) repo.evaluateQual(objHash, conditionalHash, request.pageRequest());
         }
         return list;
     }
@@ -228,12 +218,12 @@ public class CrudCtrlBase extends BNEBase {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> executeOperation() {
+    public Map<String, Object> executeOperation(CRUDRequest request, BaseRepository repository) {
         Map<String, Object> response = null;
         CRUDResponse CRUDResponse = null;
-        String crudOperation = this.request().stringValue("C_operation");
+        String crudOperation = request.stringValue("C_operation");
         try {
-            CRUDResponse = invokeCrudOperation(crudOperation);
+            CRUDResponse = invokeCrudOperation(crudOperation, request, repository);
             response = new ObjectMapper().convertValue(CRUDResponse, Map.class);
         } catch (Exception e) {
             logger.error("Exception in CRUD operation ", e);
@@ -243,70 +233,73 @@ public class CrudCtrlBase extends BNEBase {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private CRUDResponse invokeCrudOperation(String operation) throws BusinessException {
+    private CRUDResponse invokeCrudOperation(String operation, CRUDRequest request, BaseRepository repository) throws BusinessException {
         Object result = null;
         switch (operation) {
             case CREATE:
-                result = this.save(this.request().entityObject(), repository);
+                result = this.save(request.entityObject(), repository);
                 break;
             case SAVE_ALL:
-                result = this.save(this.request().entityObject(), repository);
+                result = this.save(request.entityObject(), repository);
                 break;
             case READ:
-                result = this.findAll(repository);
+                result = this.findAll(repository, request);
                 break;
             case FIND_BY_ID:
-                result = this.findById(this.request().getHeaderId(repository), repository);
+                result = this.findById(request.getHeaderId(repository), repository);
                 break;
             case FIND_ALL_BY_ID:
-                result = this.findAllById(this.request().getHeaderIdArray(), repository);
+                result = this.findAllById(request.getHeaderIdArray(), repository);
                 break;
             case SEARCH:
-                result = searchResult(this.request().getObjectHash(), repository);
+                result = searchResult(request.getObjectHash(), repository, request);
                 break;
             case SEARCH_MERGED:
-                result = searchResult(this.request().getObjectHash(), this.request().getConditionalHash(), repository);
+                result = searchResult(request.getObjectHash(), request.getConditionalHash(), repository, request);
                 break;
             case NAMED_Q:
-                result = repository.executeNamedQuery(this.request().getNamedQuery(), this.request().getObjectHash(),
-                        this.request().pageRequest());
+                result = repository.executeNamedQuery(request.getNamedQuery(), request.getObjectHash(),
+                        request.pageRequest());
                 break;
             case UPDATE:
-                result = this.update(this.request().entityObject(), repository, this.request().getHeaderId(repository));
+                result = this.update(request.entityObject(), repository, request.getHeaderId(repository));
                 break;
             case DELETE:
-                this.delete(this.request().entityObject(), repository);
+                this.delete(request.entityObject(), repository);
                 break;
             case DELETE_BY_ID:
-                this.deleteById(this.request().getHeaderId(repository), repository);
+                this.deleteById(request.getHeaderId(repository), repository);
                 break;
             case DELETE_ALL_BY_ID:
-                this.delete(this.request().getHeaderIdArray(), repository);
+                this.delete(request.getHeaderIdArray(), repository);
                 break;
             default:
                 return new CRUDResponse(true, OPERATION_UNDEFINED);
         }
-        return apiResult(result);
+        return apiResult(result, request);
     }
 
-    private Object searchResult(ApplicationMap<String, Object> objHash, BaseRepository<?, ?> repository) throws BusinessException {
-        return objectUtil.isNonEmptyMap(objHash) ? this.search(repository, objHash) : this.findAll(repository);
+    private Object searchResult(ApplicationMap<String, Object> objHash, BaseRepository<?, ?> repository, CRUDRequest request) throws BusinessException {
+        return objectUtil.isNonEmptyMap(objHash) ? this.search(repository, objHash, request) :
+                this.findAll(repository, request);
     }
 
-    private Object searchResult(ApplicationMap<String, Object> objHash, ApplicationMap<String, Object> conditionalHash, BaseRepository<?, ?> repository) throws BusinessException {
-        return objectUtil.isNonEmptyMap(objHash) || objectUtil.isNonEmptyMap(conditionalHash) ? this.searchMerged(repository, objHash, conditionalHash) : this.findAll(repository);
+    private Object searchResult(ApplicationMap<String, Object> objHash, ApplicationMap<String, Object> conditionalHash,
+                                BaseRepository<?, ?> repository, CRUDRequest request) throws BusinessException {
+        return objectUtil.isNonEmptyMap(objHash) || objectUtil.isNonEmptyMap(conditionalHash) ?
+                this.searchMerged(repository, objHash, conditionalHash, request) : this.findAll(repository, request);
     }
 
-    private CRUDResponse apiResult(Object result) throws BusinessException {
-        String uiBeanId = this.request().uiBeanId();
+    private CRUDResponse apiResult(Object result, CRUDRequest request) throws BusinessException {
+        String uiBeanId = request.uiBeanId();
         if (uiBeanId != null) {
 //             list= ((PageImpl) result).getContent();
             List<?> list = (List) uiBeanMapper.beanForId(uiBeanId, result);
             return new CRUDResponse(new PageImpl<>(list, ((PageImpl) result).getPageable(), ((PageImpl) result).getTotalElements()));
         }
-        String uiBean = this.request().uiBean();
+        String uiBean = request.uiBean();
         if (uiBean != null) {
-            String crudOperation = this.request().stringValue("C_operation");
+            String crudOperation = request.stringValue("C_operation");
             if (UPDATE.equalsIgnoreCase(crudOperation)) {
                 result = uiBeanMapper.updateObj(uiBean, result);
             } else if (CREATE.equalsIgnoreCase(crudOperation)) {
@@ -317,20 +310,5 @@ public class CrudCtrlBase extends BNEBase {
             }
         }
         return new CRUDResponse(result);
-    }
-
-
-    /**
-     * This must be implemented by the respective controller that extends this
-     * BaseCrudCtrl class
-     *
-     * @return the generalized User Request
-     */
-    public CRUDRequest request() {
-        return this.CRUDRequest;
-    }
-
-    public void setCRUDRequest(CRUDRequest CRUDRequest) {
-        this.CRUDRequest = CRUDRequest;
     }
 }
