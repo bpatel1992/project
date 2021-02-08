@@ -18,44 +18,44 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-@Indexed(index = "symptom_index")
+@Indexed(index = "behaviour_index")
 @Entity
 @Data
-@Table(name = "symptom_m")
+@Table(name = "behaviour_m")
 //@Analyzer(impl = CustomLowerCaseAnalyzer.class)
-@AnalyzerDef(name = "custom_analyzer", tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class), filters = {
+@AnalyzerDef(name = "behaviour_custom_analyzer", tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class), filters = {
         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params =
                 {@Parameter(name = "language", value = "English")}),
         @TokenFilterDef(factory = EdgeNGramFilterFactory.class, params = {@Parameter(name = "maxGramSize", value = "15")})
 
 })
-public class Symptom implements Serializable {
+public class Behaviour implements Serializable {
 
     @Id
     @NumericField
-    @SequenceGenerator(name = "symptom_gen", allocationSize = 1, sequenceName = "symptom_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "symptom_gen")
+    @SequenceGenerator(name = "behaviour_gen", allocationSize = 1, sequenceName = "behaviour_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "behaviour_gen")
     private Long id;
 
     @Field(store = Store.YES, analyzer = @Analyzer(definition = "custom_analyzer"/*impl = CustomLowerCaseAnalyzer.class*/))
-    @Column(name = "symptom_name", length = 100)
-    private String symptomName;
+    @Column(name = "behaviour_name", length = 100)
+    private String behaviourName;
     @Column(name = "code", length = 50)
     private String code;
     @Basic
     @Column(name = "image_name")
     private String imageName;
     @ManyToOne
-    @JoinColumn(name = "symptom_node")
-    @JsonIgnoreProperties({"symptomNode", "symptomNodeAssessments"})
-    private SymptomNode symptomNode;
+    @JoinColumn(name = "behaviour_node")
+    @JsonIgnoreProperties({"behaviourNode", "behaviourNodeAssessments"})
+    private SymptomNode behaviourNode;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "symptomEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "behaviourEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @MapKey(name = "localizedId.locale")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
-    private Map<String, LocalizedSymptom> localizations = new HashMap<>();
+    private Map<String, LocalizedBehaviour> localizations = new HashMap<>();
 
     @JsonInclude()
     @Transient
@@ -68,8 +68,8 @@ public class Symptom implements Serializable {
 
     /*@IndexedEmbedded
     @ManyToMany // owner side: it doesn't have mappedBy, and can decide how the association is mapped: with a join table
-    @JoinTable(name = "symptom_pet_type_mp",
-            joinColumns = {@JoinColumn(name = "symptom_id", referencedColumnName = "id")},
+    @JoinTable(name = "behaviour_pet_type_mp",
+            joinColumns = {@JoinColumn(name = "behaviour_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "pet_type_id", referencedColumnName = "id")})
     private Set<PetType> petTypes;*/
 

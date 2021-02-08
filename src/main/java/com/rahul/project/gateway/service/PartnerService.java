@@ -335,6 +335,7 @@ public class PartnerService {
         eCardDTO.setBio(user.getBio());
         eCardDTO.setUserCharges(user.getUserCharges());
         eCardDTO.setUserExperience(user.getUserExperience());
+        eCardDTO.setAttendantId(user.getId());
         return eCardDTO;
     }
 
@@ -343,7 +344,7 @@ public class PartnerService {
         ECardDTO eCardDTO = new ECardDTO();
         Boolean partnerUserNamePresent = false;
         User user = userService.getUserRepository().getByUserName(userName);
-        Partner partner;
+        Partner partner = new Partner();
         if (user == null)
             throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
         if (partnerUserName != null) {
@@ -354,12 +355,12 @@ public class PartnerService {
         } else {
             List<Authority> collect = user.getAuthorities().stream().filter(authority -> "ROLE_PARTNER".equalsIgnoreCase(authority.getName())).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(collect)) {
-                Set<Partner> partners = userPartnerRelationMPRepository.byUserAndRelation(user.getId(), "Owner");
+                /*Set<Partner> partners = userPartnerRelationMPRepository.byUserAndRelation(user.getId(), "Owner");
                 if (CollectionUtils.isEmpty(partners))
                     throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
                 else {
                     partner = partners.iterator().next();
-                }
+                }*/
             } else {
                 throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
             }

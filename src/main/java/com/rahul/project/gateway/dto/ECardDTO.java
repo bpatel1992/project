@@ -12,6 +12,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ECardDTO {
     private String name;//": "Dr. Rishi Sood",
+    private Long attendantId;
     private String bio;
     private BigDecimal userCharges;
     private String consultationFee;

@@ -376,6 +376,10 @@ public class CommonUtility {
 //    }
 
     public String currencyFormat(BigDecimal n) {
-        return NumberFormat.getInstance(Locale.US).format(n);
+        try {
+            return NumberFormat.getInstance(Locale.US).format(n);
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

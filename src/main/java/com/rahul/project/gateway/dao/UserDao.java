@@ -134,8 +134,16 @@ public class UserDao implements IUserDao {
                 throw new BusinessException("password.incorrect");
             if (!user.getActivated())
                 throw new BusinessException(translator.toLocale("user.not.activated", new String[]{userName}));
-        } else
-            throw new BusinessException(translator.toLocale("user.type.not.found", new String[]{userName, userAuthority}));
+        } else {
+            if ("ROLE_CUSTOMER".equalsIgnoreCase(userAuthority))
+                throw new BusinessException("customer.not.found");
+            else if ("ROLE_PARTNER".equalsIgnoreCase(userAuthority))
+                throw new BusinessException("partner.not.found");
+            else
+                throw new BusinessException("admin.not.found");
+        }
+
+//            throw new BusinessException(translator.toLocale("user.type.not.found", new String[]{userName, userAuthority}));
         return user;
     }
 

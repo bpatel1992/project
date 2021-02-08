@@ -7,8 +7,6 @@ import com.rahul.project.gateway.dto.enablex.CreateRoomDTO;
 import com.rahul.project.gateway.service.AppointmentService;
 import com.rahul.project.gateway.service.EnableXService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +57,7 @@ public class AppointmentController {
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})*/
-    @RequestMapping(path = {"/oauth2/api/appointment/schedule"}, method = RequestMethod.GET,
+    @RequestMapping(path = {"/oauth2/api/appointment/schedule"}, method = {RequestMethod.GET, RequestMethod.POST},
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateAppointmentDto getSchedule(@Valid @RequestBody CreateAppointmentDto createAppointmentDto) throws Exception {
         return appointmentService.getAvailability(createAppointmentDto);
@@ -69,7 +67,7 @@ public class AppointmentController {
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})*/
-    @RequestMapping(path = {"/oauth2/api/appointment/getAvailableDatesForNext7days"}, method = RequestMethod.GET,
+    @RequestMapping(path = {"/oauth2/api/appointment/getAvailableDatesForNext7days"}, method = {RequestMethod.GET, RequestMethod.POST},
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateAppointmentDto getAvailableDates(@Valid @RequestBody CreateAppointmentDto createAppointmentDto) throws Exception {
         return appointmentService.getAvailableDatesForNext7days(createAppointmentDto);
@@ -79,7 +77,7 @@ public class AppointmentController {
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})*/
-    @RequestMapping(path = {"/oauth2/api/appointment/updateCustomerArrivalStatus"}, method = RequestMethod.GET,
+    @RequestMapping(path = {"/oauth2/api/appointment/updateCustomerArrivalStatus"}, method = {RequestMethod.GET, RequestMethod.POST},
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean updateCustomerArrivalStatus(@Valid @RequestBody CreateAppointmentDto createAppointmentDto) throws Exception {
         return appointmentService.updateCustomerArrivalStatus(createAppointmentDto);
