@@ -17,6 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "assessment_m")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Assessment implements Serializable {
 
     @Id
@@ -48,7 +49,7 @@ public class Assessment implements Serializable {
 
     public String getLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 
 }

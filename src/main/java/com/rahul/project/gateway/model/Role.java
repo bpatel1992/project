@@ -25,7 +25,7 @@ import java.util.Set;
 public class Role implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "ROLE_GEN", allocationSize = 1, sequenceName = "ROLE_SEQ")
+    @SequenceGenerator(name = "ROLE_GEN", allocationSize = 1, initialValue = 5, sequenceName = "ROLE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_GEN")
     @Column(name = "role_id")
     private Long id;

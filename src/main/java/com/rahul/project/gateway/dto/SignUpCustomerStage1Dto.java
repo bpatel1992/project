@@ -1,11 +1,9 @@
 package com.rahul.project.gateway.dto;
 
-import com.rahul.project.gateway.utility.Patterns;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 /**
  * @author rahul malhotra
@@ -18,7 +16,7 @@ public class SignUpCustomerStage1Dto {
     private String firstName;
     @NotNull(message = "Validator.mandatory")
     private String lastName;
-    @Pattern(regexp = Patterns.Validator_EmailRegEx, message = "Validator.EmailRegMsg")
+    //    @Pattern(regexp = Patterns.Validator_EmailRegEx, message = "Validator.EmailRegMsg")
     private String email;
     private String mobile;
     private Long countryId;
