@@ -24,4 +24,12 @@ public interface AppointmentRepository extends BaseRepository<Appointment, Long>
     @Query(value = "SELECT a FROM Appointment a " +
             "  WHERE a.attendant.id = ?1 and a.appointmentDate= ?2 order by a.appointmentFromTime asc")
     List<Appointment> appointmentListByDate(Long partnerAddress, Date time);
+
+    /*@Query(value = "SELECT a FROM Appointment a " +
+            "  WHERE a.appointmentType.appointmentType = ?1 and a.isVideoTokenGenerated=?2 and a.statusType.id in (?3) and a.appointmentDate = date_add(curdate(),interval 1 day) order by a.appointmentFromTime asc")
+    List<Appointment> findAppointmentsByAppointmentTypeAndStatus(String appointmentType,boolean isVideoTokenGenerated, List<Long> appointmentStatuses);*/
+
+    @Query(value = "SELECT a FROM Appointment a " +
+            "  WHERE a.appointmentType.appointmentType = ?1 and a.id=?2 and a.isVideoTokenGenerated=?3  and a.statusType.id in (?4) order by a.appointmentFromTime asc")
+    Appointment findByOnlineConsultationAppointmentId(String appointmentType,Long appointmentId,boolean isVideoTokenGenerated,List<Long> appointmentStatuses);
 }

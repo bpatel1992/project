@@ -11,6 +11,7 @@ import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.*;
 import com.rahul.project.gateway.utility.CommonUtility;
 import com.rahul.project.gateway.utility.Translator;
+import com.rahul.project.gateway.video.service.VideoService;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -53,6 +54,8 @@ public class AppointmentService {
     private StatusTypeRepository statusTypeRepository;
     @Autowired
     private PartnerClientManagementService partnerClientManagementService;
+    @Autowired
+    private VideoService videoService;
     /**
      * Converter for converting a string Date Value on the DTO into a Code object with type Date
      */
@@ -248,6 +251,10 @@ public class AppointmentService {
             smsService.sendSMS(message, mobileNumber);
             if (!customer.getEmail().isEmpty()) {
                 sendMailService.sendAppointmentBooked(customer, createAppointmentDto, clinic, pet.getName(), attendant.getFirstName());
+            }
+
+            if(StringUtils.equalsAnyIgnoreCase(appointment.getAppointmentType().getAppointmentType(),"Online Consultation")){
+                videoService.buildAndSaveVideoAppointmentMapping(appointment);
             }
 
         }
