@@ -2,7 +2,6 @@ package com.rahul.project.gateway.model.vitals;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rahul.project.gateway.model.LocalizedVaccine;
 import com.rahul.project.gateway.model.LocalizedVitalService;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,7 +69,7 @@ public class VitalService implements Serializable {
     private String modifiedBy;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "departmentEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vitalService", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @MapKey(name = "localizedId.locale")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedVitalService> localizations = new HashMap<>();
@@ -81,7 +80,7 @@ public class VitalService implements Serializable {
 
     public String getLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 
 }

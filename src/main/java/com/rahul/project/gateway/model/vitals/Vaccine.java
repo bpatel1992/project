@@ -74,7 +74,7 @@ public class Vaccine implements Serializable {
     private String modifiedBy;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "departmentEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vaccine", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @MapKey(name = "localizedId.locale")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedVaccine> localizations = new HashMap<>();
@@ -85,7 +85,7 @@ public class Vaccine implements Serializable {
 
     public String getLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 
 }

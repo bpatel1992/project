@@ -86,7 +86,7 @@ public class GroomingAppointmentMapping implements Serializable {
     private String modifiedBy;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "departmentEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vitalService", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @MapKey(name = "localizedId.locale")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedVitalService> localizations = new HashMap<>();
@@ -97,7 +97,7 @@ public class GroomingAppointmentMapping implements Serializable {
 
     public String getLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
-                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : "";
+                ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
 
 }
