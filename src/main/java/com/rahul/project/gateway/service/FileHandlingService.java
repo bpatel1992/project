@@ -20,6 +20,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rahul Malhotra
@@ -90,6 +92,26 @@ public class FileHandlingService {
         String base = environment.getRequiredProperty("location.file.symptom.checker");
         File file = new File(base + fileName);
         return new FileSystemResource(file.getAbsoluteFile());
+    }
+
+    public List<ResponseDTO> symptomCheckerFileList() throws Exception {
+        String base = environment.getRequiredProperty("location.file.symptom.checker");
+        List<ResponseDTO> responseDTOS = new ArrayList<>();
+        File file = new File(base);
+        if (file.exists()) {
+            File[] folderFiles = file.listFiles();
+            if (folderFiles != null) {
+                for (File f : folderFiles) {
+                    ResponseDTO responseDTO = new ResponseDTO(false);
+                    responseDTO.setFileName(f.getName());
+                    responseDTO.setImage(environment.getRequiredProperty("gateway.api.url") + "sc/file/fetch?fileName=" + f.getName());
+                    responseDTOS.add(responseDTO);
+                }
+            } else
+                throw new BusinessException(translator.toLocale("file.not.found"));
+        } else
+            throw new BusinessException(translator.toLocale("file.not.found"));
+        return responseDTOS;
     }
 
     public ResponseDTO saveSymptomCheckerFile(MultipartFile file, String fileName) throws Exception {

@@ -32,6 +32,13 @@ public class ResponseDTO {
         this.responseMessage = TextSource.getText("api.success");
     }
 
+    public ResponseDTO(boolean defaultCodeAndMessage) {
+        if (defaultCodeAndMessage) {
+            this.responseCode = "0000";
+            this.responseMessage = TextSource.getText("api.success");
+        }
+    }
+
     public ResponseDTO(String responseCode, String responseMessage) {
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;

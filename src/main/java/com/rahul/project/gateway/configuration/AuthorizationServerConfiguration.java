@@ -52,11 +52,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .scopes("read", "write", "trust")
                 // .secret("{bcrypt}$2a$16$jLzKwu1oP4XV.IJ0VsR2EeSjfw4O4iq6Hg9/cnj8g327V7dq.xRUG")
                 .secret("{noop}" + environment.getRequiredProperty("spring.security.oauth2.client.registration.my-client.client-secret"))
-                .resourceIds("my_rest_api");
+                .resourceIds("my_rest_api")
 //				.accessTokenValiditySeconds(120);//Access token is only valid for 2 minutes.
-        //.refreshTokenValiditySeconds(120);//Refresh token is only valid for 10 minutes.
-           /* .accessTokenValiditySeconds(120).//Access token is only valid for 2 minutes.
-            refreshTokenValiditySeconds(600);//Refresh token is only valid for 10 minutes.*/
+                //.refreshTokenValiditySeconds(120);//Refresh token is only valid for 10 minutes.
+                .accessTokenValiditySeconds(120).//Access token is only valid for 2 minutes.
+                refreshTokenValiditySeconds(Integer.MAX_VALUE);//Refresh token is only valid for 10 minutes.
     }
 
     @Bean

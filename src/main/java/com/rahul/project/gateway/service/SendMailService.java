@@ -149,7 +149,7 @@ public class SendMailService {
                 "<a href='" + emailConfirmUrl + "'>" + emailConfirmUrl + "</a></td> </tr> " +
 
                 "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>PetShree</span> Team <br>\n" +
-                "care.digipe@mann-india.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
+                "admin@petshree.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
                 "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr>" +
                 "<tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>", true);
 
@@ -367,7 +367,7 @@ public class SendMailService {
 //                "</td> </tr> " +
 //
 //                "<tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;text-align:center;line-height:16px;padding:0 0 27px 0'></td></tr> <tr><td></td></tr><tr><td style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#3b4143;font-size:13px;font-weight:300;line-height:18px;padding:0 0 20px 0'>Thanking you,<br><span class='il'>PetShree</span> Team <br>\n" +
-//                "care.digipe@mann-india.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
+//                "admin@petshree.com </td></tr> </tbody></table></td> <td width='20'></td> </tr> " +
 //                "<tr height='30'><td width='20'></td> <td width='360' colspan='2'></td> <td width='20'></td> </tr></tbody></table> </td> <td width='10'></td> </tr><tr height='15'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr><tr> <td width='10'></td> <td align='center' style='font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#84939d;font-size:10px;line-height:10px;margin:0 0 0 0;padding:0 0 20px 0'>© <span class='il'>PetShree </span> </td><td width='10'></td> </tr>" +
 //                "<tr height='29'> <td width='10'></td> <td width='400'></td> <td width='10'></td> </tr> </tbody></table>", true);
 //

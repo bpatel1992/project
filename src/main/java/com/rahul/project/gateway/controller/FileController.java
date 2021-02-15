@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RESTController
 @Api(value = "API provide product basic functionalities",
         description = "This API provides below functionalities : " + "\n" +
@@ -34,6 +36,12 @@ public class FileController {
     @Autowired
     public FileController(FileHandlingService fileHandlingService) {
         this.fileHandlingService = fileHandlingService;
+    }
+
+    @ApiOperation(value = "Create a symptom checker file", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/oauth2/api/sc/file/list")
+    public List<ResponseDTO> symptomCheckerFileList() throws Exception {
+        return fileHandlingService.symptomCheckerFileList();
     }
 
     @ApiOperation(value = "fetch symptom checker file by file name", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
