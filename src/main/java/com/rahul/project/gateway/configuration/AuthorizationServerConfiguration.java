@@ -55,7 +55,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .resourceIds("my_rest_api")
 //				.accessTokenValiditySeconds(120);//Access token is only valid for 2 minutes.
                 //.refreshTokenValiditySeconds(120);//Refresh token is only valid for 10 minutes.
-                .accessTokenValiditySeconds(120).//Access token is only valid for 2 minutes.
+                .accessTokenValiditySeconds(Integer.MAX_VALUE).//Access token is only valid for 2 minutes.
                 refreshTokenValiditySeconds(Integer.MAX_VALUE);//Refresh token is only valid for 10 minutes.
     }
 

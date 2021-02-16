@@ -371,18 +371,30 @@ public class PartnerService {
 //        eCardDTO = modelMapper.map(eCardFlow, ECardDTO.class);
         eCardDTO.setAddress(partner.getAddress());
         eCardDTO.setAddressLink("https://www.google.com/maps/search/" + partner.getAddress());
-        eCardDTO.setEmail(partner.getEmail());
-        eCardDTO.setEmailLink("mailto:" + partner.getEmail());
-        eCardDTO.setYoutubeLink(partner.getYoutubeLink());
-        eCardDTO.setTwitterLink(partner.getTwitterLink());
-        eCardDTO.setInstagramLink(partner.getInstagramLink());
-        eCardDTO.setFbLink(partner.getFbLink());
+
+        eCardDTO.setEmail(user.getEmail());
+        eCardDTO.setEmailLink("mailto:" + user.getEmail());
+        eCardDTO.setYoutubeLink(user.getYoutubeLink());
+        eCardDTO.setTwitterLink(user.getTwitterLink());
+        eCardDTO.setInstagramLink(user.getInstagramLink());
+        eCardDTO.setFbLink(user.getFbLink());
+
+        eCardDTO.setPhone("+" + user.getCountry().getCode() + " " + user.getMobile());
+        eCardDTO.setPhoneLink("tel:" + "+" + eCardDTO.getPhone());
+
+        eCardDTO.setWhatsAppPhone(eCardDTO.getPhone());
+        String text = translator.toLocale("user.ecard.contact", new String[]{user.getFirstName()});
+        eCardDTO.setWhatsAppLink("https://api.whatsapp.com/send?phone=" + eCardDTO.getPhone()
+                + "&text=" + URLEncoder.encode(text, "UTF-8"));
+
         eCardDTO.setWhatsShareLink("https://api.whatsapp.com/send?text=" +
                 URLEncoder.encode(translator.toLocale("user.ecard.share",
                         new String[]{environment.getRequiredProperty("application.url") + "ecard/" + userName
                                 + (partnerUserNamePresent ? ("/" + partnerUserName) : "")}), "UTF-8"));
-        eCardDTO.setExperience(user.getUserExperience() + " " + translator.toLocale("user.experience.label"));
-        eCardDTO.setConsultationFee("₹ " + commonUtility.currencyFormat(user.getUserCharges()) + " " + translator.toLocale("consultation.fees.label"));
+        eCardDTO.setExperience(user.getUserExperience() != null ?
+                user.getUserExperience() + " " + translator.toLocale("user.experience.label") : null);
+        eCardDTO.setConsultationFee(user.getUserCharges() != null ?
+                "₹ " + commonUtility.currencyFormat(user.getUserCharges()) + " " + translator.toLocale("consultation.fees.label") : null);
 
         return processPartnerAddress(userAddressTimingRepository.getPartnerAddress(user.getId()), user, eCardDTO);
     }

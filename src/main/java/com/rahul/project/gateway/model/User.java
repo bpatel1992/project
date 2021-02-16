@@ -26,7 +26,8 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "user_gen", allocationSize = 1, initialValue = 2, sequenceName = "user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     @Column(name = "user_id")
     private Long id;
     @Basic
