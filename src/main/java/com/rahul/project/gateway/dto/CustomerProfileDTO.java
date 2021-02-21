@@ -63,4 +63,8 @@ public class CustomerProfileDTO {
     private String youtubeLink;
     private String instagramLink;
     private String twitterLink;
+
+    private String jobTitle;
+    private String address;
+    private String webSiteURL;
 }

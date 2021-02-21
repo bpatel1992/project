@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -352,25 +351,25 @@ public class PartnerService {
             partner = partnerRepository.getByUserName(partnerUserName);
             if (partner == null)
                 throw new BusinessException(translator.toLocale("user.not.found", new Object[]{partnerUserName}));
-        } else {
+        } /*else {
             List<Authority> collect = user.getAuthorities().stream().filter(authority -> "ROLE_PARTNER".equalsIgnoreCase(authority.getName())).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(collect)) {
-                /*Set<Partner> partners = userPartnerRelationMPRepository.byUserAndRelation(user.getId(), "Owner");
+                *//*Set<Partner> partners = userPartnerRelationMPRepository.byUserAndRelation(user.getId(), "Owner");
                 if (CollectionUtils.isEmpty(partners))
                     throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
                 else {
                     partner = partners.iterator().next();
-                }*/
+                }*//*
             } else {
                 throw new BusinessException(translator.toLocale("user.not.found", new Object[]{userName}));
             }
-        }
+        }*/
 
 //        partner.setName(userName);
 //        ECardFlow eCardFlow = new ECardFlow(partner);
 //        eCardDTO = modelMapper.map(eCardFlow, ECardDTO.class);
-        eCardDTO.setAddress(partner.getAddress());
-        eCardDTO.setAddressLink("https://www.google.com/maps/search/" + partner.getAddress());
+        eCardDTO.setAddress(user.getAddress());
+        eCardDTO.setAddressLink("https://www.google.com/maps/search/" + user.getAddress());
 
         eCardDTO.setEmail(user.getEmail());
         eCardDTO.setEmailLink("mailto:" + user.getEmail());
@@ -396,7 +395,11 @@ public class PartnerService {
         eCardDTO.setConsultationFee(user.getUserCharges() != null ?
                 "₹ " + commonUtility.currencyFormat(user.getUserCharges()) + " " + translator.toLocale("consultation.fees.label") : null);
 
-        return processPartnerAddress(userAddressTimingRepository.getPartnerAddress(user.getId()), user, eCardDTO);
+        processPartnerAddress(userAddressTimingRepository.getPartnerAddress(user.getId()), user, eCardDTO);
+
+        eCardDTO.setProfession(user.getJobTitle());
+
+        return eCardDTO;
     }
 
 

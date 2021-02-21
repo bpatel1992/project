@@ -173,6 +173,16 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "profession_id", referencedColumnName = "id")
     private Profession profession;
+    @Basic
+    @Column(name = "job_title")
+    private String jobTitle;
+    @Basic
+    @Column(name = "address")
+    @Type(type = "text")
+    private String address;
+    @Basic
+    @Column(name = "web_site_url")
+    private String webSiteURL;
     /*@ManyToMany()
     @JoinTable(name = "user_certificate", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "certificate_id"))
