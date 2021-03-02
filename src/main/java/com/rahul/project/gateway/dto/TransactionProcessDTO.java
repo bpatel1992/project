@@ -16,10 +16,10 @@ public class TransactionProcessDTO {
     private Long id;
     @NotNull(message = "Validator.notNullMsg")
     private Long customerId;
-    @NotNull(message = "Validator.notNullMsg")
     private BigDecimal amount;
     @NotNull(message = "Validator.notNullMsg")
     private Long serviceId;
+    private Long txnTypeId;
     private String redirectURL;
     private Long appointmentId;
     private Long authorityId;

@@ -75,11 +75,14 @@ public class BNEUser implements BNE {
         customerProfileDTO.setProfileImage(user.getProfileImage());
         customerProfileDTO.setImageURL(user.getImageName() != null ?
                 environment.getRequiredProperty("gateway.api.url") + "assets/user/profile?randomKey=" + user.getRandomKey() : null);
-        customerProfileDTO.setAvatarURL(user.getAvatarName() != null ?
+        /*customerProfileDTO.setAvatarURL(user.getAvatarName() != null ?
                 environment.getRequiredProperty("gateway.api.url") +
-                        "assets/user/avatar?randomKey=" + user.getRandomKey() : null);
+                        "assets/user/avatar?randomKey=" + user.getRandomKey() : null);*/
         customerProfileDTO.setCoverURL(user.getCoverName() != null ?
                 environment.getRequiredProperty("gateway.api.url") + "assets/user/cover?randomKey=" + user.getRandomKey() : null);
+
+        if (user.getUserName() != null)
+            customerProfileDTO.setECardUrl(environment.getRequiredProperty("application.url") + "ecard/" + user.getUserName());
 //        customerProfileDTO.setAuthorities(userAuthorityRepository.byUserId(user.getId()));
         customerProfileDTO.setAuthorities(user.getAuthorities());
         List<Authority> collect = user.getAuthorities().stream().filter(authority -> "ROLE_PARTNER".equalsIgnoreCase(authority.getName())).collect(Collectors.toList());
@@ -97,7 +100,7 @@ public class BNEUser implements BNE {
         }
         customerProfileDTO.setGenderId(user.getGender().getId());
         customerProfileDTO.setLanguageCode(user.getPreferLanguage() != null ? user.getPreferLanguage().getCode() : null);
-        customerProfileDTO.setSubscribed(user.getSubscribed());
+//        customerProfileDTO.setSubscribed(user.getSubscribed() != null ? user.getSubscribed() : false);
         return customerProfileDTO;
     }
 }

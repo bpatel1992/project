@@ -24,7 +24,7 @@ import java.util.Map;
 @Api(value = "API provide product basic functionalities",
         description = "This API provides below functionalities : " + "\n" +
                 "1. Process transaction response, " + "\n" +
-                "2. Updates email verification status of user",tags = { "Transaction response services" })
+                "2. Updates email verification status of user", tags = {"Transaction response services"})
 public class ResponseController {
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -59,9 +59,9 @@ public class ResponseController {
         TransactionProcessDTO response = transactionProcessService.processGatewayResponse(transactionProcessDTO);
         if (response.getRedirectURL() != null) {
             model.addAttribute("url", response.getRedirectURL());
-            model.addAttribute("smsInvoice", "notEnabled");
+            model.addAttribute("redirect", "yes");
         } else
-            model.addAttribute("smsInvoice", "enabled");
+            model.addAttribute("redirect", "no");
         logger.info("response status is " + response.getRespKey());
         return "pgResult";
     }
@@ -93,33 +93,6 @@ public class ResponseController {
         }
 
         model.addAttribute("message", message);
-
-        //        TransactionProcessDTO transactionProcessDTO = new TransactionProcessDTO();
-//        Map<String, String[]> map = request.getParameterMap();
-//        HashMap<String, Object> attributes = new HashMap<>();
-//        for (String str : map.keySet()) {
-//            result = (result.equalsIgnoreCase("") ? result : result + ",") + str + "=" + request.getParameter(str);
-//            attributes.put(str, request.getParameter(str));
-//            logger.info(" parameter --> " + str + " param value -->" + request.getParameter(str));
-//        }
-//        model.addAttribute("result", result);
-//
-//        transactionProcessDTO.setTransactionGatewayReferenceId(request.getParameter("gatewayTxnRef"));
-//        transactionProcessDTO.setGatewayName(request.getParameter("gatewayName"));
-//        transactionProcessDTO.setBankName(request.getParameter("bankName"));
-//        transactionProcessDTO.setTransactionId(request.getParameter("systemTxnRef"));
-//        transactionProcessDTO.setStatus(request.getParameter("txnStatus"));
-//
-//        TransactionProcessDTO response = new TransactionProcessDTO();
-////        TransactionProcessDTO response = transactionProcessService.processGatewayHostedUpdate(transactionProcessDTO);
-//        response.setRedirectURL(null);
-//        if (response.getRedirectURL() != null) {
-//            model.addAttribute("url", response.getRedirectURL());
-//            model.addAttribute("smsInvoice", "enabled");
-//        } else
-//            model.addAttribute("smsInvoice", "notEnabled");
-//        logger.info("response status is " + response.getRespKey());
-
         return "verifyEmail";
     }
 

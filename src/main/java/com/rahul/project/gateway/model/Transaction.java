@@ -43,6 +43,10 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "txn_type")
     private TransactionTypes transactionType;
 
+    @ManyToOne
+    @JoinColumn(name = "service_package")
+    private ServicePackage servicePackage;
+
     /*@ManyToOne
     @JsonIgnoreProperties("transactionTypes")
     @JoinColumn(name = "sub_txn_type")

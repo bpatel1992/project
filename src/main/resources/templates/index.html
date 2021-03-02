@@ -292,11 +292,11 @@ button.accent {
 				var url= 'http://localhost:8083/service';
 				var channelUuid;
 				var senderId =1;
-				var receiverId =2
+				var receiverId = 2;
 				var welcomeForm = document.querySelector('#welcomeForm');
 				var dialogueForm = document.querySelector('#dialogueForm');
-				welcomeForm.addEventListener('submit', connect, true)
-				dialogueForm.addEventListener('submit', sendMessage, true)
+				welcomeForm.addEventListener('submit', connect, true);
+				dialogueForm.addEventListener('submit', sendMessage, true);
 
 				var stompClient = null;
 				var name = null;
@@ -317,7 +317,7 @@ button.accent {
 				url: url +'/oauth2/api/private-chat/channel',
 				headers : {
 						"Content-Type": "application/json; charset=utf-8",
-						"Authorization": "Bearer 4805e7af-1a61-4a88-91f8-1252b911932b"
+					"Authorization": "Bearer cc975e83-5e67-47e4-b96a-6abf155388a5"
 				},
 				data: request,
 				async: false,

@@ -1,5 +1,6 @@
 package com.rahul.project.gateway.service;
 
+import com.rahul.project.gateway.configuration.BusinessException;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.FeeDTO;
@@ -50,6 +51,13 @@ public class TransactionProcessService {
             transaction.setStatus(TransactionStatus.FAILED);
         }
         transaction.setAggregatorReferenceNumber(transactionProcessDTO.getTransactionGatewayReferenceId());
+
+        if (transaction.getService() != null) {
+            if (transaction.getService().getId() == 2) {
+
+            }
+        }
+
         abstractDao.saveOrUpdateEntity(transaction);
 
 
@@ -69,21 +77,33 @@ public class TransactionProcessService {
         if (transactionProcessDTO.getServiceId() == 1) {
             Appointment appointment = abstractDao.getEntityById(Appointment.class, transactionProcessDTO.getAppointmentId());
             transaction.setServiceReferenceNumber(appointment.getId());
+            transaction.setAmount(new BigDecimal(String.valueOf(transactionProcessDTO.getAmount())));
+
+            FeeDTO feeDTO = new FeeDTO(transactionProcessDTO.getServiceId(), transactionProcessDTO.getAuthorityId(), transactionProcessDTO.getAmount());
+            feeDTO = processFee(feeDTO);
+            if (feeDTO != null) {
+                transaction.setFee(feeDTO.getFee());
+                transaction.setTax(feeDTO.getTax());
+                transaction.setPayableAmount(transaction.getAmount().add(transaction.getFee().add(transaction.getTax())));
+            } else
+                transaction.setPayableAmount(transaction.getAmount());
+
+        } else if (2 == transactionProcessDTO.getServiceId()) {
+            ServicePackage servicePackage = abstractDao.getEntityById(ServicePackage.class, transactionProcessDTO.getServiceId());
+            if (servicePackage == null)
+                throw new BusinessException("internal.error");
+            transaction.setPayableAmount(servicePackage.getPackageMRP().subtract(servicePackage.getDiscount()));
+            transaction.setServicePackage(servicePackage);
         }
 
-        transaction.setAmount(new BigDecimal(String.valueOf(transactionProcessDTO.getAmount())));
+        transaction.setService(new Services(transactionProcessDTO.getServiceId()));
+        transaction.setTransactionType(new TransactionTypes(transactionProcessDTO.getTxnTypeId()));
+
         transaction.setStatus(TransactionStatus.INPROGRESS);
 
         transaction.setCustomerUserId(sendByUser);
-        FeeDTO feeDTO = new FeeDTO(transactionProcessDTO.getServiceId(), transactionProcessDTO.getAuthorityId(), transactionProcessDTO.getAmount());
-        feeDTO = processFee(feeDTO);
-        if (feeDTO != null) {
-            transaction.setFee(feeDTO.getFee());
-            transaction.setTax(feeDTO.getTax());
-            transaction.setPayableAmount(transaction.getAmount().add(transaction.getFee().add(transaction.getTax())));
-        } else
-            transaction.setPayableAmount(transaction.getAmount());
-        transaction.setService(new Services(transactionProcessDTO.getServiceId()));
+
+
         transaction.setIsApproved(false);
         transaction.setIsReconciled(false);
         transaction.setRedirectUrl(transactionProcessDTO.getRedirectURL());

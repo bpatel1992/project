@@ -34,9 +34,6 @@ public class User extends BaseEntity {
     @Column(name = "activated", columnDefinition = "boolean default false", nullable = false)
     private Boolean activated;
     @Basic
-    @Column(name = "subscribed", columnDefinition = "boolean default false")
-    private Boolean subscribed;
-    @Basic
     @Column(name = "user_name", unique = true)
     private String userName;
     // in months

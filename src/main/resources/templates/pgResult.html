@@ -3,16 +3,16 @@
 <head>
     <title>Payment Aggregator Response</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!--    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>-->
     <script th:inline="javascript">
         /*<![CDATA[*/
 
         var result = /*[[${result}]]*/ 'result';
         var url = /*[[${url}]]*/ 'url';
-        var smsInvoice = /*[[${smsInvoice}]]*/ 'smsInvoice';
+        var redirect = /*[[${redirect}]]*/ 'redirect';
 
         window.onload = function () {
-            if (smsInvoice == "notEnabled") {
+            if (redirect == "yes") {
                 window.location.replace(url);
             } else {
                 AndroidSuccess(result);
@@ -29,9 +29,10 @@
 
 </head>
 <body>
-<lottie-player
+Redirecting...
+<!--<lottie-player
         autoplay background="transparent" loop speed="1" src="https://assets4.lottiefiles.com/packages/lf20_NCgBCz.json"
         style="height: 100vh; width: 100vh">
-</lottie-player>
+</lottie-player>-->
 </body>
 </html>
