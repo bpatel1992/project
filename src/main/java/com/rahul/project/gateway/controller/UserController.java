@@ -211,7 +211,7 @@ public class UserController {
     /*@ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})*/
-    @PostMapping(value = {"/api/user/password/update", "oauth2/api/user/password/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
+    @PostMapping(value = {"/api/user/password/update"}, /*consumes = MediaType.APPLICATION_JSON_VALUE,*/
             produces = MediaType.APPLICATION_JSON_VALUE)
     public OauthResponse passwordUpdateSignUp(@RequestBody SavePasswordAdminDTO savePasswordAdminDTO) throws Exception {
 
@@ -228,6 +228,16 @@ public class UserController {
     public ResponseDTO passwordUpdateNew(@RequestBody SavePasswordAdminDTO savePasswordAdminDTO) throws Exception {
 
         return userService.userPasswordUpdate(savePasswordAdminDTO, new ResponseDTO());
+    }
+
+    @ApiOperation(value = "Set user password", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})*/
+    @PostMapping(value = {"oauth2/api/user/password/set"}, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDTO passwordSet(@RequestBody SetPasswordDTO setPasswordDTO) throws Exception {
+        return userService.passwordSet(setPasswordDTO, new ResponseDTO());
     }
 
     /*  @PostMapping(value = {"/api/login"}, *//*consumes = MediaType.APPLICATION_JSON_VALUE,*//*

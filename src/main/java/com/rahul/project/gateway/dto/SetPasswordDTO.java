@@ -5,16 +5,12 @@ import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 
-
 @Data
-public class SavePasswordAdminDTO {
-
+public class SetPasswordDTO {
     @Pattern(regexp = Patterns.Validator_passwordRegEx, message = "validator.password.reg.msg")
     private String password;
-
-    private String randomKey;
-
-    private String userType;
-
-    private String signUpBy;
+    @Pattern(regexp = Patterns.Validator_passwordRegEx, message = "validator.password.reg.msg")
+    private String confirmPassword;
+    @Pattern(regexp = Patterns.Validator_passwordRegEx, message = "validator.password.reg.msg")
+    private String oldPassword;
 }

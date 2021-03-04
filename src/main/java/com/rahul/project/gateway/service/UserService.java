@@ -18,7 +18,6 @@ import com.rahul.project.gateway.utility.Translator;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -26,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
@@ -39,10 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Rahul Malhotra
@@ -470,6 +465,31 @@ public class UserService {
             }
         }
         return translator.toLocale("user.image.update.success");
+    }
+
+    public ResponseDTO passwordSet(SetPasswordDTO setPasswordDTO, ResponseDTO responseDTO) throws BusinessException {
+        User user;
+        if (commonUtility.getLoggedInUser() != null) {
+            user = abstractDao.getEntityById(User.class, commonUtility.getLoggedInUser());
+        } else {
+            throw new BusinessException("user.not.found.info");
+        }
+
+        // login type self
+        String loginType = "self";
+        UserLoginType loginTypeEntity = userLoginTypeRepository.getByLoginType(loginType);
+        UserLoginPassword userLoginPassword = userLoginPasswordRepository.getByUserAndLoginType(user, loginTypeEntity);
+        if (userLoginPassword.getPassword().equalsIgnoreCase(passwordUtil.convertToAES(setPasswordDTO.getOldPassword()))) {
+            if (setPasswordDTO.getPassword().equalsIgnoreCase(setPasswordDTO.getConfirmPassword()))
+                userLoginPassword.setPassword(passwordUtil.convertToAES(setPasswordDTO.getPassword().trim()));
+            else
+                throw new BusinessException("user.password.does.not.match");
+        } else
+            throw new BusinessException("user.password.wrong");
+
+        user.setActivated(true);
+        userLoginPasswordRepository.save(userLoginPassword);
+        return responseDTO;
     }
 
     public ResponseDTO userPasswordUpdate(SavePasswordAdminDTO savePasswordAdminDTO, ResponseDTO responseDTO) throws BusinessException {
