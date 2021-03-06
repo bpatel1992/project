@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name = "pet_sign_m", uniqueConstraints = @UniqueConstraint(columnNames = {"assessment_option_id", "assessment_id", "symptom_node_id"}))
+@Table(name = "pet_sign_m", uniqueConstraints =
+@UniqueConstraint(columnNames = {"assessment_option_id", "assessment_id", "symptom_node_id"}))
 public class PetSign implements Serializable {
 
     @Id

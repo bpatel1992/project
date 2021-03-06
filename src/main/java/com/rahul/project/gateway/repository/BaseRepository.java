@@ -50,23 +50,23 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
 
     Page<?> executeNamedQuery(String namedQ, Map<String, Object> qualMap, Pageable pageable);
 
-    default Page<?> evaluateQual(String keys, Object... values) throws BusinessException {
+    default Page<?> evaluateQual(String keys, Object... values) throws Exception {
         return this.evaluateQual(mapFromQualKeys(keys, values));
     }
 
-    default Page<?> evaluateQual(ApplicationMap<String, Object> map) throws BusinessException {
+    default Page<?> evaluateQual(ApplicationMap<String, Object> map) throws Exception {
         return evaluateQual(map, Pageable.unpaged());
     }
 
-    Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Pageable pageable) throws BusinessException;
+    Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Pageable pageable) throws Exception;
 
     Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap,
-                         ApplicationMap<String, Object> conditionalMap, Pageable pageable) throws BusinessException;
+                         ApplicationMap<String, Object> conditionalMap, Pageable pageable) throws Exception;
 
     Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap,
-                         ApplicationMap<String, Object> conditionalMap, Class<?> clz, Pageable pageable) throws BusinessException;
+                         ApplicationMap<String, Object> conditionalMap, Class<?> clz, Pageable pageable) throws Exception;
 
-    Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Class<?> clz, Pageable pageable) throws BusinessException;
+    Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Class<?> clz, Pageable pageable) throws Exception;
 
     default ApplicationMap<String, Object> mapFromQualKeys(String keys, Object... values) {
         ApplicationMap<String, Object> map = new ApplicationMap<>();
@@ -79,7 +79,7 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
         return map;
     }
 
-    default Page<?> evaluateQual(Class<?> clz, Pageable pageable, String keys, Object... values) throws BusinessException {
+    default Page<?> evaluateQual(Class<?> clz, Pageable pageable, String keys, Object... values) throws Exception {
         ApplicationMap<String, Object> map = new ApplicationMap<>();
         String[] keysList = keys.split("~");
         for (int i = 0; i < keysList.length; i++) {
@@ -88,7 +88,7 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
         return this.evaluateQual(mapFromQualKeys(keys, values), clz, pageable);
     }
 
-    default Object evaluateQualToObject(Class<?> clz, String keys, Object... values) throws BusinessException {
+    default Object evaluateQualToObject(Class<?> clz, String keys, Object... values) throws Exception {
         Page<?> page = evaluateQual(clz, Pageable.unpaged(), keys, values);
         if (page == null || page.getContent() == null || page.getContent().isEmpty()) {
             throw new BusinessException(

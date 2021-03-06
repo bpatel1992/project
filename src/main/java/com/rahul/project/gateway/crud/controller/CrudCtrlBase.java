@@ -175,7 +175,7 @@ public class CrudCtrlBase extends BNEBase {
     }
 
     @SuppressWarnings("unchecked")
-    public <T, ID> Page<T> search(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash, CRUDRequest request) throws BusinessException {
+    public <T, ID> Page<T> search(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash, CRUDRequest request) throws Exception {
         Page<T> list = null;
         if (canTakeAction(READ)) {
             list = (Page<T>) repo.evaluateQual(objHash, request.pageRequest());
@@ -185,7 +185,7 @@ public class CrudCtrlBase extends BNEBase {
 
     @SuppressWarnings("unchecked")
     public <T, ID> Page<T> searchMerged(BaseRepository<T, ID> repo, ApplicationMap<String, Object> objHash,
-                                        ApplicationMap<String, Object> conditionalHash, CRUDRequest request) throws BusinessException {
+                                        ApplicationMap<String, Object> conditionalHash, CRUDRequest request) throws Exception {
         Page<T> list = null;
         if (canTakeAction(READ)) {
             list = (Page<T>) repo.evaluateQual(objHash, conditionalHash, request.pageRequest());
@@ -233,7 +233,7 @@ public class CrudCtrlBase extends BNEBase {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private CRUDResponse invokeCrudOperation(String operation, CRUDRequest request, BaseRepository repository) throws BusinessException {
+    private CRUDResponse invokeCrudOperation(String operation, CRUDRequest request, BaseRepository repository) throws Exception {
         Object result = null;
         switch (operation) {
             case CREATE:
@@ -279,13 +279,13 @@ public class CrudCtrlBase extends BNEBase {
         return apiResult(result, request);
     }
 
-    private Object searchResult(ApplicationMap<String, Object> objHash, BaseRepository<?, ?> repository, CRUDRequest request) throws BusinessException {
+    private Object searchResult(ApplicationMap<String, Object> objHash, BaseRepository<?, ?> repository, CRUDRequest request) throws Exception {
         return objectUtil.isNonEmptyMap(objHash) ? this.search(repository, objHash, request) :
                 this.findAll(repository, request);
     }
 
     private Object searchResult(ApplicationMap<String, Object> objHash, ApplicationMap<String, Object> conditionalHash,
-                                BaseRepository<?, ?> repository, CRUDRequest request) throws BusinessException {
+                                BaseRepository<?, ?> repository, CRUDRequest request) throws Exception {
         return objectUtil.isNonEmptyMap(objHash) || objectUtil.isNonEmptyMap(conditionalHash) ?
                 this.searchMerged(repository, objHash, conditionalHash, request) : this.findAll(repository, request);
     }

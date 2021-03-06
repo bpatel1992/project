@@ -155,7 +155,7 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
     }
 
     @Override
-    public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Class<?> clz, Pageable pageable) throws BusinessException {
+    public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Class<?> clz, Pageable pageable) throws Exception {
         return evaluateQual(qualifierMap, null, clz, pageable);
     }
 
@@ -172,7 +172,7 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, ApplicationMap<String, Object> conditionalMap
-            , Class<?> clz, Pageable pageable) throws BusinessException {
+            , Class<?> clz, Pageable pageable) throws Exception {
         ObjectUtil objectUtil = new ObjectUtil();
         if (objectUtil.isNonEmptyMap(qualifierMap) && objectUtil.isNonEmptyMap(conditionalMap)) {
             return null;
@@ -200,23 +200,89 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
             cQ.orderBy(orderList);
         }
         TypedQuery<?> tQ = this.entityManager.createQuery(cQ);
+        long totalContentSize;
+        if (conditionalMap != null && conditionalMap.size() > 0) {
+            totalContentSize = evaluateCountQual(qualifierMap, conditionalMap);
+        } else {
+            totalContentSize = evaluateCountQual(qualifierMap);
+        }
         if (pageable.isPaged()) {
             tQ.setFirstResult((int) pageable.getOffset());
             tQ.setMaxResults(pageable.getPageSize());
         }
         List<?> content = tQ.getResultList();
-        return new PageImpl(content, pageable, null == content ? 0l : content.size());
+        return new PageImpl(content, pageable, totalContentSize);
 
+    }
+
+    public long evaluateCountQual(ApplicationMap<String, Object> qualifierMap,
+                                  ApplicationMap<String, Object> qualifierMapD) throws Exception {
+        Long total;
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cQ = cb.createQuery(Long.class);
+        Root root = getRoot(cQ, qualifierMap, qualifierMapD, cb);
+        cQ.select(cb.count(root));
+        total = entityManager.createQuery(cQ).getSingleResult();
+        return total;
+    }
+
+    private long evaluateCountQual(ApplicationMap<String, Object> qualifierMap) throws Exception {
+        Long total;
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cQ = cb.createQuery(Long.class);
+        Root root = getRoot(cQ, qualifierMap, cb);
+        cQ.select(cb.count(root));
+        total = entityManager.createQuery(cQ).getSingleResult();
+        return total;
+    }
+
+    private Root getRoot(CriteriaQuery<? extends Number> cQ,
+                         ApplicationMap<String, Object> qualifierMap, CriteriaBuilder cb) throws BusinessException {
+        Root root = cQ.distinct(true).from(this.getDomainClass());
+        Predicate[] predicates = new Predicate[qualifierMap.size()];
+        int i = 0;
+        if (qualifierMap.size() > 0) {
+            for (Entry<String, Object> entry : qualifierMap.entrySet()) {
+                String key = entry.getKey();
+                predicates[i++] = predicateForKey(cb, root, key, entry.getValue());
+            }
+            cQ.where(cb.and(predicates));
+        }
+        return root;
+    }
+
+    private Root getRoot(CriteriaQuery<? extends Number> cQ,
+                         ApplicationMap<String, Object> qualifierMap,
+                         ApplicationMap<String, Object> qualifierMapD, CriteriaBuilder cb) throws BusinessException {
+        Root root = cQ.distinct(true).from(this.getDomainClass());
+        Predicate[] predicates = new Predicate[qualifierMap.size()];
+        int i = 0;
+        if (qualifierMap.size() > 0) {
+            for (Entry<String, Object> entry : qualifierMap.entrySet()) {
+                String key = entry.getKey();
+                predicates[i++] = predicateForKey(cb, root, key, entry.getValue());
+            }
+        }
+        Predicate[] predicatesD = new Predicate[qualifierMapD.size()];
+        i = 0;
+        if (qualifierMapD.size() > 0) {
+            for (Entry<String, Object> entry : qualifierMapD.entrySet()) {
+                String key = entry.getKey();
+                predicatesD[i++] = predicateForKey(cb, root, key, entry.getValue());
+            }
+        }
+        cQ.where(cb.and(predicates), cb.or(predicatesD));
+        return root;
     }
 
     @Override
     public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, ApplicationMap<String, Object> conditionalMap
-            , Pageable pageable) throws BusinessException {
+            , Pageable pageable) throws Exception {
         return evaluateQual(qualifierMap, conditionalMap, this.getDomainClass(), pageable);
     }
 
     @Override
-    public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Pageable pageable) throws BusinessException {
+    public Page<?> evaluateQual(ApplicationMap<String, Object> qualifierMap, Pageable pageable) throws Exception {
         return evaluateQual(qualifierMap, this.getDomainClass(), pageable);
         /**
          * if (qualifierMap == null || qualifierMap.isEmpty()) { return null; }
