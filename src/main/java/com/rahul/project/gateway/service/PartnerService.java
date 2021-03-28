@@ -412,12 +412,20 @@ public class PartnerService {
         enquiry.setMessage(enquiryDTO.getMessage());
         enquiry.setMobile(enquiryDTO.getMobile());
         enquiry.setName(enquiryDTO.getName());
+        if (enquiryDTO.getAttendantId() != null)
+            enquiry.setAttendant(new User(enquiryDTO.getAttendantId()));
         Partner partner = null;
         if (enquiryDTO.getUserName() != null)
             partner = partnerRepository.getByUserName(enquiryDTO.getUserName());
 //        if (partner == null)
 //            throw new BusinessException(translator.toLocale("user.not.found", new String[]{enquiryDTO.getUserName()}));
         enquiry.setPartner(partner);
+
+//        enquiry.setCreationDate(commonUtility.getCalendarConverted(commonUtility.getDateByTimeZone(enquiryDTO.getTimeZone())));
+//        enquiry.setCreationDate(commonUtility.getCurrentDate(enquiryDTO.getTimeZone()));
+        enquiry.setCreationDate(commonUtility.getDateByTimeZoneDate(enquiryDTO.getTimeZone()));
+        enquiry.setModificationDate(enquiry.getCreationDate());
+        enquiry.setTimeZone(enquiryDTO.getTimeZone());
         return abstractDao.saveOrUpdateEntity(enquiry);
     }
 

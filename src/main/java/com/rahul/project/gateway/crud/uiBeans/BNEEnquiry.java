@@ -38,7 +38,7 @@ public class BNEEnquiry implements BNE {
                 enquiryDTO = modelMapper.map(enquiry, EnquiryDTO.class);
                 enquiryDTO.setNameFormatted(commonUtility.getTitle(enquiry.getTitle()) + enquiry.getName());
                 String cId = enquiry.getCountry() != null ? "+" + enquiry.getCountry().getCode().toString() + "-" : null;
-                enquiryDTO.setPhone(cId != null ? cId + enquiry.getMobile() : (enquiry.getMobile() != null ? enquiry.getMobile().toString() : null));
+                enquiryDTO.setPhone(cId != null && enquiry.getMobile() != null ? cId + enquiry.getMobile() : (enquiry.getMobile() != null ? enquiry.getMobile() : null));
 
                 enquiryDTOS.add(enquiryDTO);
             }

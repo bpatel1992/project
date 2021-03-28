@@ -45,9 +45,12 @@ public class Enquiry implements Serializable {
     @ManyToOne
     @JoinColumn(name = "partner_id", referencedColumnName = "id")
     private Partner partner;
+    @ManyToOne
+    @JoinColumn(name = "partner_user_id")
+    private User attendant;
     @Basic
     @Column(name = "mobile")
-    private Long mobile;
+    private String mobile;
     @Basic
     @Column(name = "message")
     @Type(type = "text")
@@ -62,7 +65,9 @@ public class Enquiry implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date modificationDate;
-
+    @Basic
+    @Column(name = "time_zone")
+    private String timeZone;
     public Enquiry(Long id) {
         this.id = id;
     }

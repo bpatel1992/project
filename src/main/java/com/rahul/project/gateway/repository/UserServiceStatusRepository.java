@@ -1,5 +1,7 @@
 package com.rahul.project.gateway.repository;
 
+import com.rahul.project.gateway.model.Services;
+import com.rahul.project.gateway.model.User;
 import com.rahul.project.gateway.model.UserServiceStatus;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "UserServiceStatusRepository")
 public interface UserServiceStatusRepository extends BaseRepository<UserServiceStatus, Long> {
+
+    UserServiceStatus getDistinctByUserIdAndServiceId(User user, Services service);
 
 }

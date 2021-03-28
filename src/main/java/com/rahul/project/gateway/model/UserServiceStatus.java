@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "user_service_status_m")
-public class UserServiceStatus implements Serializable {
+public class UserServiceStatus extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "user_service_status_m_gen", allocationSize = 1, sequenceName = "user_service_status_m_seq")
@@ -40,6 +39,10 @@ public class UserServiceStatus implements Serializable {
     @Column(name = "validity_to_date")
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date validityToDate;
+
+    @Basic
+    @Column(name = "time_zone")
+    private String timeZone;
 
     @Basic
     @CreatedDate

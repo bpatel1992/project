@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Data
 @Entity
 @NoArgsConstructor
-@SequenceGenerator(name = "TransactionTypes_SEQ", allocationSize = 1, sequenceName = "TransactionTypes_SEQ")
-@Table(name = "TRANSACTION_TYPES")
+@SequenceGenerator(name = "transaction_types_seq", allocationSize = 1, sequenceName = "transaction_types_seq")
+@Table(name = "transaction_types")
 public class TransactionTypes implements Serializable {
 
     private final long serialVersionUID = 6734081956196446356L;
@@ -20,13 +20,13 @@ public class TransactionTypes implements Serializable {
     }
 
     @Id
-    @GeneratedValue(generator = "TransactionTypes_SEQ", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "transaction_types_seq", strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "TRANSACTION_CODE")
+    @Column(name = "transaction_code")
     private String transactionCode;
 
-    @Column(name = "TRANSACTION_NAME")
+    @Column(name = "transaction_name")
     private String transactionName;
 }

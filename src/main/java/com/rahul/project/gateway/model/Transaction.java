@@ -141,4 +141,8 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "run_id")
     private SettlementRequest settlementRequest;
 
+    @Basic
+    @Column(name = "time_zone")
+    private String timeZone;
+
 }

@@ -19,6 +19,7 @@ public class TransactionProcessDTO {
     private BigDecimal amount;
     @NotNull(message = "Validator.notNullMsg")
     private Long serviceId;
+    private Long packageId;
     private Long txnTypeId;
     private String redirectURL;
     private Long appointmentId;

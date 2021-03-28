@@ -156,7 +156,7 @@ public class CommonUtility {
             String currentUserName = authentication.getName();
             if (!("admin".equalsIgnoreCase(currentUserName) || "rahul".equalsIgnoreCase(currentUserName)
                     || "petshree27".equalsIgnoreCase(currentUserName)))
-                return Long.parseLong(currentUserName);
+                aLong = Long.parseLong(currentUserName);
         }
         return aLong;
     }
@@ -164,6 +164,18 @@ public class CommonUtility {
     public Calendar getCalendarConverted(String date) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateFormat.parse(date));
+        return calendar;
+    }
+
+    public Calendar getCalendarByTimeZone(String timeZone) throws ParseException {
+        Instant nowUtc = Instant.now();
+        ZoneId zoneId = ZoneId.of(timeZone != null ? timeZone : "Asia/Kolkata");
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nowUtc, zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        SimpleDateFormat dateFormatReport = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        String date = zonedDateTime.format(formatter);
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(zoneId));
+        calendar.setTime(dateFormatReport.parse(date));
         return calendar;
     }
 
@@ -188,9 +200,18 @@ public class CommonUtility {
 
     public Date getDateByTimeZoneDate(String timeZone) throws ParseException {
         Instant nowUtc = Instant.now();
-        ZoneId zoneId = ZoneId.of(timeZone);
+        ZoneId zoneId = ZoneId.of(timeZone != null ? timeZone : "Asia/Kolkata");
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nowUtc, zoneId);
-        return dateFormat.parse(zonedDateTime.format(formatter));
+        Date from = Date.from(zonedDateTime.toInstant());
+//        dateFormat.setTimeZone(TimeZone.getTimeZone(zoneId));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        SimpleDateFormat dateFormatReport = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        String format = zonedDateTime.format(formatter);
+        TimeZone zone = TimeZone.getTimeZone(zoneId);
+//        TimeZone zone = TimeZone.getTimeZone("GMT");
+        dateFormatReport.setTimeZone(zone);
+        Date parse = dateFormatReport.parse(format);
+        return parse;
     }
 
     public String getDateConverted(Calendar time) {

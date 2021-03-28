@@ -10,7 +10,9 @@ import com.rahul.project.gateway.hash.AESSecurity;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.FeeRepository;
 import com.rahul.project.gateway.repository.TransactionRepository;
+import com.rahul.project.gateway.repository.UserServiceStatusRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -38,6 +40,9 @@ public class TransactionProcessService {
     @Autowired
     FeeRepository feeRepository;
 
+    @Autowired
+    UserServiceStatusRepository userServiceStatusRepository;
+
 //    ModelMapper modelMapper;
 
     String SUCCESS_FLAG = "success";
@@ -47,16 +52,32 @@ public class TransactionProcessService {
 
         if ("S".equalsIgnoreCase(transactionProcessDTO.getStatus())) {
             transaction.setStatus(TransactionStatus.SUCCESS);
+            if (transaction.getService() != null) {
+                if (transaction.getService().getId() == 2) {
+                    ServicePackage servicePackage = transaction.getServicePackage();
+                    UserServiceStatus userServiceStatus;
+                    userServiceStatus = userServiceStatusRepository.getDistinctByUserIdAndServiceId(transaction.getCustomerUserId(), new Services(2));
+                    if (userServiceStatus == null) {
+                        userServiceStatus = new UserServiceStatus();
+                        userServiceStatus.setUserId(transaction.getCustomerUserId());
+                        userServiceStatus.setServiceId(new Services(2));
+
+                    }
+                    userServiceStatus.setValidityFromDate(new Date());
+                    userServiceStatus.setValidityToDate(DateUtils.addMonths(new Date(), servicePackage.getValidityInMonths()));
+                    userServiceStatus.setTimeZone(transaction.getTimeZone());
+                    abstractDao.saveOrUpdateEntity(userServiceStatus);
+
+                    User customerUserId = transaction.getCustomerUserId();
+                    customerUserId.setSubscribed(true);
+//                    abstractDao.saveOrUpdateEntity(customerUserId);
+                }
+            }
         } else {
             transaction.setStatus(TransactionStatus.FAILED);
         }
         transaction.setAggregatorReferenceNumber(transactionProcessDTO.getTransactionGatewayReferenceId());
 
-        if (transaction.getService() != null) {
-            if (transaction.getService().getId() == 2) {
-
-            }
-        }
 
         abstractDao.saveOrUpdateEntity(transaction);
 
@@ -70,8 +91,9 @@ public class TransactionProcessService {
     }
 
     public TransactionProcessDTO processGatewayHostedSave(TransactionProcessDTO transactionProcessDTO) throws Exception {
-
-        User sendByUser = abstractDao.getEntityById(User.class, transactionProcessDTO.getCustomerId());
+        Long loggedInUser = commonUtility.getLoggedInUser();
+        User sendByUser = abstractDao.getEntityById(User.class, loggedInUser != null
+                ? loggedInUser : transactionProcessDTO.getCustomerId());
 
         Transaction transaction = new Transaction();
         if (transactionProcessDTO.getServiceId() == 1) {
@@ -89,7 +111,7 @@ public class TransactionProcessService {
                 transaction.setPayableAmount(transaction.getAmount());
 
         } else if (2 == transactionProcessDTO.getServiceId()) {
-            ServicePackage servicePackage = abstractDao.getEntityById(ServicePackage.class, transactionProcessDTO.getServiceId());
+            ServicePackage servicePackage = abstractDao.getEntityById(ServicePackage.class, transactionProcessDTO.getPackageId());
             if (servicePackage == null)
                 throw new BusinessException("internal.error");
             transaction.setPayableAmount(servicePackage.getPackageMRP().subtract(servicePackage.getDiscount()));
@@ -112,7 +134,7 @@ public class TransactionProcessService {
         transaction.setDate(date);
         transaction.setTime(date);
         transaction.setLogTime(date);
-
+        transaction.setTimeZone(transactionProcessDTO.getTimeZone());
         abstractDao.saveOrUpdateEntity(transaction);
 
         transactionProcessDTO.setRespKey(SUCCESS_FLAG);
