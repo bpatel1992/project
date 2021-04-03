@@ -66,6 +66,7 @@ public class TransactionProcessService {
                     userServiceStatus.setValidityFromDate(new Date());
                     userServiceStatus.setValidityToDate(DateUtils.addMonths(new Date(), servicePackage.getValidityInMonths()));
                     userServiceStatus.setTimeZone(transaction.getTimeZone());
+                    userServiceStatus.setStatus(true);
                     abstractDao.saveOrUpdateEntity(userServiceStatus);
 
                     User customerUserId = transaction.getCustomerUserId();

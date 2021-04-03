@@ -55,6 +55,6 @@ public class UserServiceStatus extends BaseEntity {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date modificationDate;
 
-    @Column(name = "status", length = 3)
-    private String status;
+    @Column(name = "service_status", columnDefinition = "boolean default false", nullable = false)
+    private Boolean status;
 }
