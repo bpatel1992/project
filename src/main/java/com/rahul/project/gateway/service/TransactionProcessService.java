@@ -57,14 +57,17 @@ public class TransactionProcessService {
                     ServicePackage servicePackage = transaction.getServicePackage();
                     UserServiceStatus userServiceStatus;
                     userServiceStatus = userServiceStatusRepository.getDistinctByUserIdAndServiceId(transaction.getCustomerUserId(), new Services(2));
+                    Date fromDate;
                     if (userServiceStatus == null) {
                         userServiceStatus = new UserServiceStatus();
                         userServiceStatus.setUserId(transaction.getCustomerUserId());
                         userServiceStatus.setServiceId(new Services(2));
-
-                    }
-                    userServiceStatus.setValidityFromDate(new Date());
-                    userServiceStatus.setValidityToDate(DateUtils.addMonths(new Date(), servicePackage.getValidityInMonths()));
+                        fromDate = new Date();
+                    } else
+                        fromDate = userServiceStatus.getValidityToDate();
+                    userServiceStatus.setValidityFromDate(fromDate);
+                    userServiceStatus.setValidityToDate(DateUtils.addMonths(fromDate, servicePackage.getValidityInMonths()));
+                    userServiceStatus.setPlan(servicePackage);
                     userServiceStatus.setTimeZone(transaction.getTimeZone());
                     userServiceStatus.setStatus(true);
                     abstractDao.saveOrUpdateEntity(userServiceStatus);

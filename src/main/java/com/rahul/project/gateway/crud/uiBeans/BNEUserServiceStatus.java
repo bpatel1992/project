@@ -34,6 +34,8 @@ public class BNEUserServiceStatus implements BNE {
                 UserServiceStatusDTO serviceStatusDTO = modelMapper.map(serviceStatus, UserServiceStatusDTO.class);
                 serviceStatusDTO.setUserId(serviceStatus.getUserId().getId());
                 serviceStatusDTO.setServiceId(serviceStatus.getServiceId().getId());
+                if (serviceStatus.getPlan() != null)
+                    serviceStatusDTO.setPlan(serviceStatus.getPlan().getPackageName());
                 statusDTOS.add(serviceStatusDTO);
             }
         }

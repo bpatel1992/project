@@ -30,6 +30,10 @@ public class UserServiceStatus extends BaseEntity {
     @JoinColumn(name = "service_id")
     private Services serviceId;
 
+    @ManyToOne
+    @JoinColumn(name = "service_package")
+    private ServicePackage plan;
+
     @Basic
     @Column(name = "validity_from_date")
     @Temporal(value = TemporalType.TIMESTAMP)

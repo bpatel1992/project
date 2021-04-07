@@ -13,6 +13,7 @@ public class UserServiceStatusDTO {
     private Long serviceId;
     private Date validityFromDate;
     private Date validityToDate;
+    private String plan;
     private String timeZone;
     private Boolean status;
 }
