@@ -1,6 +1,7 @@
 package com.rahul.project.gateway.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rahul.project.gateway.dto.pet.PetDTO;
 import com.rahul.project.gateway.utility.Patterns;
 import lombok.Data;
 

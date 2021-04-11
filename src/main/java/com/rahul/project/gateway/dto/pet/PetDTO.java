@@ -1,5 +1,8 @@
-package com.rahul.project.gateway.dto;
+package com.rahul.project.gateway.dto.pet;
 
+import com.rahul.project.gateway.dto.GenderDTO;
+import com.rahul.project.gateway.dto.PetBreedDTO;
+import com.rahul.project.gateway.dto.WeightUnitDTO;
 import lombok.Getter;
 import lombok.Setter;
 

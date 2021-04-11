@@ -1,6 +1,7 @@
 package com.rahul.project.gateway.controller;
 
 import com.rahul.project.gateway.configuration.annotations.RESTController;
+import com.rahul.project.gateway.dto.ResponseHandlerDTO;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
 import com.rahul.project.gateway.service.PetService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,6 +44,16 @@ public class PetController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreatePetDTO createPetAdmin(@Valid @RequestBody CreatePetDTO createPetDTO) throws Exception {
         return petService.registerPetAdmin(createPetDTO);
+    }
+
+    @ApiOperation(value = "Get Register Pet details of Customers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
+    @GetMapping(value = "/oauth2/api/pet/fetch", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseHandlerDTO getPetDetails() throws Exception {
+        return new ResponseHandlerDTO();
     }
 
 }

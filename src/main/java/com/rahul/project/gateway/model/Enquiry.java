@@ -48,6 +48,9 @@ public class Enquiry implements Serializable {
     @ManyToOne
     @JoinColumn(name = "partner_user_id")
     private User attendant;
+    @ManyToOne
+    @JoinColumn(name = "customer_user_id")
+    private User customerId;
     @Basic
     @Column(name = "mobile")
     private String mobile;

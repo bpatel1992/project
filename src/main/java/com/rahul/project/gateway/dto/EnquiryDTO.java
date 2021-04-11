@@ -17,15 +17,16 @@ public class EnquiryDTO {
     @NotNull(message = "Validator.notNullMsg")
     private String timeZone;
     private String mobile;
-    @NotNull(message = "Validator.notNullMsg")
+    //    @NotNull(message = "Validator.notNullMsg")
     private String email;
-    @NotNull(message = "Validator.notNullMsg")
+    //    @NotNull(message = "Validator.notNullMsg")
     private Long titleId;
-    @NotNull(message = "Validator.notNullMsg")
+    //    @NotNull(message = "Validator.notNullMsg")
     private String name;
     @NotNull(message = "Validator.notNullMsg")
     private String message;
     private Long attendantId;
+    private Long customerId;
     private String userName;
     private String phone;
     private String nameFormatted;

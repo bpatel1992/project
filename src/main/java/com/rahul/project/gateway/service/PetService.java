@@ -2,7 +2,9 @@ package com.rahul.project.gateway.service;
 
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
+import com.rahul.project.gateway.dto.ResponseHandlerDTO;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
+import com.rahul.project.gateway.dto.pet.PetDTO;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.UserPetRelationMPRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
@@ -55,6 +57,11 @@ public class PetService {
         this.abstractDao = abstractDao;
         this.userPetRelationMPRepository = userPetRelationMPRepository;
         this.commonUtility = commonUtility;
+    }
+
+    public ResponseHandlerDTO<List<PetDTO>> getPetList() throws Exception {
+        Long loggedInUser = commonUtility.getLoggedInUser();
+        return new ResponseHandlerDTO();
     }
 
     public CreatePetDTO registerPetAdmin(CreatePetDTO createPetDTO) throws Exception {

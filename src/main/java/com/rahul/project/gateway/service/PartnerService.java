@@ -407,13 +407,16 @@ public class PartnerService {
         Enquiry enquiry = new Enquiry();//modelMapper.map(enquiryDTO, Enquiry.class);
         if (enquiryDTO.getCountryId() != null)
             enquiry.setCountry(new Country(enquiryDTO.getCountryId()));
-        enquiry.setTitle(new Title(enquiryDTO.getTitleId()));
+        if (enquiryDTO.getTitleId() != null)
+            enquiry.setTitle(new Title(enquiryDTO.getTitleId()));
         enquiry.setEmail(enquiryDTO.getEmail());
         enquiry.setMessage(enquiryDTO.getMessage());
         enquiry.setMobile(enquiryDTO.getMobile());
         enquiry.setName(enquiryDTO.getName());
         if (enquiryDTO.getAttendantId() != null)
             enquiry.setAttendant(new User(enquiryDTO.getAttendantId()));
+        if (enquiryDTO.getCustomerId() != null)
+            enquiry.setCustomerId(new User(enquiryDTO.getCustomerId()));
         Partner partner = null;
         if (enquiryDTO.getUserName() != null)
             partner = partnerRepository.getByUserName(enquiryDTO.getUserName());

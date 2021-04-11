@@ -5,6 +5,7 @@ import com.rahul.project.gateway.dto.DocumentDTO;
 import com.rahul.project.gateway.dto.ECardDTO;
 import com.rahul.project.gateway.dto.EnquiryDTO;
 import com.rahul.project.gateway.dto.ResponseDTO;
+import com.rahul.project.gateway.model.Enquiry;
 import com.rahul.project.gateway.service.PartnerService;
 import com.rahul.project.gateway.utility.Translator;
 import io.swagger.annotations.*;
@@ -25,13 +26,13 @@ import java.lang.invoke.MethodHandles;
         description = "This API provides below functionalities : " + "\n" +
                 "1. Fetch e-card details of the user, " + "\n" +
                 "2. Fetch partner detail by username, " + "\n" +
-                "3. Save enquiry details for partner, "+ "\n" +
-                "4. Fetch e-card assets of partner, "+ "\n" +
-                "5. Fetch e-card assets of user by key, "+ "\n" +
-                "6. Fetch e-card assets of partner by key, "+ "\n" +
-                "7. Delete e-card assets of partner by key, "+ "\n" +
-                "8. Delete e-card assets of user by key, "+ "\n" +
-                "9. Upload partner document by document Id and partner Id",tags = { "E-card services" })
+                "3. Save enquiry details for partner, " + "\n" +
+                "4. Fetch e-card assets of partner, " + "\n" +
+                "5. Fetch e-card assets of user by key, " + "\n" +
+                "6. Fetch e-card assets of partner by key, " + "\n" +
+                "7. Delete e-card assets of partner by key, " + "\n" +
+                "8. Delete e-card assets of user by key, " + "\n" +
+                "9. Upload partner document by document Id and partner Id", tags = {"E-card services"})
 public class ECardController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -68,8 +69,11 @@ public class ECardController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO registerPartner(@Valid @RequestBody EnquiryDTO enquiryDTO) throws Exception {
         logger.info(" inside create enquiry for partner");
-        partnerService.saveEnquiry(enquiryDTO);
-        return new ResponseDTO("0000", translator.toLocale("enquiry.create.success"));
+        Enquiry enquiry = partnerService.saveEnquiry(enquiryDTO);
+        if (enquiry != null)
+            return new ResponseDTO("0000", translator.toLocale("enquiry.create.success"));
+        else
+            return new ResponseDTO("internal.error");
     }
 
     @ApiOperation(value = "Fetch e-card assets of partner", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
