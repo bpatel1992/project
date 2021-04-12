@@ -11,6 +11,8 @@ import com.rahul.project.gateway.utility.CommonUtility;
 import org.hibernate.query.Query;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,6 +33,8 @@ public class PetService {
     private final UserPetRelationMPRepository userPetRelationMPRepository;
     private final ModelMapper modelMapper;
     private final CommonUtility commonUtility;
+    @Autowired
+    Environment environment;
     PropertyMap<CreatePetDTO, Pet> petMapping = new PropertyMap<CreatePetDTO, Pet>() {
         protected void configure() {
             map().getWeightUnit().setId(source.getWeightUnitId());
@@ -67,8 +71,12 @@ public class PetService {
             List<UserPetRelationMP> userPetRelation = userPetRelationMPRepository.getUserPetRelation(loggedInUser);
             if (userPetRelation != null)
                 for (UserPetRelationMP upr : userPetRelation) {
-                    PetListDTO petDTO = modelMapper.map(upr.getId().getPet(), PetListDTO.class);
+                    Pet pet1 = upr.getId().getPet();
+                    PetListDTO petDTO = modelMapper.map(pet1, PetListDTO.class);
                     petDTO.setRelation(upr.getRelationM().getRelationName());
+                    petDTO.setImageURL(pet1.getImageName() != null ?
+                            environment.getRequiredProperty("gateway.api.url")
+                                    + "assets/pet/profile?randomKey=" + pet1.getRandomKey() : null);
                     petDTOS.add(petDTO);
                 }
         }
@@ -76,8 +84,16 @@ public class PetService {
         return responseHandlerDTO;
     }
 
+    public ResponseHandlerDTO deletePetMapping(Long petId) throws Exception {
+        ResponseHandlerDTO responseHandlerDTO = new ResponseHandlerDTO<>();
+        Long loggedInUser = commonUtility.getLoggedInUser();
+        userPetRelationMPRepository.delete(loggedInUser, petId);
+        return responseHandlerDTO;
+    }
+
     public CreatePetDTO registerPetAdmin(CreatePetDTO createPetDTO) throws Exception {
         Pet pet = modelMapper.map(createPetDTO, Pet.class);
+        pet.setUserName(commonUtility.generateRandomKey(6));
         if (createPetDTO.getBirthDay() != null)
             pet.setDob(commonUtility.getDateConvertedDay(createPetDTO.getBirthDay()));
         pet.setRandomKey(commonUtility.generatePetRandomKey());

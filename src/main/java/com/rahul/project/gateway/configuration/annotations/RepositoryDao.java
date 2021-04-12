@@ -3,6 +3,9 @@ package com.rahul.project.gateway.configuration.annotations;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.annotation.*;
 
@@ -15,6 +18,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Repository
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = {NullPointerException.class, Exception.class, Throwable.class}
+        , isolation = Isolation.READ_COMMITTED
+/* , noRollbackFor= {CustomException.class} */)
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public @interface RepositoryDao {
 

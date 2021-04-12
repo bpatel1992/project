@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -28,7 +26,7 @@ import java.lang.invoke.MethodHandles;
 @RESTController
 @Api(value = "API provide product basic functionalities",
         description = "This API provides below functionalities : " + "\n" +
-                "1. Register Pet details by admin",tags = { "Pet services" })
+                "1. Register Pet details by admin", tags = {"Pet services"})
 public class PetController {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -55,4 +53,12 @@ public class PetController {
         return petService.getPetList();
     }
 
+    @ApiOperation(value = "Delete Pet details of Customers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
+    @DeleteMapping(value = "/oauth2/api/pet/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseHandlerDTO deletePetMapping(@RequestParam("petId") Long petId) throws Exception {
+        return petService.deletePetMapping(petId);
+    }
 }
