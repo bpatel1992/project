@@ -29,11 +29,11 @@ public class EnableXService {
         Response<CreateRoomResponse> response = createRoomResponseCall.execute();
         if (response.isSuccessful()) {
             ResponseHandlerDTO<CreateRoomResponse> responseHandlerDTO = new ResponseHandlerDTO<>();
-            responseHandlerDTO.setT(response.body());
+            responseHandlerDTO.setData(response.body());
             return responseHandlerDTO;
         } else {
             ResponseHandlerDTO<ErrorResponse> responseHandlerDTO = new ResponseHandlerDTO<>();
-            responseHandlerDTO.setT(parseError(response));
+            responseHandlerDTO.setData(parseError(response));
             responseHandlerDTO.setResponseCode("4001");
             responseHandlerDTO.setResponseMessage("Not able to create room, Try again later.");
             return responseHandlerDTO;

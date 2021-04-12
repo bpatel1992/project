@@ -23,7 +23,7 @@ import java.util.Map;
  * needs to follow the Request Pattern i.e CRUDRequest instance.
  * <p>
  * So all the CRUD operations in the application can be handled by this
- * Controller only and we don't have to define Entity and CRUD operation
+ * Controller only and we don'data have to define Entity and CRUD operation
  * specific rest end Points in the application.
  * <p>
  * A Request can be of the form :

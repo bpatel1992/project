@@ -50,10 +50,9 @@ public class PetController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
                     , required = true, dataType = "String", paramType = "header")})
-    @GetMapping(value = "/oauth2/api/pet/fetch", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/oauth2/api/pet/fetch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseHandlerDTO getPetDetails() throws Exception {
-        return new ResponseHandlerDTO();
+        return petService.getPetList();
     }
 
 }

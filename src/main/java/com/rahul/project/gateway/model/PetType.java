@@ -59,7 +59,7 @@ public class PetType implements Serializable {
   /*  @JsonIgnoreProperties("petTypes")
     @JsonIgnore
     @ContainedIn
-    @ManyToMany // owner side: it doesn't have mappedBy, and can decide how the association is mapped: with a join table
+    @ManyToMany // owner side: it doesn'data have mappedBy, and can decide how the association is mapped: with a join table
     @JoinTable(name = "symptom_pet_type_mp",
             joinColumns = {@JoinColumn(name = "pet_type_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "symptom_id", referencedColumnName = "id")})

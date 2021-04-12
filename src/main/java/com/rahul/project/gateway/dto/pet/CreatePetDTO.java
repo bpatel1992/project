@@ -27,6 +27,7 @@ public class CreatePetDTO {
     private Long petTypeId;
     private Long petBreedId;
     private String birthDay;
+
     private Integer yearOld;
     @NotNull(message = "Validator.notNullMsg")
     private Long customerId;

@@ -67,7 +67,7 @@ public class Behaviour implements Serializable {
     }
 
     /*@IndexedEmbedded
-    @ManyToMany // owner side: it doesn't have mappedBy, and can decide how the association is mapped: with a join table
+    @ManyToMany // owner side: it doesn'data have mappedBy, and can decide how the association is mapped: with a join table
     @JoinTable(name = "behaviour_pet_type_mp",
             joinColumns = {@JoinColumn(name = "behaviour_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "pet_type_id", referencedColumnName = "id")})

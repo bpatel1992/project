@@ -2,18 +2,18 @@ package com.rahul.project.gateway.chat.service;
 
 
 import com.google.common.collect.Lists;
-import com.rahul.project.gateway.chat.exception.IsSameUserException;
-import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.chat.dto.ChatChannelInitializationDTO;
 import com.rahul.project.gateway.chat.dto.ChatMessageDTO;
 import com.rahul.project.gateway.chat.dto.NotificationDTO;
 import com.rahul.project.gateway.chat.dto.PageRequestDTO;
+import com.rahul.project.gateway.chat.exception.IsSameUserException;
 import com.rahul.project.gateway.chat.interfaces.IChatService;
 import com.rahul.project.gateway.chat.model.ChatChannel;
 import com.rahul.project.gateway.chat.model.ChatMessage;
 import com.rahul.project.gateway.chat.repository.ChatChannelRepository;
 import com.rahul.project.gateway.chat.repository.ChatMessageRepository;
 import com.rahul.project.gateway.chat.utility.ChatMessageMapper;
+import com.rahul.project.gateway.dao.AbstractDao;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -50,8 +50,8 @@ public class ChatService implements IChatService {
         chatChannelInitializationDTO.getSenderId(),
         chatChannelInitializationDTO.getReceiverId()
       );
-    
-    return (channel != null && !channel.isEmpty()) ? channel.get(0).getChannelId().toString() : null;
+
+      return (channel != null && !channel.isEmpty()) ? channel.get(0).getChannelId() : null;
   }
 
   private String newChatSession(ChatChannelInitializationDTO chatChannelInitializationDTO)
@@ -59,7 +59,7 @@ public class ChatService implements IChatService {
     ChatChannel channel = new ChatChannel(chatChannelInitializationDTO.getSenderId()
             ,chatChannelInitializationDTO.getReceiverId());
     chatChannelRepository.save(channel);
-    return channel.getChannelId().toString();
+      return channel.getChannelId();
   }
 
   public String establishChatSession(ChatChannelInitializationDTO chatChannelInitializationDTO)
@@ -70,7 +70,7 @@ public class ChatService implements IChatService {
 
     String uuid = getExistingChannel(chatChannelInitializationDTO);
 
-    // If channel doesn't already exist, create a new one
+      // If channel doesn'data already exist, create a new one
     return (uuid != null) ? uuid : newChatSession(chatChannelInitializationDTO);
   }
   

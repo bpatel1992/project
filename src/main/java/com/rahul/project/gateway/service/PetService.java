@@ -4,7 +4,7 @@ import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.ResponseHandlerDTO;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
-import com.rahul.project.gateway.dto.pet.PetDTO;
+import com.rahul.project.gateway.dto.pet.PetListDTO;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.UserPetRelationMPRepository;
 import com.rahul.project.gateway.utility.CommonUtility;
@@ -59,9 +59,21 @@ public class PetService {
         this.commonUtility = commonUtility;
     }
 
-    public ResponseHandlerDTO<List<PetDTO>> getPetList() throws Exception {
+    public ResponseHandlerDTO<List<PetListDTO>> getPetList() throws Exception {
+        ResponseHandlerDTO<List<PetListDTO>> responseHandlerDTO = new ResponseHandlerDTO<>();
+        List<PetListDTO> petDTOS = new ArrayList<>();
         Long loggedInUser = commonUtility.getLoggedInUser();
-        return new ResponseHandlerDTO();
+        if (loggedInUser != null) {
+            List<UserPetRelationMP> userPetRelation = userPetRelationMPRepository.getUserPetRelation(loggedInUser);
+            if (userPetRelation != null)
+                for (UserPetRelationMP upr : userPetRelation) {
+                    PetListDTO petDTO = modelMapper.map(upr.getId().getPet(), PetListDTO.class);
+                    petDTO.setRelation(upr.getRelationM().getRelationName());
+                    petDTOS.add(petDTO);
+                }
+        }
+        responseHandlerDTO.setData(petDTOS);
+        return responseHandlerDTO;
     }
 
     public CreatePetDTO registerPetAdmin(CreatePetDTO createPetDTO) throws Exception {

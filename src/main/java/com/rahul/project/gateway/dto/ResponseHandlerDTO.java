@@ -16,7 +16,7 @@ public class ResponseHandlerDTO<T> {
 
     private String responseCode;
     private String responseMessage;
-    private T t;
+    private T data;
 
     public ResponseHandlerDTO() {
         this.responseCode = "0000";

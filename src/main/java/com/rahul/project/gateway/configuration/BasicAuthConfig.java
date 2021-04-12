@@ -60,7 +60,7 @@ public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//We don't need sessions to be created.;
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//We don'data need sessions to be created.;
     }
 
     @Bean
