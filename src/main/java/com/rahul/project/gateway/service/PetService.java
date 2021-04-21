@@ -4,6 +4,7 @@ import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.ResponseHandlerDTO;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
+import com.rahul.project.gateway.dto.pet.PetDetailsDTO;
 import com.rahul.project.gateway.dto.pet.PetListDTO;
 import com.rahul.project.gateway.model.*;
 import com.rahul.project.gateway.repository.UserPetRelationMPRepository;
@@ -81,6 +82,23 @@ public class PetService {
                 }
         }
         responseHandlerDTO.setData(petDTOS);
+        return responseHandlerDTO;
+    }
+
+    public ResponseHandlerDTO getPetDetails(Long petId) throws Exception {
+        ResponseHandlerDTO<PetDetailsDTO> responseHandlerDTO = new ResponseHandlerDTO<>();
+        Long loggedInUser = commonUtility.getLoggedInUser();
+
+        UserPetRelationMP userPetRelation = userPetRelationMPRepository.getUserPetRelation(loggedInUser, petId);
+        Pet pet1 = userPetRelation.getId().getPet();
+//        PetDetailsDTO petDTO =new PetDetailsDTO();
+        PetDetailsDTO petDTO = modelMapper.map(pet1, PetDetailsDTO.class);
+        petDTO.setRelation(userPetRelation.getRelationM().getRelationName());
+        petDTO.setImageURL(pet1.getImageName() != null ?
+                environment.getRequiredProperty("gateway.api.url")
+                        + "assets/pet/profile?randomKey=" + pet1.getRandomKey() : null);
+
+        responseHandlerDTO.setData(petDTO);
         return responseHandlerDTO;
     }
 

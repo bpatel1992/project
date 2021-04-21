@@ -53,6 +53,15 @@ public class PetController {
         return petService.getPetList();
     }
 
+    @ApiOperation(value = "Pet details", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"
+                    , required = true, dataType = "String", paramType = "header")})
+    @GetMapping(value = "/oauth2/api/pet/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseHandlerDTO getPetMapping(@RequestParam("petId") Long petId) throws Exception {
+        return petService.getPetDetails(petId);
+    }
+
     @ApiOperation(value = "Delete Pet details of Customers", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bearer token", value = "Bearer token required to access this service"

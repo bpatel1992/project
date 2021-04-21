@@ -13,7 +13,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,20 +37,29 @@ public class Vaccine implements Serializable {
     @Column(name = "vaccine_name")
     private String vaccineName;
 
+    @JsonInclude()
+    @Transient
+    private String vaccineNameLabel;
+
+    @Basic
+    @Column(name = "image_name")
+    private String imageName;
+
+  /*// manufacturing company
     @NotNull
     @Column(name = "manufacturer_name")
-    private String manufacturerName;
-
+    private String manufacturerName;*/
+/*
     @NotNull
     @Column(name = "cost")
     private BigDecimal cost;
 
     @NotNull
     @Column(name = "currency")
-    private String currency;
+    private String currency;*/
 
-    @Column(name = "status", columnDefinition = "boolean default true", nullable = false)
-    private boolean status;
+    @Column(name = "status", columnDefinition = "boolean default true")
+    private Boolean status;
 
     @Basic
     @CreatedDate
@@ -59,19 +67,11 @@ public class Vaccine implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @NotNull
-    @Column(name = "created_by")
-    private String createdBy;
-
     @Basic
     @LastModifiedDate
     @Column(name = "modification_date")
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date modificationDate;
-
-    @NotNull
-    @Column(name = "modified_by")
-    private String modifiedBy;
 
     @JsonIgnore
     @OneToMany(mappedBy = "vaccine", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -79,11 +79,7 @@ public class Vaccine implements Serializable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedVaccine> localizations = new HashMap<>();
 
-    @JsonInclude()
-    @Transient
-    private String label;
-
-    public String getLabel() {
+    public String getVaccineNameLabel() {
         return localizations.get(LocaleContextHolder.getLocale().getLanguage()) != null
                 ? localizations.get(LocaleContextHolder.getLocale().getLanguage()).getLabel() : null;
     }
