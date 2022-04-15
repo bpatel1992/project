@@ -3,6 +3,7 @@ package com.rahul.project.gateway.service;
 import com.rahul.project.gateway.configuration.annotations.TransactionalService;
 import com.rahul.project.gateway.dao.AbstractDao;
 import com.rahul.project.gateway.dto.ResponseHandlerDTO;
+import com.rahul.project.gateway.dto.VaccinationDTO;
 import com.rahul.project.gateway.dto.pet.CreatePetDTO;
 import com.rahul.project.gateway.dto.pet.PetDetailsDTO;
 import com.rahul.project.gateway.dto.pet.PetListDTO;
